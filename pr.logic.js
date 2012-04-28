@@ -1,8 +1,3 @@
-if ('object' === typeof module && 'function' === typeof require) {
-	module.exports = PeerReview;
-	var node = module.parent.exports.node;
-}
-
 function PeerReview () {
 	
 	this.name = 'Game Example';
@@ -193,3 +188,20 @@ function PeerReview () {
 				}
 		};	
 }
+
+if ('object' === typeof module && 'function' === typeof require) {
+	var node = require('../../node_modules/nodegame-server/node_modules/nodegame-client');
+	module.exports.node = node;
+	module.exports.PeerReview = PeerReview;
+}
+
+
+var conf = {
+	name: "PeerReview_Logic",
+	url: "http://localhost:8080/pr/admin",
+	io: {				 
+	     reconnect: false
+	} 
+};
+
+node.play(conf, new PeerReview());
