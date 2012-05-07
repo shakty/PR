@@ -22,6 +22,12 @@ function PeerReview () {
 	};
 		
 	var creation = function () {
+		
+		console.log('DUMPINIIINNIGNIGNGI');
+		console.log(node.game.memory.split().db);
+		console.log('---------------');
+		console.log(node.game.memory.split().fetchValues());
+		
 		console.log('creation');
 	};
 	

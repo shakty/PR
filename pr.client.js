@@ -21,7 +21,7 @@ function PeerReviewGame () {
 		this.outlet = null;
 		this.exs = ['A','B','C'];
 		this.donetxt = 'Done!';
-		this.milli = 10000;
+		this.milli = 1000;
 		this.milli_short = 1000;
 
 		
@@ -163,19 +163,19 @@ function PeerReviewGame () {
 	
 	
 	var pregame = function() {
-		var frame = node.window.loadFrame('pregame.html');
+		var frame = node.window.loadFrame('html/pregame.html');
 		node.emit('DONE');
 		console.log('Pregame');
 	};
 	
 	var instructions = function() {
-		node.window.loadFrame('instructions.html');
+		node.window.loadFrame('html/instructions.html');
 		console.log('Instructions');
 	};
 	
 	var creation = function() {
 
-		node.window.loadFrame('creation.html', function() {
+		node.window.loadFrame('html/creation.html', function() {
 	
 			var creationDiv = node.window.getElementById('creation');
 			this.personal_history = node.window.addWidget('NDDBBrowser', creationDiv, {id: 'ph'});
@@ -183,8 +183,8 @@ function PeerReviewGame () {
 			//node.emit('INPUT_ENABLE');
 			
 			var cf_options = { id: 'cf',
-							   width: 300,
-							   height: 300,
+							   width: 500,
+							   height: 500,
 							   features: this.last_cf
 			};
 			
@@ -209,7 +209,6 @@ function PeerReviewGame () {
 			});
 			
 			//node.emit('DONE');
-			
 		});
 
 		console.log('Creation');
@@ -240,39 +239,35 @@ function PeerReviewGame () {
 	
 	var evaluation = function() {
 		
-		node.window.loadFrame('evaluation.html', function() {
+		node.window.loadFrame('html/evaluation.html', function() {
 		
-			
-			var table = new node.window.Table({auto_update: true});		
-			node.window.write(table.table);
-			
-			node.onDATA('CF', function(msg) {
-				
-				var cf_options = { id: 'cf',
-								   width: 300,
-								   height: 300,
-								   features: msg.data.face,
-								   change: false,
-								   controls: false
-				};
-	
-				var cf = node.window.getWidget('ChernoffFaces', cf_options);
-				
-				var evaId = 'eva_' + msg.data.from;
-				
-				// Add the slider to the container
-				var sl = node.window.getSlider(evaId, this.evaAttr);
-				this.evas[msg.data.from] = sl; 
-		
-				table.addColumn([cf.getCanvas(), sl])
-				
-				// AUTOPLAY
-				node.random.exec(function() {
-					var choice = Math.random();
-					node.window.getElementById(evaId).value = Math.random()*10;
-					//alert(choice);
-				}, 200);
-			});
+//			var table = new node.window.Table({auto_update: true});
+//			node.window.write(table.table);
+//			node.onDATA('CF', function(msg) {
+//			var cf_options = { id: 'cf',
+//			width: 300,
+//			height: 300,
+//			features: msg.data.face,
+//			change: false,
+//			controls: false
+//			};
+//			var cf = node.window.getWidget('ChernoffFaces', cf_options);
+//			var evaId = 'eva_' + msg.data.from;
+//			// Add the slider to the container
+//			//var sl = node.window.getSlider(evaId, this.evaAttr);
+//			var sl = node.window.getDiv(evaId);
+//			this.evas[msg.data.from] = sl;
+//			table.addColumn([cf.getCanvas(), sl]);
+//			// How to add jquery slider
+//			$( "#eva_" + msg.data.from ).slider();
+//			// AUTOPLAY
+//			node.random.exec(function() {
+//			var choice = Math.random();
+//			node.window.getElementById(evaId).value = Math.random()*10;
+//			//alert(choice);
+//			}, 10000);
+//			}); 
+
 			
 			//node.emit('DONE');
 	
@@ -282,7 +277,7 @@ function PeerReviewGame () {
 	};
 	
 	var dissemination = function(){
-		node.window.loadFrame('dissemination.html', function() {
+		node.window.loadFrame('html/dissemination.html', function() {
 			
 			this.all_ex.addDT('Round: ' + node.game.gameState.round);
 			
@@ -301,7 +296,6 @@ function PeerReviewGame () {
 					for (var j=0; j < this.exs.length; j++) {
 						var winners = db.select('ex','=',this.exs[j])
 										.sort('mean')
-										.reverse()
 										.fetch();
 					
 						if (winners.length > 0) {
@@ -342,13 +336,13 @@ function PeerReviewGame () {
 	};
 	
 	var questionnaire = function() {
-		node.window.loadFrame('postgame.html');
+		node.window.loadFrame('html/postgame.html');
 		//node.emit('DONE');
 		console.log('Postgame');
 	};
 	
 	var endgame = function() {
-		node.window.loadFrame('ended.html');
+		node.window.loadFrame('html/ended.html');
 		console.log('Game ended');
 	};
 	
@@ -360,9 +354,9 @@ function PeerReviewGame () {
 		
 		1: {name: 'Creation',
 			state: creation,
-			timer: 10000,
+			timer: 1000,
 			done: function () {
-				console.log('executing crea done');
+				//console.log('executing crea done');
 				node.set('CF', this.cf.getAllValues());
 				this.last_cf = this.cf.getAllValues();
 				return true;
@@ -371,10 +365,10 @@ function PeerReviewGame () {
 		
 		2: {name: 'Submission',
 			state: submission,
-			timer: 5000,
+			timer: 2000,
 //			frame: 'postgame.html',
 			done: function (ex) {
-				console.log('executing sub done');
+				//console.log('executing sub done');
 				if (!JSUS.in_array(ex, ['A','B','C'])) {
 					alert('You must select an outlet for your creation NOW!!');
 					this.timer.restart({timer: 5000});
@@ -389,7 +383,7 @@ function PeerReviewGame () {
 		
 		3: {name: 'Evaluation',
 			state: evaluation,
-			timer: 5000,
+			timer: 200000,
 			done: function () {
 				console.log('executing eva done');
 				for (var i in this.evas) {
@@ -406,7 +400,7 @@ function PeerReviewGame () {
 		
 		4: {state: dissemination,
 			name: 'Exhibition',
-			timer: 5000
+			timer: 1000
 		}
 	};
 

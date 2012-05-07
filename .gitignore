@@ -1,3 +1,7 @@
+ember*
+
+CF-evaluate
+
 lib-cov
 *.seed
 *.log

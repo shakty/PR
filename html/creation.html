@@ -32,10 +32,10 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <body>
 	<h2>Phase 1: Creation</h2>
-	<table id="create_sub_his">
-	 <tr>
-	   <td id="creation"></td>
-	   <td id="submission">
+
+	   <div id="creation"></div>
+	   
+	   <div id="submission">
 	     <div id="waiting_sub">
 	       Once you have finished your creation, you must decide to which exhibition to submit it.
 	     </div>
@@ -47,13 +47,14 @@
 			     <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
 		     </dl>
 	     </div>
-	   </td>
-	   <td id="history"></td>
-	</table> 
+	     </div>
+	     
+	   <div id="history"></div>
+	
 </body>
 <script>
-console.log('what is in here?');
-console.log(window);
+//console.log('what is in here?');
+//console.log(window);
 // console.log(this);
 // console.log(parent.window.node);
 // console.log(parent.node);

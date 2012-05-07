@@ -1,8 +1,106 @@
 <!doctype html>
+<style>
+  #tbl_evaluation {
+    border: 1px black solid;
+  };
+  #tbl_evaluation td {
+    width: 200px;
+    border: 1px solid #CCC;
+  };
+  
+  .display_container {
+    width: 200px;
+    border: 1px solid red;
+  }
+  
+</style>
 <title>Evaluation</title>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <body>
 	 <h2>Phase 2: Evaluation</h2>
 	 <div id="root">
-  </div>
+	   Give an evaluation to the following drawings that other participants of the game just created. <br/>
+	   Move the slider underneath the picture on a scale from 1 to 9,  where 
+	   <ul>
+	     <li> 1 (one) means <em>complete dislike</em> </li>
+	     <li> 5 (five) means that you are <em>indifferent</em> </li>
+       <li> 9 (nine) means <em>complete like</em> </li>
+	   </ul>
+   </div>
 </body>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="http://localhost:8080/javascripts/jqueryui/css/ui-lightness/jquery-ui-1.8.19.custom.css" rel="Stylesheet" />
+<script src="http://localhost:8080/javascripts/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="http://localhost:8080/javascripts/jqueryui/js/jquery-ui-1.8.19.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+<script type="text/javascript">
+<!--
+
+window.onload = function(){
+
+	
+	var node = parent.node;
+	
+	var table = new node.window.Table({
+		  auto_update: true,
+		  id: 'tbl_evaluation',
+	});   
+	
+	node.window.write(table.table);
+	document.getElementById('root').appendChild(table.table);
+	
+	
+	node.onDATA('CF', function(msg) {
+	  
+	  var cf_options = { id: 'cf',
+	             width: 300,
+	             height: 300,
+	             features: msg.data.face,
+	             change: false,
+	             controls: false
+	  };
+
+  var cf = node.window.getWidget('ChernoffFaces', cf_options);
+  
+  var evaId = 'eva_' + msg.data.from;
+  var diplayEvaId = 'display_' + msg.data.from;
+  var displayContId = 'display_cont_' + msg.data.from;
+  
+  // Add the slider to the container
+  
+  var sl = node.window.getDiv(evaId, {'style': 'width:300px'});
+  var display_container = node.window.getDiv(displayContId, {'style': 'width:300px'});
+  var display = node.window.addTextInput(display_container, diplayEvaId, {
+     disabled: "disabled",
+     style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
+  });
+  
+  var labelText = 'Your current evaluation: ';
+  node.window.addLabel(display_container, display, null, labelText);  
+  
+  this.evas[msg.data.from] = display; 
+  table.addColumn([sl, display_container, cf.getCanvas()]);
+  // How to add jquery slider   
+  
+
+
+  
+  $( "#" + evaId).slider({
+	  value: 5,
+    min: 1,
+    max: 9,
+    step: 0.1,
+    slide: function( event, ui ) {
+      $( "#" + diplayEvaId ).val( ui.value );
+    }
+  });
+  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
+  
+  
+});
+
+}
+
+//-->
+</script>
+
