@@ -205,6 +205,7 @@ if ('object' === typeof module && 'function' === typeof require) {
 var conf = {
 	name: "PeerReview_Logic",
 	url: "http://localhost:8080/pr/admin",
+	verbosity: 0,
 	io: {				 
 	     reconnect: false
 	} 
