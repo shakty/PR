@@ -177,36 +177,36 @@ function PeerReviewGame () {
 
 		node.window.loadFrame('html/creation.html', function() {
 	
-			var creationDiv = node.window.getElementById('creation');
-			this.personal_history = node.window.addWidget('NDDBBrowser', creationDiv, {id: 'ph'});
-			
-			//node.emit('INPUT_ENABLE');
-			
-			var cf_options = { id: 'cf',
-							   width: 500,
-							   height: 500,
-							   features: this.last_cf
-			};
-			
-			this.cf = node.window.addWidget('ChernoffFaces', creationDiv, cf_options);
-		
-			this.personal_history.add(this.cf.getAllValues());
-			
-			// History of previous exhibits
-			var historyDiv = node.window.getElementById('history');
-
-			this.all_ex.parse();
-			node.window.write(this.all_ex.getRoot(), historyDiv);
-			
-			// Adding to history
-			node.on(this.cf.change, function() {
-				this.personal_history.add(this.cf.getAllValues());
-			});
-			
-			// Pulling back from history
-			node.on(this.personal_history.id + '_GOT', function (face) {
-				node.game.cf.draw(face);
-			});
+//			var creationDiv = node.window.getElementById('creation');
+//			this.personal_history = node.window.addWidget('NDDBBrowser', creationDiv, {id: 'ph'});
+//			
+//			//node.emit('INPUT_ENABLE');
+//			
+//			var cf_options = { id: 'cf',
+//							   width: 500,
+//							   height: 500,
+//							   features: this.last_cf
+//			};
+//			
+//			this.cf = node.window.addWidget('ChernoffFaces', creationDiv, cf_options);
+//		
+//			this.personal_history.add(this.cf.getAllValues());
+//			
+//			// History of previous exhibits
+//			var historyDiv = node.window.getElementById('history');
+//
+//			this.all_ex.parse();
+//			node.window.write(this.all_ex.getRoot(), historyDiv);
+//			
+//			// Adding to history
+//			node.on(this.cf.change, function() {
+//				this.personal_history.add(this.cf.getAllValues());
+//			});
+//			
+//			// Pulling back from history
+//			node.on(this.personal_history.id + '_GOT', function (face) {
+//				node.game.cf.draw(face);
+//			});
 			
 			//node.emit('DONE');
 		});
@@ -354,7 +354,7 @@ function PeerReviewGame () {
 		
 		1: {name: 'Creation',
 			state: creation,
-			timer: 1000,
+			timer: 100000,
 			done: function () {
 				//console.log('executing crea done');
 				node.set('CF', this.cf.getAllValues());

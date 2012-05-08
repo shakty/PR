@@ -30,6 +30,11 @@
 	
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
 <body>
 	<h2>Phase 1: Creation</h2>
 
@@ -53,10 +58,43 @@
 	
 </body>
 <script>
-//console.log('what is in here?');
-//console.log(window);
-// console.log(this);
-// console.log(parent.window.node);
-// console.log(parent.node);
+	
+	  var node = parent.node;
+	
+    var creationDiv = document.getElementById('creation');
+    node.game.personal_history = node.window.addWidget('NDDBBrowser', creationDiv, {id: 'ph'});
+      
+      //node.emit('INPUT_ENABLE');
+      
+      var cf_options = { id: 'cf',
+                 width: 500,
+                 height: 500,
+                 features: this.last_cf,
+//								 controls: false,
+      };
+      
+     node.game.cf = node.window.addWidget('ChernoffFaces', creationDiv, cf_options);
+    
+      node.game.personal_history.add(node.game.cf.getAllValues());
+      
+      // History of previous exhibits
+      //var historyDiv = node.window.getElementById('history');
+      var historyDiv = document.getElementById('history');
+
+
+      node.game.all_ex.parse();
+      //node.window.write(node.game.all_ex.getRoot(), historyDiv);
+      $(node.game.all_ex.getRoot()).append(historyDiv);
+      
+			
+      // Adding to history
+      node.on(node.game.cf.change, function() {
+        node.game.personal_history.add(node.game.cf.getAllValues());
+      });
+      
+      // Pulling back from history
+      node.on(node.game.personal_history.id + '_GOT', function (face) {
+        node.game.cf.draw(face);
+      });
 
 </script>
