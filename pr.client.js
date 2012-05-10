@@ -13,11 +13,6 @@ function PeerReviewGame () {
 	this.init = function() {			
 		node.window.setup('PLAYER');
 		this.cf = null;
-//		this.header = document.getElementById('gn_header');
-//		this.vs = node.window.addWidget('VisualState', this.header);
-//		this.timer = node.window.addWidget('VisualTimer', this.header);
-//		this.doneb = node.window.addWidget('DoneButton', this.header);
-//		this.sd = node.window.addWidget('StateDisplay', this.header);
 		this.outlet = null;
 		this.exs = ['A','B','C'];
 		this.donetxt = 'Done!';
@@ -365,7 +360,7 @@ function PeerReviewGame () {
 		
 		2: {name: 'Submission',
 			state: submission,
-			timer: 2000,
+			timer: 10000,
 //			frame: 'postgame.html',
 			done: function (ex) {
 				//console.log('executing sub done');

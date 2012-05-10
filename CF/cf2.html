@@ -1,0 +1,249 @@
+<!doctype html>
+
+<h2>Chernoff Faces Test</h2>
+<div id="root"></div>
+<script src="http://localhost:8080/socket.io/socket.io.js"></script> 
+<script src="http://localhost:8080/javascripts/nodegame.js" charset="utf-8"></script>
+
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<script src="./ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./CFControls.js" charset="utf-8"></script>
+<link type="text/css" href="./css/style.css" rel="Stylesheet" />
+
+<script src="../lib/ember-0.9.7.1.min.js" charset="utf-8"></script>
+
+<script type="text/x-handlebars" data-template-name="controls">
+  <dl>
+    <dt><img src="./images/face.jpg" /> Head</dt>
+      <dd>Head</dd>
+</dt>
+</dl>
+    
+</script>
+<div id="cf_span">
+<table>
+<tr>
+<th colspan="2">Head</th>
+</tr>
+<tr>
+  <td>
+		<label for="head_scale_x">Scale head horizontally</label>
+  </td>
+  <td>
+    <div id="head_scale_x">
+    </div>
+  </td>
+</tr>
+<tr>
+	<td>
+		<label for="head_scale_y">Scale head vertically</label>
+		</td>
+		<td>
+		<div id="head_scale_y">&nbsp;
+		</div>
+	</td>
+</table>
+
+<table>
+<tr>
+<th colspan="2">Eye and Eyebrow</th>
+</tr>
+<tr>
+  <td>
+		<label for="eye_spacing">Eye spacing</label>
+		</td>
+    <td>
+		<div id="eye_spacing">
+		</div>
+	</td>
+<tr>
+  <td>
+		<label for="eye_scale_x">Scale eyes horizontally</label>
+		</td>
+    <td>
+		<div id="eye_scale_x">
+		</div>
+	</td>
+<tr>
+  <td>
+		<label for="eye_scale_y">Scale eyes vertically</label>
+		</td>
+    <td>
+		<div id="eye_scale_y">
+		</div>
+	</td>
+<tr>
+  <td>
+		<label for="eyebrow_angle">Eyebrow angle</label>
+		</td>
+    <td>
+		<div id="eyebrow_angle">
+		</div>
+		</td>
+<tr>
+  <td>
+		<label for="eye_height">Eye and Eyebrow height</label>
+		</td>
+		<td>
+		<div id="eye_height">
+		</div>
+	</td>
+	</tr>
+</table>
+
+<table>
+<tr>
+<th colspan="2">Nose</th>
+</tr>
+<tr>
+		<td>
+			<label for="nose_length">Nose length</label>
+			</td>
+			<td>
+			<div id="nose_length">
+			</div>
+		</td>
+</table>
+
+<table>
+  <tr>
+	<th colspan="2">Mouth</th>
+	</tr>
+		<td>
+			<label id="" for="mouth_shape">Mouth Shape</label>
+		</td>
+		<td>
+      <div id="mouth_shape">
+      </div>
+    </td>
+    </tr>
+</table>
+
+
+
+
+
+</div>
+
+<body>
+
+
+<script>
+
+var defaults = {
+	    
+        // Head
+
+        head_scale_x: {
+          min: 0.2,
+          max: 2,
+          step: 0.01,
+          value: 0.5,
+          label: 'Scale head horizontally'
+        },
+        
+        head_scale_y: {
+          min: 0.2,
+          max: 2,
+          step: 0.01,
+          value: 1,
+          label: 'Scale head vertically'
+        },
+        
+        // Eye
+        
+
+        eye_spacing: {
+          min: 0,
+          max: 50,
+          step: 0.01,
+          value: 10,
+          label: 'Eye spacing'
+        },
+        eye_scale_x: {
+          min: 0.2,
+          max: 2,
+          step: 0.01,
+          value: 1,
+          label: 'Scale eyes horizontally'
+        },
+        eye_scale_y: {
+          min: 0.2,
+          max: 2,
+          step: 0.01,
+          value: 1,
+          label: 'Scale eyes vertically'
+        },
+
+
+        // Eyebrow
+
+        eyebrow_angle: {
+          min: -2,
+          max: 2,
+          step: 0.01,
+          value: -0.5,
+          label: 'Eyebrow angle'
+        },
+
+        
+        eye_height: {
+          min: 0.1,
+          max: 0.9,
+          step: 0.01,
+          value: 0.4,
+          label: 'Eye and Eyebrow height'
+        },
+        
+
+        nose_length: {
+          min: 0.2,
+          max: 18,
+          step: 0.01,
+          value: 15,
+          label: 'Nose length'
+        },
+
+        mouth_shape: {
+          min: 0,
+          max: 30,
+          step: 1,
+          value: 0,
+          label: 'Mouth Shape'
+        }   
+        };
+
+$(function() {
+   
+    // setup graphic EQ
+    $( "#cf_span div" ).each(function() {
+      // read initial values from markup and remove that
+      var settings = defaults[this.id];
+      settings['animate'] = true;
+      
+      settings.slide = function(e, ui) {
+    	  node.emit('CF_CHANGE');
+      };
+      
+      //console.log(settings);
+      //console.log(this.id);
+      var sl = $( this ).slider(settings);
+      
+    });
+  });
+
+
+  node.on('CF_CHANGE', function(){
+	  console.log()
+  })
+
+
+
+</script>
+</body>
+</html>

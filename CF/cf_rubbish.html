@@ -1,0 +1,221 @@
+<!doctype html>
+
+<h2>Chernoff Faces Test</h2>
+<div id="root"></div>
+<script src="http://localhost:8080/socket.io/socket.io.js"></script> 
+<script src="http://localhost:8080/javascripts/nodegame.js" charset="utf-8"></script>
+
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<script src="./ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./CFControls.js" charset="utf-8"></script>
+<link type="text/css" href="./css/style.css" rel="Stylesheet" />
+
+<script src="../lib/ember-0.9.7.1.min.js" charset="utf-8"></script>
+
+<script type="text/x-handlebars" data-template-name="controls">
+  <dl>
+    <dt><img src="./images/face.jpg" /> Head</dt>
+      <dd>Head</dd>
+</dt>
+</dl>
+    
+</script>
+<body>
+<dl>
+    <dt><img src="./images/face.jpg" width="50px" /> Head</dt>
+      <dd>Scale head horizontally <div type="slider"/></dd>
+</dt>
+</dl>
+
+
+
+<dl id="cf_controls">
+<dt>
+<div>
+<p>
+<label id="" for="head_scale_x">Scale head horizontally</label>
+</p><br/><br/><br/>
+<div id="head_scale_x">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="head_scale_y">Scale head vertically</label>
+<div id="head_scale_y">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_spacing">Eye spacing</label>
+<div id="eye_spacing">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_scale_x">Scale eyes horizontally</label>
+<div id="eye_scale_x">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_scale_y">Scale eyes vertically</label>
+<div id="eye_scale_y">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="pupil_radius">Pupil radius</label>
+<div id="pupil_radius">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eyebrow_angle">Eyebrow angle</label>
+<div id="eyebrow_angle">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_height">Eye and Eyebrow height</label>
+<div id="eye_height">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="nose_length">Nose length</label>
+<div id="nose_length">
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="mouth_shape">Mouth Shape</label>
+<div id="mouth_shape">
+</div>
+</dt>
+</dl>
+
+
+
+<dl id="cf_span">
+<dt>
+<span>
+<p>
+<label id="" for="head_scale_x">Scale head horizontally</label>
+</p><br/><br/><br/>
+<span id="head_scale_x">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="head_scale_y">Scale head vertically</label>
+<span id="head_scale_y">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="eye_spacing">Eye spacing</label>
+<span id="eye_spacing">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="eye_scale_x">Scale eyes horizontally</label>
+<span id="eye_scale_x">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="eye_scale_y">Scale eyes vertically</label>
+<span id="eye_scale_y">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="pupil_radius">Pupil radius</label>
+<span id="pupil_radius">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="eyebrow_angle">Eyebrow angle</label>
+<span id="eyebrow_angle">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="eye_height">Eye and Eyebrow height</label>
+<span id="eye_height">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="nose_length">Nose length</label>
+<span id="nose_length">
+</span>
+</dt>
+<dt>
+<span>
+<label id="" for="mouth_shape">Mouth Shape</label>
+<span id="mouth_shape">
+</span>
+</dt>
+</dl>
+
+
+<script>
+window.onload = function() {
+
+	$(function() {
+
+	    // setup graphic EQ
+	    $( "#cf_span > span" ).each(function() {
+	      // read initial values from markup and remove that
+	      //var value = parseInt( $( this ).text(), 10 );
+	      $( this ).empty().slider({
+	        value: 10,
+	        range: "min",
+	        animate: true,
+	        //orientation: "vertical"
+	      });
+	    });
+	  });
+	
+  node.window.generateRandomRoot();
+	
+	var CFControls = node.window.widgets.CFControls;
+	var defaults = CFControls.defaults;
+	//console.dir(defaults);
+
+	 
+		var sc_options = {
+      id: 'cf_controls',
+      features: defaults,
+      change: 'CF_CHANGE',
+      submit: 'Send'
+    };
+	
+	node.cfc = cfc = new CFControls(sc_options);
+	
+	//var defaults = node.window.widgets.ChernoffFaces.FaceVector.defaults;
+//	  var sc = node.window.getWidget('Controls.Slider', sc_options);
+    //var sc = new node.window.widgets.ChernoffFaces.CFControls(sc_options);
+
+	
+	   var cf_options = { id: 'cf',
+         width: 500,
+         height: 500,
+				 controls: cfc,
+				 features: node.window.widgets.ChernoffFaces.FaceVector.defaults,
+    };
+	
+	node.window.addWidget('ChernoffFaces', node.window.root, cf_options);
+	node.emit('CF_CHANGE');
+}
+</script>
+</body>
+</html>

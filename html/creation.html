@@ -35,6 +35,13 @@
 <script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
 <script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
 <!-- JQUERY UI ENDS -->
+
+<!--  CF -->
+<script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./../CF/CFControls.js" charset="utf-8"></script>
+<!-- CF ends -->
+
+
 <body>
 	<h2>Phase 1: Creation</h2>
 
@@ -64,12 +71,28 @@
     var creationDiv = document.getElementById('creation');
     node.game.personal_history = node.window.addWidget('NDDBBrowser', creationDiv, {id: 'ph'});
       
+    
+    var CFControls = node.window.widgets.CFControls;
+    var defaults = CFControls.defaults;
+    //console.dir(defaults);
+
+     
+      var sc_options = {
+        id: 'cf_controls',
+        features: defaults,
+        change: 'CF_CHANGE',
+        submit: 'Send'
+      };
+    
+      var cfc = new CFControls(sc_options);
+    
       //node.emit('INPUT_ENABLE');
       
       var cf_options = { id: 'cf',
                  width: 500,
                  height: 500,
                  features: this.last_cf,
+                 controls: cfc,
 //								 controls: false,
       };
       
