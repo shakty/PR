@@ -23,10 +23,10 @@ function PeerReview () {
 		
 	var creation = function () {
 		
-		console.log('DUMPINIIINNIGNIGNGI');
-		console.log(node.game.memory.split().db);
-		console.log('---------------');
-		console.log(node.game.memory.split().fetchValues());
+//		console.log('DUMPINIIINNIGNIGNGI');
+//		console.log(node.game.memory.split().db);
+//		console.log('---------------');
+//		console.log(node.game.memory.split().fetchValues());
 		
 		console.log('creation');
 	};
@@ -67,7 +67,6 @@ function PeerReview () {
 								.select('EVA2')
 								.select('key','=','SUB')
 								.sort('value')
-								.reverse()
 								.groupBy('value');
 		
 		var selected = [];
@@ -98,7 +97,7 @@ function PeerReview () {
 					//var player = works[j].fetch()[0].player;
 					var player = works[j].first().player;
 					
-					var cf = this.memory.select('state', '=', this.previous(3))
+					var cf = this.memory.select('state', '=', this.previous(2))
 										.select('player', '=', player)
 										.select('key', '=', 'CF');
 				
@@ -158,6 +157,12 @@ function PeerReview () {
 			}
 		};
 
+	var testloop = JSUS.clone(gameloop);
+	testloop[4] = {name: 'Test completed',
+				   state: function() {
+						console.log('Test round completed');
+					},
+	};
 
 		
 		// LOOPS
@@ -171,17 +176,21 @@ function PeerReview () {
 				2: {state: 	instructions,
 					name: 	'Instructions'
 				},
+				
+				3: {state: 	testloop,
+					name: 	'Test Game'
+				},
 					
-				3: {rounds:	10, 
+				4: {rounds:	10, 
 					state: 	gameloop,
 					name: 	'Game'
 				},
 				
-				4: {state:	questionnaire,
+				5: {state:	questionnaire,
 					name: 	'Questionnaire'
 				},
 					
-				5: {state:	endgame,
+				6: {state:	endgame,
 					name: 	'Thank you'
 				}
 		};	

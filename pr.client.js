@@ -209,28 +209,6 @@ function PeerReviewGame () {
 		console.log('Creation');
 	};
 	
-	var submission = function() {
-		
-		node.emit('HIDE', 'waiting_sub');
-		node.emit('SHOW', 'active_sub');
-		
-//		// AUTOPLAY
-//		node.random.exec(function(){
-//			var choice = Math.random();
-//			if (choice < 0.33) {
-//				node.window.getElementById('ex_A').click();
-//			}
-//			else if (choice < 0.66) {
-//				node.window.getElementById('ex_B').click();
-//			}
-//			else {
-//				node.window.getElementById('ex_C').click();
-//			}
-//		}, 30000);
-
-		
-		console.log('Submission');
-	};	
 	
 	var evaluation = function() {
 		
@@ -389,13 +367,13 @@ function PeerReviewGame () {
 		
 		3: {state: dissemination,
 			name: 'Exhibition',
-			timer: 1000
+			timer: 100000
 		}
 	};
 
 
 	var testloop = JSUS.clone(gameloop);
-	testloop[5] = {name: 'Test completed',
+	testloop[4] = {name: 'Test completed',
 				   state: function() {
 						node.window.loadFrame('html/testgame_completed.html');
 					},

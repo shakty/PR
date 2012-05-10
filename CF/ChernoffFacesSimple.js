@@ -2,19 +2,14 @@
 	
 	var node = parent.node;
 	
-	console.log('EEH');
-	console.log(node);
-	
 	var Table = node.window.Table;
-	
-	//node.window.addCSS(node.window.root, './CF/css/style.css');
 	
 	//var CF = Ember.Application.create();
 	
 	/**
 	 * Expose constructor
 	 */
-	exports.ChernoffFaces = ChernoffFaces;
+	exports.ChernoffFacesSimple = ChernoffFaces;
 	exports.ChernoffFaces.FaceVector = FaceVector;
 	exports.ChernoffFaces.FacePainter = FacePainter;
 	
