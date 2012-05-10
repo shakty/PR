@@ -102,6 +102,16 @@ table#create_sub_his td{
   vertical-align: top;
 }
 
+
+/* Submission */
+
+#active_sub button {
+	width: 100px;
+	height: 100px;
+	margin: 10px;
+}
+
+
 /* General nodeGame */
 
 .strong {

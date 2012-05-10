@@ -214,19 +214,19 @@ function PeerReviewGame () {
 		node.emit('HIDE', 'waiting_sub');
 		node.emit('SHOW', 'active_sub');
 		
-		// AUTOPLAY
-		node.random.exec(function(){
-			var choice = Math.random();
-			if (choice < 0.33) {
-				node.window.getElementById('ex_A').click();
-			}
-			else if (choice < 0.66) {
-				node.window.getElementById('ex_B').click();
-			}
-			else {
-				node.window.getElementById('ex_C').click();
-			}
-		}, 300);
+//		// AUTOPLAY
+//		node.random.exec(function(){
+//			var choice = Math.random();
+//			if (choice < 0.33) {
+//				node.window.getElementById('ex_A').click();
+//			}
+//			else if (choice < 0.66) {
+//				node.window.getElementById('ex_B').click();
+//			}
+//			else {
+//				node.window.getElementById('ex_C').click();
+//			}
+//		}, 30000);
 
 		
 		console.log('Submission');
