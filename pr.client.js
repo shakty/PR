@@ -344,7 +344,6 @@ function PeerReviewGame () {
 	
 // Assigning Functions to Loops
 	
-	
 	var gameloop = { // The different, subsequent phases in each round
 		
 		1: {name: 'Creation',
@@ -400,6 +399,14 @@ function PeerReviewGame () {
 	};
 
 
+	var testloop = JSUS.clone(gameloop);
+	testloop[5] = {name: 'Test completed',
+				   state: function() {
+						node.window.loadFrame('html/testgame_completed.html');
+					},
+	};
+	
+	
 	
 	// LOOPS
 	this.loops = {
@@ -411,20 +418,24 @@ function PeerReviewGame () {
 			
 			2: {state: 	instructions,
 				name: 	'Instructions',
-				timer:  1200
+				timer: 	60000,
+			},
+			
+			3: {state: testloop,
+				name: 'TEST: Game',
 			},
 				
-			3: {rounds:	10, 
+			4: {rounds:	10, 
 				state: 	gameloop,
 				name: 	'Game'
 			},
 			
-			4: {state:	questionnaire,
+			5: {state:	questionnaire,
 				name: 	'Questionnaire',
 				timer: 	1200
 			},
 				
-			5: {state:	endgame,
+			6: {state:	endgame,
 				name: 	'Thank you'
 			}
 			

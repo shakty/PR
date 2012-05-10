@@ -1,35 +1,7 @@
 <!doctype html>
 <title>Creation</title>
-<style>
-	div#history {
-		float: right;
-		overflow-y: auto;
-		border-left: 1px solid #CCC;
-	}
-	
-	div#creation {
-		/*
-		left: 0;
-		top: 0;
-		position: fixed;
-		*/
-		float: left;
-    width: 800px;
-    overflow-y: auto;
-  }
-  
-  table#cf_table {
-    border: 1px solid #CCC;
-  }
-  
-  table#cf_table td {
-    border: 1px solid #CCC;
-    vertical-align: top;
-		width: 200px;
-  }
-	
-</style>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/creation.css">
 <!-- JQUERY UI STARTS -->
 <link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
 <script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
@@ -43,23 +15,22 @@
 
 
 <body>
-	<h2>Phase 1: Creation</h2>
-
+	<h2>Create your personal drawing</h2>
+<p>
+  Move the sliders below to compose an original portrait. Feel free to express
+	yourself in the style that you feel more confortable with. You can produce 
+	both realistic or abstract paintings.  
+</p>
+<p>
+	Once you have finished your creation, click on one of the three exhibition 
+	names (A, B, or C) to submit your work, and proceed to the next step.
+</p>
 	   <div id="creation"></div>
-	   
-	   <div id="submission">
-	     <div id="waiting_sub">
-	       Once you have finished your creation, you must decide to which exhibition to submit it.
-	     </div>
-	     <div id="active_sub" style="visibility: hidden">
-			   <dl>
-			     Submit your work to one of the three exhibitions.
-			     <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
-			     <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
-			     <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
-		     </dl>
-	     </div>
-	     </div>
+		      <dl id="submission">
+           <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
+           <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
+           <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
+         </dl>
 	     
 	   <div id="history"></div>
 	

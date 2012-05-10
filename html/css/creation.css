@@ -1,0 +1,37 @@
+div#history {
+  float: right;
+  overflow-y: auto;
+  border-left: 1px solid #CCC;
+}
+
+div#creation {
+  /*
+  left: 0;
+  top: 0;
+  position: fixed;
+  */
+  float: left;
+  width: 800px;
+  overflow-y: auto;
+}
+
+table#cf_table {
+  border: 1px solid #CCC;
+}
+
+table#cf_table td {
+  border: 1px solid #CCC;
+  vertical-align: top;
+  width: 200px;
+}
+
+/* Submission */
+
+dl#submission {
+	display: inline;
+}
+#submission button {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
