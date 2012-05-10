@@ -31,14 +31,10 @@ function PeerReview () {
 		console.log('creation');
 	};
 	
-	var submission = function(){		
-		console.log('submission');
-	};
-	
 	var evaluation = function(){
 		
 		// TODO: expose these methods from the node obj
-		var faces = this.memory.select('state', '=', this.previous(2))
+		var faces = this.memory.select('state', '=', this.previous())
 							   .select('key', '=', 'CF')
 							   .fetch();
 		
@@ -153,15 +149,11 @@ function PeerReview () {
 				name: 'Creation'
 			},
 			
-			2: {state: submission,
-				name: 'Submission'
-			},
-			
-			3: {state: evaluation,
+			2: {state: evaluation,
 				name: 'Evaluation'
 			},
 			
-			4: {state: dissemination,
+			3: {state: dissemination,
 				name: 'Exhibition'
 			}
 		};

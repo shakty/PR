@@ -349,33 +349,28 @@ function PeerReviewGame () {
 		1: {name: 'Creation',
 			state: creation,
 			timer: 100000,
-			done: function () {
-				//console.log('executing crea done');
-				node.set('CF', this.cf.getAllValues());
-				this.last_cf = this.cf.getAllValues();
-				return true;
-			}
-		},
-		
-		2: {name: 'Submission',
-			state: submission,
-			timer: 10000,
-//			frame: 'postgame.html',
 			done: function (ex) {
-				//console.log('executing sub done');
+				//console.log('executing crea done');
+		
 				if (!JSUS.in_array(ex, ['A','B','C'])) {
 					alert('You must select an outlet for your creation NOW!!');
-					this.timer.restart({timer: 5000});
+					if (this.timer.timeLeft <= 0) { 
+						this.timer.restart({timer: 5000});
+					};
 					return false;
 				}
 				else {
+					this.last_cf = this.cf.getAllValues();
 					node.set('SUB', ex);
+					node.set('CF', this.last_cf);
 					return true;
 				}
 			}
+				
+		
 		},
 		
-		3: {name: 'Evaluation',
+		2: {name: 'Evaluation',
 			state: evaluation,
 			timer: 200000,
 			done: function () {
@@ -392,7 +387,7 @@ function PeerReviewGame () {
 			}
 		},
 		
-		4: {state: dissemination,
+		3: {state: dissemination,
 			name: 'Exhibition',
 			timer: 1000
 		}
