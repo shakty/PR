@@ -124,13 +124,26 @@ function PeerReviewGame () {
 //		});
 		// End TABLE
 		
-		
 		this.renderCF = function (cell) {
+			
+			var w = 250;
+			var h = 250;
+			
+			console.log(node.game.gameLoop.getName());
+			
+			if (node.game.gameLoop.getName() == 'Creation') {
+				
+				console.log('AAAh!');
+				
+				w = 100;
+				h = 100;
+			}
+			
 			// Check if it is really CF obj
 			if (cell.content.cf) {
 				var cf_options = { id: 'cf_' + cell.x,
-						   width: 200,
-						   height: 200,
+						   width: w,
+						   height: h,
 						   features: cell.content.cf,
 						   controls: false,
 						   change: false,

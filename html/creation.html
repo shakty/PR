@@ -25,15 +25,16 @@
 	Once you have finished your creation, click on one of the three exhibition 
 	names (A, B, or C) to submit your work, and proceed to the next step.
 </p>
+<div id="container">
 	   <div id="creation"></div>
 		      <dl id="submission">
            <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
            <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
            <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
          </dl>
-	     
+	 </div>    
 	   <div id="history"></div>
-	
+	</div>
 </body>
 <script>
 	
@@ -78,8 +79,8 @@
 
       node.game.all_ex.parse();
       //node.window.write(node.game.all_ex.getRoot(), historyDiv);
-      $(node.game.all_ex.getRoot()).append(historyDiv);
-      
+      //$(node.game.all_ex.getRoot()).append(historyDiv);
+      historyDiv.appendChild(node.game.all_ex.getRoot());
 			
       // Adding to history
       node.on(node.game.cf.change, function() {
