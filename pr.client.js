@@ -178,6 +178,7 @@ function PeerReviewGame () {
 	
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
+		node.emit('DONE');
 		console.log('Instructions');
 	};
 	
@@ -282,6 +283,7 @@ function PeerReviewGame () {
 					for (var j=0; j < this.exs.length; j++) {
 						var winners = db.select('ex','=',this.exs[j])
 										.sort('mean')
+										.reverse()
 										.fetch();
 					
 						if (winners.length > 0) {

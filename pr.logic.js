@@ -73,12 +73,13 @@ function PeerReview () {
 		// Exhibitions Loop
 		for (var i=0; i < exhibs.length; i++) {
 			
-//			console.log('EX ' + i);
-//			console.log(exhibs[i].fetch()[0].EVA2);
+			//console.log('EX ' + i);
+			//console.log(exhibs[i].first().EVA2);
 			
 			// Get the list of works per exhibition
 			var works = exhibs[i].groupBy('EVA2.value');
-			
+//			works.sort();
+//			works.reverse();
 			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
