@@ -111,7 +111,9 @@ function PeerReview () {
 					selected.push({ex: works[j].first().value,
 								   mean: mean.toFixed(2),
 								   author: author.name,
-								   cf: cf.first().value});
+								   cf: cf.first().value,
+								   id: author.name,
+					});
 					
 				}
 				

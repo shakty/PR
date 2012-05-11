@@ -91,5 +91,69 @@
       node.on(node.game.personal_history.id + '_GOT', function (face) {
         node.game.cf.draw(face);
       });
+			
+      $( "canvas").hover(
+         function(){
+          $(this).css({
+            border: '3px solid #CCC'
+          });
+         },
+         function(){
+          $(this).css({
+            border: 0
+          });
+         });
+
+      $( "canvas").click(
+         function () {
+           var id = '#' + $(this).attr('id');
+           
+          var canvas = document.getElementById($(this).attr('id'));
+          
+//          canvas.width = 200;
+//          canvas.height = 200;
+          
+          var div = $('<div>', {
+            
+          }
+          );
+          var copy = $('<canvas width="300" height"300">');
+          copy.css({
+            border: '1px solid #CCC',
+            background: 'white',
+          });
+          var copy = copy[0];
+          copy.width = 300;
+          copy.height = 300;
+          var destCtx = copy.getContext('2d');
+          
+          // translate context to center of canvas
+          destCtx.translate(canvas.width / 2, canvas.height / 2); 
+          // scale down y component by half
+          destCtx.scale(2, 2);
+          //call its drawImage() function passing it the source canvas directly
+          destCtx.drawImage(canvas, 0, 0);
+
+          
+          div.append(copy);
+          
+          div.dialog({
+            width: 400,
+            height: 400,
+            show: "blind",
+            hide: "explode",
+            buttons: {
+              "Copy": function() {
+                $( this ).dialog( "close" );
+              },
+              Cancel: function() {
+                $( this ).dialog( "close" );
+              }
+          }
+          });
+  });     
+        
+
+			
 
 </script>

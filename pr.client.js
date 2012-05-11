@@ -129,12 +129,7 @@ function PeerReviewGame () {
 			var w = 250;
 			var h = 250;
 			
-			console.log(node.game.gameLoop.getName());
-			
-			if (node.game.gameLoop.getName() == 'Creation') {
-				
-				console.log('AAAh!');
-				
+			if (node.game.gameLoop.getName() == 'Creation') {	
 				w = 100;
 				h = 100;
 			}
@@ -391,6 +386,7 @@ function PeerReviewGame () {
 	testloop[4] = {name: 'Test completed',
 				   state: function() {
 						node.window.loadFrame('html/testgame_completed.html');
+						node.DONE();
 					},
 	};
 	
