@@ -1,17 +1,15 @@
-div#history {
-  float: right;
-  overflow-y: auto;
-  border-left: 1px solid #CCC;
+div {
+  border: 1px solid black;
 }
 
 div#creation {
-  border: 1px solid green;
   float: left;
   width: 58%;
-  height: 500px;
+  height: 510px;
   overflow-y: auto;
 }
 
+/*
 table#cf_table {
   border: 1px solid #CCC;
 }
@@ -21,6 +19,7 @@ table#cf_table td {
   vertical-align: top;
   width: 200px;
 }
+*/
 
 /* Submission */
 
@@ -34,15 +33,29 @@ dl#submission dt{
   margin: 10px;
 }
 
-div#history {
-  float: right;
-  width: 40%;
-  height: 800px;
-  border: 1px solid #CCC;
-  border-left: 5px solid #CCC;
-  vertical-align: top;
-}
+
+/* Right Part */
 
 div#container {
-  border: 1 px dashed red;
+  float: right;
+  height: 500px;
+  width: 40%;
+  border: 0;
+}
+
+div#history {
+  height: 400px;
+  vertical-align: top;
+  margin-bottom: 10px;
+  overflow-y: auto;
+}
+
+div#done_box {
+  height: 100px;
+}
+
+div#done_box button{
+  height: 100%;
+  width: 100%;
+	font-size: 20px;
 }
