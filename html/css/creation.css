@@ -24,9 +24,10 @@ table#cf_table td {
 
 /* Submission */
 
-dl#submission {
+dl#submission dt{
   display: inline;
 }
+
 #submission button {
   width: 100px;
   height: 100px;
