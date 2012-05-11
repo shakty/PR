@@ -143,9 +143,43 @@ function PeerReviewGame () {
 						   controls: false,
 						   change: false,
 						   onclick: function() {
-							   var f = this.getAllValues();
-								node.game.personal_history.add(f);
-								node.game.cf.draw(f);
+								var that = this;
+								var f = that.getAllValues();
+		
+								var cf_options = { id: 'cf',
+						                 width: 500,
+						                 height: 500,
+						                 features: f,
+					                 	 controls: false,
+						      };
+						      
+						      var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+								
+
+				    	          var div = $('<div>', {});
+				    	          
+				    	          div.append(cf.canvas);
+				    	          
+				    	          div.dialog({
+				    	            width: 400,
+				    	            height: 400,
+				    	            show: "blind",
+				    	            hide: "explode",
+				    	            buttons: {
+				    	              "Copy": function() {
+				    	        	  	
+										node.game.personal_history.add(f);
+										node.game.cf.draw(f);
+				    	        	  	
+				    	                $( this ).dialog( "close" );
+				    	              },
+				    	              Cancel: function() {
+				    	                $( this ).dialog( "close" );
+				    	              }
+				    	          }
+				    	          });
+					
+							   
 						   }
 				};
 				
