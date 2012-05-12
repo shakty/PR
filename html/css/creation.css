@@ -1,13 +1,8 @@
-div {
-  border: 1px solid black;
-}
+/* General */
 
-div#creation {
-  float: left;
-  width: 58%;
-  height: 510px;
-  overflow-y: auto;
-}
+
+/* Creation */
+
 
 /*
 table#cf_table {
@@ -18,16 +13,59 @@ table#cf_table td {
   border: 1px solid #CCC;
   vertical-align: top;
   width: 200px;
+  padding: 5px;
 }
 */
 
+table {
+  border: 0;
+}
+
+div#creation {
+  float: left;
+  width: 58%;
+  height: 550px;
+  overflow-y: auto;
+}
+
+div#ph button{
+  width: 100px;
+}
+
+
+table#cf_table td {
+  vertical-align: top;
+  padding: 5px;
+}
+
+
+div#creation canvas {
+  border: 3px solid #CCC;
+  padding: 5px;
+  background: white;
+}
+
+table#cf_table td div{
+  border: 0;
+}
+
+
 /* Submission */
 
-dl#submission dt{
+dl#sub_list{
+  margin: 0 auto;
+}
+
+span#text_sub_list {
+  margin-bottom: 25px;
+}
+
+
+dl#sub_list dt{
   display: inline;
 }
 
-#submission button {
+#sub_list button {
   width: 100px;
   height: 100px;
   margin: 10px;
@@ -38,13 +76,14 @@ dl#submission dt{
 
 div#container {
   float: right;
-  height: 500px;
+  height: 550px;
   width: 40%;
   border: 0;
+  background: white;
 }
 
 div#history {
-  height: 400px;
+  height: 435px;
   vertical-align: top;
   margin-bottom: 10px;
   overflow-y: auto;

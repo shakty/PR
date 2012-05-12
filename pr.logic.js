@@ -4,7 +4,7 @@ function PeerReview () {
 	this.description = 'General Description';
 	this.version = '0.2';
 	
-	this.minPlayers = 2;
+	this.minPlayers = 1;
 	this.maxPlayers = 10;
 	
 	this.automatic_step = true;

@@ -28,12 +28,14 @@
 		 </div>
 	</div>
 
-	
-    <dl id="submission" style="visibility: hidden;">
+	<div id="submission" style="visibility: hidden;">
+    <dl id="sub_list">
+      <span id="text_sub_list">Select the exhibition you would like to submit your drawing to:</span>
      <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
      <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
      <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
    </dl>
+ </div>
  
 </body>
 <script>
@@ -105,5 +107,19 @@
           });
          });
 			
+      $('#done_box button').click(function(){
+    	  $(function() {
+    		    // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+    		    //$( "#dialog:ui-dialog" ).dialog( "destroy" );
+    		  
+    		    $( "#submission #sub_list" ).dialog({
+    		      resizable: false,
+    		      width: 550,
+    		      height: 300,
+    		      modal: true,
+    		    });
+    		  });
+      });
+      
 
 </script>
