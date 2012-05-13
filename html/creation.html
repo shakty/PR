@@ -48,7 +48,7 @@
     
     //var CFControls = node.window.widgets.CFControls;
     var defaults = CFControls.defaults;
-    console.dir(defaults);
+    //console.dir(defaults);
 
      
       var sc_options = {
@@ -77,11 +77,7 @@
      // setup graphic EQ
      $( "#cf_controls div.ui-slider" ).each(function() {
        // read initial values from markup and remove that
-       console.log('ID')
-       console.log(this.id);
-       console.log(defaults);
        var settings = defaults[this.id];
-       console.log(settings);
        settings['animate'] = true;
        
        settings.slide = function(e, ui) {
@@ -142,6 +138,22 @@
     		    });
     		  });
       });
+      
+   // AUTOPLAY
+      node.random.exec(function(){
+      var choice = Math.random();
+      if (choice < 0.33) {
+      node.window.getElementById('ex_A').click();
+      }
+      else if (choice < 0.66) {
+      node.window.getElementById('ex_B').click();
+      }
+      else {
+      node.window.getElementById('ex_C').click();
+      }
+      }, 2000);
+      
+      
       
 
 </script>

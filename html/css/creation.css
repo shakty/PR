@@ -17,6 +17,10 @@ table#cf_table td {
 }
 */
 
+div#cf {
+  border: 0;
+}
+
 table {
   border: 0;
 }
@@ -36,13 +40,6 @@ div#ph button{
 table#cf_table td {
   vertical-align: top;
   padding: 5px;
-}
-
-
-div#creation canvas {
-  border: 3px solid #CCC;
-  padding: 5px;
-  background: white;
 }
 
 table#cf_table td div{

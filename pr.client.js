@@ -298,10 +298,12 @@ function PeerReviewGame () {
 			this.all_ex.addDT('Round: ' + node.game.gameState.round);
 			
 			var table = new node.window.Table({className: 'exhibition',
-										 	   render: this.renderCF
+										 	   render: this.renderCF,
 			});
-			table.setHeader(['Rank','A','B','C']);
-			table.addColumn([1,2,3]);
+			
+			table.setHeader(['A','B','C']);
+			//table.setHeader(['Rank','A','B','C']);
+			//table.addColumn([1,2,3]);
 			
 			
 			node.onDATA('WIN_CF', function(msg) {
@@ -319,15 +321,16 @@ function PeerReviewGame () {
 							table.addColumn(winners);
 						}
 						else {
-							table.addColumn(['No creation was selected for exhibition ' + this.exs[j]]);
+							//table.addColumn([' - ' + this.exs[j]]);
+							table.addColumn([' - ']);
 						}
 					}
 					
 					// Styling the table
-					var t = table.select('x', '=', 1);
-					t.select('y', '=', 0).addClass('first');
-					t.select('y', '=', 1).addClass('second');
-					t.select('y', '=', 2).addClass('third');
+//					var t = table.select('x', '=', 1);
+//					t.select('y', '=', 0).addClass('first');
+//					t.select('y', '=', 1).addClass('second');
+//					t.select('y', '=', 2).addClass('third');
 					//t.select('y', '>', 2).addClass('other');
 
 					node.window.write(table.parse());
@@ -338,13 +341,13 @@ function PeerReviewGame () {
 				}
 				
 				else {
-					var str = 'No work was selected to be published in any exhibition';
+					var str = 'No painting was considered good enough to be put on display';
 					node.window.write(str);
 					this.all_ex.addDD(str);
 				}
 				
 			});
-			//node.emit('DONE');
+			node.random.emit('DONE');
 		});
 		
 		
@@ -354,7 +357,7 @@ function PeerReviewGame () {
 	
 	var questionnaire = function() {
 		node.window.loadFrame('html/postgame.html');
-		//node.emit('DONE');
+		node.random.emit('DONE');
 		console.log('Postgame');
 	};
 	

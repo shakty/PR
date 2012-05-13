@@ -1,23 +1,8 @@
 <!doctype html>
-<style>
-  #tbl_evaluation {
-    border: 1px black solid;
-  };
-  #tbl_evaluation td {
-    width: 200px;
-    border: 1px solid #CCC;
-  };
-  
-  .display_container {
-    width: 200px;
-    border: 1px solid red;
-  }
-  
-</style>
 <title>Evaluation</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
 <body>
-	 <h2>Phase 2: Evaluation</h2>
+	 <h2>Evaluation</h2>
 	 <div id="root">
 	   Give an evaluation to the following drawings that other participants of the game just created. <br/>
 	   Move the slider underneath the picture on a scale from 1 to 9,  where 
@@ -54,6 +39,8 @@ window.onload = function(){
 	  var cf_options = { id: 'cf',
 	             width: 300,
 	             height: 300,
+	             scaleX: 1,
+	             scaleY: 1,
 	             features: msg.data.face,
 	             change: false,
 	             controls: false
@@ -61,14 +48,15 @@ window.onload = function(){
 
   var cf = node.window.getWidget('ChernoffFaces', cf_options);
   
+  
   var evaId = 'eva_' + msg.data.from;
   var diplayEvaId = 'display_' + msg.data.from;
   var displayContId = 'display_cont_' + msg.data.from;
   
   // Add the slider to the container
   
-  var sl = node.window.getDiv(evaId, {'style': 'width:300px'});
-  var display_container = node.window.getDiv(displayContId, {'style': 'width:300px'});
+  var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
+  var display_container = node.window.getDiv(displayContId, {'class': 'displayContainer'});
   var display = node.window.addTextInput(display_container, diplayEvaId, {
      disabled: "disabled",
      style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
@@ -96,8 +84,16 @@ window.onload = function(){
   $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
   
   
+  //AUTOPLAY
+  node.random.exec(function() {
+	  $( "#" + evaId ).slider( "value",  Math.random()*10);
+	  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+  }, 2000);
+  
 });
 
+	node.random.emit('DONE', 10000);
+	
 }
 
 //-->

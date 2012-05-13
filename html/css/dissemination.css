@@ -2,51 +2,57 @@ table.exhibition {
 	border: 1px solid #CCC;
 }
 
-table.exhibition thead tr th, {
+table.exhibition thead tr th {
   font-weight: bold;
   text-align: center;
 }
 
-table.exhibition tr {
-  border: 1px solid black;
-}
+/* table.exhibition tr { */
+/*   border: 1px solid black; */
+/* } */
 
 table.exhibition td {
-  width: 200px;
+  width: 250px;
+  border-right: 3px solid #CCC;
 }
 
-table.exhibition td:first-child {
-	width: 20px;
+table.exhibition td:last-child {
+  border-right: 0;
 }
 
-table.exhibition tr:last-child  {
-  border-bottom: none;
+table.exhibition div{
+  border: 0;
 }
 
-.exhibition_odd   {
-  background: #FFF;
+table.exhibition table div{
+  border: 0;
 }
 
-.exhibition_even   {
-  background: #FFC;
+table.exhibition table {
+	border: 0;
 }
 
-table.exhibition .first {
-  background: #ffffaa;	
-}
+/* table.exhibition td:first-child { */
+/* 	width: 20px; */
+/* } */
 
-table.exhibition .second {
-  background: #eeeeee; 
-}
+/* table.exhibition tr:last-child  { */
+/*   border-bottom: none; */
+/* } */
 
-table.exhibition .third {
- background: #ffdd66; 
-}
+/* table.exhibition .first { */
+/*   background: #ffffaa;	 */
+/* } */
 
-table.exhibition .other {
-  background: #CCC; 
-}
+/* table.exhibition .second { */
+/*   background: #eeeeee;  */
+/* } */
 
-canvas {
-	background: white;
-}
+/* table.exhibition .third { */
+/*  background: #ffdd66;  */
+/* } */
+
+/* table.exhibition .other { */
+/*   background: #CCC;  */
+/* } */
+

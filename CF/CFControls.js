@@ -124,9 +124,6 @@
 	Controls.prototype.populate = function () {
 		var that = this;
 		
-		console.log('Features');
-		console.log(this.features);
-		
 		for (var key in this.features) {
 			if (this.features.hasOwnProperty(key)) {
 				// Prepare the attributes vector
@@ -569,16 +566,16 @@
 		var xspan = Math.abs(x_descr.min - x_descr.max) / x_descr.step;
 		var yspan = Math.abs(y_descr.min - y_descr.max) / y_descr.step;
 		
-		console.log(xspan);
-		console.log(yspan);
+//		console.log(xspan);
+//		console.log(yspan);
 		
 		
 		var x = d / yspan;
 		var y = d / xspan;
 		var x = 0;
 		
-		console.log('in: ' + d);
-		console.log('out: ' + x + ' ' + y);
+//		console.log('in: ' + d);
+//		console.log('out: ' + x + ' ' + y);
 		
 		return {x: x, y: y};
 		

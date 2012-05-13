@@ -11,6 +11,7 @@ function PeerReview () {
 	
 	this.init = function() {
 		this.threshold = 3;
+		this.reviewers = 1;
 	};
 	
 	var pregame = function () {
@@ -40,7 +41,9 @@ function PeerReview () {
 		
 		var matches = [[1,2]];
 		do {
-			matches = node.utils.matchN(faces,1,true);
+			matches = node.utils.matchN(faces, this.reviewers);
+//			console.log('---');
+//			console.log(matches);
 		} while (!matches[matches.length-1][1]);
 		
 //		console.log('STEEEE');
