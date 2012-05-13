@@ -260,7 +260,8 @@
         var slider = jQuery('<div/>', {
     	    id: id,
     	}).slider();
-    	
+        
+        
     	var s = slider.appendTo(root);
     	return s[0];
     };
@@ -496,11 +497,13 @@
 		for (var key in this.features) {	
 			if (this.features.hasOwnProperty(key)) {
 				var el = node.window.getElementById(key);
+				
 				if (el) {
 					
-					var value = Number(el.value);
-					
-					
+					//var value = Number(el.value);
+					var value = $(el).slider('value');
+//					console.log('key');
+//					console.log(value);
 					
 					if (key == 'mouth_shape') {
 						
@@ -555,7 +558,7 @@
 		out['eyebrow_spacing'] = 5;
 		out['mouth_height'] = 0.75;
 		out['mouth_width'] = 20;
-		
+	
 		
 		return out;
 	};

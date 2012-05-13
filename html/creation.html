@@ -48,7 +48,7 @@
     
     //var CFControls = node.window.widgets.CFControls;
     var defaults = CFControls.defaults;
-    //console.dir(defaults);
+    console.dir(defaults);
 
      
       var sc_options = {
@@ -72,6 +72,28 @@
       
      node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
      $('#cf_controls').before(ph.commandsDiv);
+     
+     //console.log(defaults);
+     // setup graphic EQ
+     $( "#cf_controls div.ui-slider" ).each(function() {
+       // read initial values from markup and remove that
+       console.log('ID')
+       console.log(this.id);
+       console.log(defaults);
+       var settings = defaults[this.id];
+       console.log(settings);
+       settings['animate'] = true;
+       
+       settings.slide = function(e, ui) {
+         node.emit('CF_CHANGE');
+       };
+       
+       //console.log(settings);
+       //console.log(this.id);
+       var sl = $( this ).slider(settings);
+       
+     });
+     
 		 
      node.game.personal_history.add(node.game.cf.getAllValues());
       
