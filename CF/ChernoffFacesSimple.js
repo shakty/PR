@@ -38,7 +38,7 @@
 		this.root = options.root || document.createElement('div');
 		this.root.id = this.id;
 		
-		this.sc = node.window.getWidget('Controls.Slider'); 	// Slider Controls
+		//this.sc = node.window.getWidget('Controls.Slider'); 	// Slider Controls
 		this.fp = null; 	// Face Painter
 		this.canvas = null;
 		this.dims = null;	// width and height of the canvas
