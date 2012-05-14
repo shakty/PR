@@ -1,0 +1,355 @@
+<!doctype html>
+<title>Creation</title>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!--  CF -->
+<script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./../CF/CFControls.js" charset="utf-8"></script>
+<!-- CF ends -->
+
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/creation.css">
+<link rel="stylesheet" type="text/css" href="css/dissemination.css">
+
+
+
+<body>
+<h2>Create your personal drawing</h2>
+<div id="creation">
+<div id="cf">
+<table id="cf_table">
+<tbody>
+<tr>
+<td>
+<dl id="cf_controls">
+<dt>
+<div>
+<label id="" for="head_scale_x">Scale head horizontally</label>
+<div id="head_scale_x" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 16.6667%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="head_scale_y">Scale head vertically</label>
+<div id="head_scale_y" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 44.4444%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_spacing">Eye spacing</label>
+<div id="eye_spacing" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 20%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_scale_x">Scale eyes horizontally</label>
+<div id="eye_scale_x" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 44.4444%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_scale_y">Scale eyes vertically</label>
+<div id="eye_scale_y" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 44.4444%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eyebrow_angle">Eyebrow angle</label>
+<div id="eyebrow_angle" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 37.5%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="eye_height">Eye and Eyebrow height</label>
+<div id="eye_height" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 37.5%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="nose_length">Nose length</label>
+<div id="nose_length" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 83.1461%;"></a>
+</div>
+</div>
+</dt>
+<dt>
+<div>
+<label id="" for="mouth_shape">Mouth Shape</label>
+<div id="mouth_shape" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a>
+</div>
+</div>
+</dt>
+</dl>
+<div id="undoredo">Undo / Redo<br/>
+<button id="go_to_first">&lt;&lt;</button>
+<button id="go_to_previous">&lt;</button>
+<button id="go_to_next">&gt;</button>
+<button id="go_to_last">&gt;&gt;</button>
+<br>
+<span></span>
+</div>
+</td>
+<td>
+<canvas id="cf_canvas" width="500" height="500"></canvas>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="container">
+<div id="history">
+<dl id="all_ex">
+History of previous exhibitions
+<dt>Round: 1</dt>
+<dd>
+<table id="table_436" class="exhibition">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> - </td>
+<td>
+<div>
+<div id="cf_2">
+<table id="cf_table">
+<tbody>
+<tr>
+<td>
+<canvas id="cf_2_canvas" width="100" height="100"></canvas>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table id="table_680">
+<tbody>
+<tr>
+<td>Author: P_63</td>
+</tr>
+<tr>
+<td>Score: 3.80</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div>
+<div id="cf_3">
+<table id="cf_table">
+<tbody>
+<tr>
+<td>
+<canvas id="cf_3_canvas" width="100" height="100"></canvas>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table id="table_844">
+<tbody>
+<tr>
+<td>Author: P_18</td>
+</tr>
+<tr>
+<td>Score: 8.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr>
+<tr>
+<td class="missing"></td>
+<td class="missing"></td>
+<td>
+<div>
+<div id="cf_3">
+<table id="cf_table">
+<tbody>
+<tr>
+<td>
+<canvas id="cf_3_canvas" width="100" height="100"></canvas>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table id="table_348">
+<tbody>
+<tr>
+<td>Author: P_48</td>
+</tr>
+<tr>
+<td>Score: 7.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div id="done_box">
+<button>Click here when you are done</button>
+</div>
+</div>
+
+
+	<div id="submission" style="visibility: hidden;">
+    <dl id="sub_list">
+      <span id="text_sub_list">Select the exhibition you would like to submit your drawing to:</span><br/>
+     <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
+     <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
+     <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
+   </dl>
+ </div>
+ 
+</body>
+<script>
+	
+	  var node = parent.node;
+	
+    var creationDiv = document.getElementById('creation');
+    var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
+      
+    
+    //var CFControls = node.window.widgets.CFControls;
+    var defaults = CFControls.defaults;
+    //console.dir(defaults);
+
+     
+      var sc_options = {
+        id: 'cf_controls',
+        features: defaults,
+        change: 'CF_CHANGE',
+        submit: 'Send'
+      };
+    
+      var cfc = new CFControls(sc_options);
+    
+      //node.emit('INPUT_ENABLE');
+      
+      var cf_options = { id: 'cf',
+                 width: 500,
+                 height: 500,
+                 features: this.last_cf,
+                 controls: cfc,
+//								 controls: false,
+      };
+      
+     node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
+     $('#cf_controls').before(ph.commandsDiv);
+     
+     //console.log(defaults);
+     // setup graphic EQ
+     $( "#cf_controls div.ui-slider" ).each(function() {
+       // read initial values from markup and remove that
+       var settings = defaults[this.id];
+       settings['animate'] = true;
+       
+       settings.slide = function(e, ui) {
+         node.emit('CF_CHANGE');
+       };
+       
+       //console.log(settings);
+       //console.log(this.id);
+       var sl = $( this ).slider(settings);
+       
+     });
+     
+		 
+     node.game.personal_history.add(node.game.cf.getAllValues());
+      
+      // History of previous exhibits
+      //var historyDiv = node.window.getElementById('history');
+      var historyDiv = document.getElementById('history');
+
+
+      node.game.all_ex.parse();
+      //node.window.write(node.game.all_ex.getRoot(), historyDiv);
+      //$(node.game.all_ex.getRoot()).append(historyDiv);
+      historyDiv.appendChild(node.game.all_ex.getRoot());
+			
+      // Adding to history
+      node.on(node.game.cf.change, function() {
+        node.game.personal_history.add(node.game.cf.getAllValues());
+      });
+      
+      // Pulling back from history
+      node.on(node.game.personal_history.id + '_GOT', function (face) {
+        node.game.cf.draw(face);
+      });
+			
+      $( "history canvas").hover(
+         function(){
+          $(this).css({
+            border: '3px solid #CCC'
+          });
+         },
+         function(){
+          $(this).css({
+            border: 0
+          });
+         });
+			
+      $('#done_box button').click(function(){
+    	  $(function() {
+    		    // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+    		    //$( "#dialog:ui-dialog" ).dialog( "destroy" );
+    		  
+    		    $( "#submission #sub_list" ).dialog({
+    		      resizable: false,
+    		      width: 550,
+    		      height: 300,
+    		      modal: true,
+    		    });
+    		  });
+      });
+      
+   // AUTOPLAY
+      node.random.exec(function(){
+      var choice = Math.random();
+      if (choice < 0.33) {
+      node.window.getElementById('ex_A').click();
+      }
+      else if (choice < 0.66) {
+      node.window.getElementById('ex_B').click();
+      }
+      else {
+      node.window.getElementById('ex_C').click();
+      }
+      }, 200000);
+      
+      
+      
+
+</script>

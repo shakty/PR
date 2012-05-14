@@ -29,7 +29,6 @@ div#creation {
   float: left;
   width: 58%;
   height: 550px;
-  overflow-y: auto;
 }
 
 div#ph button{
@@ -46,6 +45,26 @@ table#cf_table td div{
   border: 0;
 }
 
+canvas#cf_canvas {
+	margin: 0 auto;
+}
+
+/* Sliders */
+
+table#cf_table td div div{
+	width: 220px;
+	height: 3px;
+	margin-top: 3px;
+	margin-bottom: 5px;
+}
+
+/* Undo/Redo */
+
+/* WHY IS IT NOT WORKING?? */
+table#cf_table div#undoredo {
+	border: 5 dashed blue;
+	padding: 3px;
+}
 
 /* Submission */
 
@@ -73,9 +92,10 @@ dl#sub_list dt{
 
 div#container {
   float: right;
-  height: 550px;
+  height: 530px;
   width: 40%;
   border: 0;
+	padding:0;
   background: white;
 }
 
@@ -88,6 +108,7 @@ div#history {
 
 div#done_box {
   height: 100px;
+	padding: 0;
 }
 
 div#done_box button{
@@ -95,3 +116,77 @@ div#done_box button{
   width: 100%;
 	font-size: 20px;
 }
+
+/* Exhibitions */
+
+
+dl#all_ex  {
+  margin: 0;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+dl#all_ex dt:first-child {
+  margin-top: 5px;
+}
+
+dl#all_ex dt {
+  padding: 5px 3px 3px 10px;
+	background: #CCC;
+	color: #333;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+dl#all_ex dd {
+  padding: 0;
+	margin: 0;
+  border: 1px solid #CCC;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+
+dl#all_ex dt canvas{
+  margin: 0;
+}
+
+table.exhibition th {
+	/*width: 350px;*/
+	height: 30px;
+	font-size: 16px;
+}
+
+table.exhibition td {
+  width: 105px;
+	margin-bottom: 5px;
+}
+
+
+dl#all_ex table tr {
+  padding: 0;
+	margin: 0;
+	text-align: center;
+  padding: 0;
+  margin: 0;
+  /*width: 120px;*/
+  border-right: 3px solid #CCC;
+	border-bottom: 1px solid #CCC;
+  
+}
+
+
+dl#all_ex table td:last-child {
+  border-right: 0;
+}
+
+dl#all_ex table td div {
+	padding: 0;
+	border: 0;
+	margin: 0;
+  /*width: 60px;*/
+}
+
+
+
+
