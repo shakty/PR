@@ -10,7 +10,7 @@ body {
 }
 
 div {
-	background: #DADCCB;
+	background: #DADCCB /* #eee1b3 #f3ede7; #D9DBCE; */ ;
 	color: black;
   border: 3px solid #CCC;
   padding: 5px;
