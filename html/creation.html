@@ -47,14 +47,25 @@
     var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
   
 	 
-	  var init_sc = (!node.game.last_cf) ? node.window.widgets.ChernoffFaces.FaceVector.random()
-		                                   : node.game.last_cf;
-			
-    var init_cf = CFControls.normalizeInput(init_sc);
+	  // If we play the first round we start
+		// with a random face, otherwise with 
+		// the last one created
+	  if (!node.game.last_cf) {
+		  var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
+			// some features are fixed in the simplified version
+			init_cf = CFControls.pinDownFeatures(init_cf);
+			console.log(init_cf);
+		}
+		else {
+			var init_cf = node.game.last_cf;
+		}
+
+    var init_sc = CFControls.normalizeFeatures(init_cf);
+		
 		 
       var sc_options = {
         id: 'cf_controls',
-        features: init_cf,
+        features: init_sc,
         change: 'CF_CHANGE',
       };
     
@@ -63,7 +74,7 @@
       var cf_options = { id: 'cf',
                  width: 500,
                  height: 500,
-                 features: init_sc,
+                 features: init_cf,
                  controls: cfc,
       };
       
@@ -73,7 +84,7 @@
 
      $( "#cf_controls div.ui-slider" ).each(function() {
        // read initial values from markup and remove that
-       var settings = init_cf[this.id];
+       var settings = init_sc[this.id];
        settings['animate'] = true;
        
        settings.slide = function(e, ui) {
@@ -153,7 +164,6 @@
                 enlarge.css({"left": (5 + e.pageX) + "px","top":e.pageY + "px" });
                   $(this).before(enlarge);
                   $(this).mousemove(function(e){
-                    console.log('ee');
                         $('span#enlarge').css({"left": (5 + e.pageX)  + "px","top":e.pageY + "px" });
                      }); 
               }, 

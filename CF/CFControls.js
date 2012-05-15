@@ -295,14 +295,7 @@
 	
 	CFControls.defaults = {
 			// Head
-//			head_radius: {
-//				// id can be specified otherwise is taken head_radius
-//				min: 10,
-//				max: 100,
-//				step: 0.01,
-//				value: 30,
-//				label: 'Face radius'
-//			},
+
 			head_scale_x: {
 				min: 0.2,
 				max: 2,
@@ -317,15 +310,6 @@
 				value: 1,
 				label: 'Scale head vertically'
 			},
-			// Eye
-			
-//			eye_radius: {
-//				min: 2,
-//				max: 30,
-//				step: 0.01,
-//				value: 5,
-//				label: 'Eye radius'
-//			},
 			eye_spacing: {
 				min: 0,
 				max: 50,
@@ -347,43 +331,9 @@
 				value: 1,
 				label: 'Scale eyes vertically'
 			},
-			// Pupil
-//			pupil_radius: {
-//				min: 1,
-//				max: 9,
-//				step: 0.01,
-//				value: 1,  //this.eye_radius;
-//				label: 'Pupil radius'
-//			},
-//			pupil_scale_x: {
-//				min: 0.2,
-//				max: 2,
-//				step: 0.01,
-//				value: 1,
-//				label: 'Scale pupils horizontally'
-//			},
-//			pupil_scale_y: {
-//				min: 0.2,
-//				max: 2,
-//				step: 0.01,
-//				value: 1,
-//				label: 'Scale pupils vertically'
-//			},
+			
 			// Eyebrow
-//			eyebrow_length: {
-//				min: 1,
-//				max: 30,
-//				step: 0.01,
-//				value: 10,
-//				label: 'Eyebrow length'
-//			},
-//			eyebrow_eyedistance: {
-//				min: 0.3,
-//				max: 10,
-//				step: 0.01,
-//				value: 3, // From the top of the eye
-//				label: 'Eyebrow from eye'
-//			},
+			
 			eyebrow_angle: {
 				min: -2,
 				max: 2,
@@ -391,13 +341,7 @@
 				value: -0.5,
 				label: 'Eyebrow angle'
 			},
-//			eyebrow_spacing: {
-//				min: 0,
-//				max: 20,
-//				step: 0.01,
-//				value: 5,
-//				label: 'Eyebrow spacing'
-//			},
+
 			
 			eye_height: {
 				min: 0.1,
@@ -405,16 +349,9 @@
 				step: 0.01,
 				value: 0.4,
 				label: 'Eye and Eyebrow height'
-			},
+			},	
 			
 			// Nose
-//			nose_height: {
-//				min: 0.4,
-//				max: 1,
-//				step: 0.01,
-//				value: 0.4,
-//				label: 'Nose height'
-//			},
 			nose_length: {
 				min: 0.2,
 				max: 18,
@@ -422,42 +359,8 @@
 				value: 15,
 				label: 'Nose length'
 			},
-//			nose_width: {
-//				min: 0,
-//				max: 30,
-//				step: 0.01,
-//				value: 10,
-//				label: 'Nose width'
-//			},
-			// Mouth
-//			mouth_height: {
-//				min: 0.2,
-//				max: 2,
-//				step: 0.01,
-//				value: 0.75, 
-//				label: 'Mouth height'
-//			},
-//			mouth_width: {
-//				min: 2,
-//				max: 100,
-//				step: 0.01,
-//				value: 20,
-//				label: 'Mouth width'
-//			},
-//			mouth_top_y: {
-//				min: -10,
-//				max: 30,
-//				step: 0.01,
-//				value: -2,
-//				label: 'Upper lip'
-//			},
-//			mouth_bottom_y: {
-//				min: -10,
-//				max: 30,
-//				step: 0.01,
-//				value: 20,
-//				label: 'Lower lip'
-//			}		
+
+			// Mouth 
 			mouth_shape: {
 				min: 0,
 				max: 30,
@@ -467,7 +370,10 @@
 			}		
 	};
 	
+
+	
 	CFControls.others = {
+		
 		mouth_top_y: {
 			min: -10,
 			max: 30,
@@ -481,36 +387,148 @@
 			step: 0.01,
 			value: 20,
 			label: 'Lower lip'
-		}	
+		},
 	};
+	
+	
+	CFControls.fixed = {
+			// Head
+
+			head_radius: {
+				min: 10,
+				max: 100,
+				step: 0.01,
+				value: 30,
+				label: 'Face radius'
+			},
+			
+			// Eye
+			eye_radius: {
+				min: 2,
+				max: 30,
+				step: 0.01,
+				value: 5,
+				label: 'Eye radius'
+			},
+			
+			// Pupil
+			pupil_radius: {
+				min: 1,
+				max: 9,
+				step: 0.01,
+				value: 1,  //this.eye_radius;
+				label: 'Pupil radius'
+			},
+			pupil_scale_x: {
+				min: 0.2,
+				max: 2,
+				step: 0.01,
+				value: 1,
+				label: 'Scale pupils horizontally'
+			},
+			pupil_scale_y: {
+				min: 0.2,
+				max: 2,
+				step: 0.01,
+				value: 1,
+				label: 'Scale pupils vertically'
+			},
+			
+			// Eyebrow
+			eyebrow_length: {
+				min: 1,
+				max: 30,
+				step: 0.01,
+				value: 10,
+				label: 'Eyebrow length'
+			},
+			eyebrow_eyedistance: {
+				min: 0.3,
+				max: 10,
+				step: 0.01,
+				value: 3, // From the top of the eye
+				label: 'Eyebrow from eye'
+			},
+			
+			eyebrow_spacing: {
+				min: 0,
+				max: 20,
+				step: 0.01,
+				value: 5,
+				label: 'Eyebrow spacing'
+			},
+			
+			// Nose
+			nose_height: {
+				min: 0.4,
+				max: 1,
+				step: 0.01,
+				value: 0.4,
+				label: 'Nose height'
+			},
+
+			nose_width: {
+				min: 0,
+				max: 30,
+				step: 0.01,
+				value: 10,
+				label: 'Nose width'
+			},
+			
+			// Mouth
+			mouth_height: {
+				min: 0.2,
+				max: 2,
+				step: 0.01,
+				value: 0.75, 
+				label: 'Mouth height'
+			},
+			mouth_width: {
+				min: 2,
+				max: 100,
+				step: 0.01,
+				value: 20,
+				label: 'Mouth width'
+			},
+	};
+	
+	
 	
 	function CFControls (options) {
 		jQuerySliderControls.call(this, options);
 	};
 	
-	CFControls.normalizeInput = function (input) {
+	CFControls.normalizeFeatures = function (input) {
 		if (!input) return CFControls.defaults;
 		var defaults = node.JSUS.clone(CFControls.defaults);
 		for (var key in input) {
-			if (input.hasOwnProperty(key) && defaults.hasOwnProperty(key)) {
+			if (input.hasOwnProperty(key)) {
+				
 				if (key === 'mouth_bottom_y') {
 					defaults.mouth_shape.value = input[key]; 
 				}
-				else if (key === 'mouth_top_y') {
-					continue;
-				}
-				else {		
+				else if (defaults.hasOwnProperty(key)){		
 					defaults[key].value = input[key];
 				}
-				console.log(key);
-				console.log(input[key]);
-				console.log(defaults[key]);
+				
+//				console.log(key);
+//				console.log(input[key]);
+//				console.log(defaults[key]);
 				
 			}	
 		}
 		return defaults;
 	}
 	
+	CFControls.pinDownFeatures = function (input) {
+		if (!input) return input;
+		for (var key in input) {
+			if (input.hasOwnProperty(key) && CFControls.fixed.hasOwnProperty(key)) {
+				input[key] = CFControls.fixed[key].value;
+			}	
+		}
+		return input;
+	}	
 	
 	CFControls.prototype.getAllValues = function() {
 		var out = {};
