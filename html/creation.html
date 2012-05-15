@@ -45,40 +45,35 @@
 	
     var creationDiv = document.getElementById('creation');
     var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
-      
-    
-    //var CFControls = node.window.widgets.CFControls;
-    var defaults = CFControls.defaults;
-    //console.dir(defaults);
-
-     
+  
+	 
+	  var init_sc = (!node.game.last_cf) ? node.window.widgets.ChernoffFaces.FaceVector.random()
+		                                   : node.game.last_cf;
+			
+    var init_cf = CFControls.normalizeInput(init_sc);
+		 
       var sc_options = {
         id: 'cf_controls',
-        features: defaults,
+        features: init_cf,
         change: 'CF_CHANGE',
-        submit: 'Send'
       };
     
       var cfc = new CFControls(sc_options);
-    
-      //node.emit('INPUT_ENABLE');
-      
+          
       var cf_options = { id: 'cf',
                  width: 500,
                  height: 500,
-                 features: this.last_cf,
+                 features: init_sc,
                  controls: cfc,
-//								 controls: false,
       };
       
      node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
      $('#cf_controls').after(ph.commandsDiv);
      
-     //console.log(defaults);
-     // setup graphic EQ
+
      $( "#cf_controls div.ui-slider" ).each(function() {
        // read initial values from markup and remove that
-       var settings = defaults[this.id];
+       var settings = init_cf[this.id];
        settings['animate'] = true;
        
        settings.slide = function(e, ui) {
@@ -135,8 +130,12 @@
       $('#done_box button').click(function(){
     	  $(function() {
     		    // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
-    		    //$( "#dialog:ui-dialog" ).dialog( "destroy" );
+    		    // $( "#submission #sub_list:ui-dialog" ).dialog( "destroy" );
     		  
+//					var a = $( "#submission #sub_list:ui-dialog" );
+//					console.log(a[0]);
+//					 console.log('eeh');
+					
     		    $( "#submission #sub_list" ).dialog({
     		      resizable: false,
     		      width: 550,

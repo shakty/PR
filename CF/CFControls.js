@@ -488,6 +488,29 @@
 		jQuerySliderControls.call(this, options);
 	};
 	
+	CFControls.normalizeInput = function (input) {
+		if (!input) return CFControls.defaults;
+		var defaults = node.JSUS.clone(CFControls.defaults);
+		for (var key in input) {
+			if (input.hasOwnProperty(key) && defaults.hasOwnProperty(key)) {
+				if (key === 'mouth_bottom_y') {
+					defaults.mouth_shape.value = input[key]; 
+				}
+				else if (key === 'mouth_top_y') {
+					continue;
+				}
+				else {		
+					defaults[key].value = input[key];
+				}
+				console.log(key);
+				console.log(input[key]);
+				console.log(defaults[key]);
+				
+			}	
+		}
+		return defaults;
+	}
+	
 	
 	CFControls.prototype.getAllValues = function() {
 		var out = {};
