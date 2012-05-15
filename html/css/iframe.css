@@ -17,7 +17,7 @@ div {
   text-align: center;
 }
 
-canvas {
+canvas, .copyorclose canvas {
   border: 3px solid #CCC;
   padding: 5px;
   background: white;
@@ -31,3 +31,5 @@ canvas {
   color: #000;
   text-decoration: none
  }
+ 
+ 

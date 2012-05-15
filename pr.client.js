@@ -146,8 +146,8 @@ function PeerReviewGame () {
 								var f = that.getAllValues();
 		
 								var cf_options = { id: 'cf',
-						                 width: 500,
-						                 height: 500,
+						                 width: 400,
+						                 height: 400,
 						                 features: f,
 					                 	 controls: false,
 						      };
@@ -156,12 +156,15 @@ function PeerReviewGame () {
 								
 
 				    	          var div = $('<div>');
+				    	          $(cf.canvas).css('background', 'white');
+				    	          $(cf.canvas).css('border', '3px solid #CCC'); 
+				    	          $(cf.canvas).css('padding', '5px');
 
 				    	          div.append(cf.canvas);
 				    	          
 				    	          div.dialog({
-				    	            width: 400,
-				    	            height: 400,
+				    	            width: 460,
+				    	            height: 560,
 				    	            show: "blind",
 				    	            hide: "explode",
 				    	            buttons: {
@@ -224,8 +227,6 @@ function PeerReviewGame () {
 		node.window.loadFrame('html/dissemination.html', function() {
 			
 			var dt_header = 'Round: ' + node.game.gameState.round;
-			console.log('NAME');
-			console.log(node.game.gameState.state);
 			if (node.game.gameState.state === 3) {	
 				dt_header = 'Test Round';
 			}
