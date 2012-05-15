@@ -294,7 +294,14 @@ function PeerReviewGame () {
 	var dissemination = function(){
 		node.window.loadFrame('html/dissemination.html', function() {
 			
-			this.all_ex.addDT('Round: ' + node.game.gameState.round);
+			var dt_header = 'Round: ' + node.game.gameState.round;
+			console.log('NAME');
+			console.log(node.game.gameState.state);
+			if (node.game.gameState.state === 3) {	
+				dt_header = 'Test Round';
+			}
+			
+			this.all_ex.addDT(dt_header);
 			
 			var table = new node.window.Table({className: 'exhibition',
 										 	   render: this.renderCF,

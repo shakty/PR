@@ -1,5 +1,8 @@
 table.exhibition {
-	
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: center;
 }
 
 table.exhibition thead tr th {
@@ -13,8 +16,11 @@ table.exhibition thead tr th {
 
 table.exhibition td {
   width: 250px;
+  margin: 0;
+  padding: 0;
   margin-bottom: 10px;
   border-right: 3px solid #CCC;
+
 }
 
 table.exhibition td:last-child {
