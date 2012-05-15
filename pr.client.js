@@ -169,6 +169,7 @@ function PeerReviewGame () {
 				    	        	  	
 										node.game.personal_history.add(f);
 										node.game.cf.draw(f);
+										//node.game.addJQuerySliders(f);
 				    	        	  	
 				    	                $( this ).dialog( "close" );
 				    	              },
@@ -209,83 +210,13 @@ function PeerReviewGame () {
 	};
 	
 	var creation = function() {
-
-		node.window.loadFrame('html/creation.html', function() {
-	
-//			var creationDiv = node.window.getElementById('creation');
-//			this.personal_history = node.window.addWidget('NDDBBrowser', creationDiv, {id: 'ph'});
-//			
-//			//node.emit('INPUT_ENABLE');
-//			
-//			var cf_options = { id: 'cf',
-//							   width: 500,
-//							   height: 500,
-//							   features: this.last_cf
-//			};
-//			
-//			this.cf = node.window.addWidget('ChernoffFaces', creationDiv, cf_options);
-//		
-//			this.personal_history.add(this.cf.getAllValues());
-//			
-//			// History of previous exhibits
-//			var historyDiv = node.window.getElementById('history');
-//
-//			this.all_ex.parse();
-//			node.window.write(this.all_ex.getRoot(), historyDiv);
-//			
-//			// Adding to history
-//			node.on(this.cf.change, function() {
-//				this.personal_history.add(this.cf.getAllValues());
-//			});
-//			
-//			// Pulling back from history
-//			node.on(this.personal_history.id + '_GOT', function (face) {
-//				node.game.cf.draw(face);
-//			});
-			
-			//node.emit('DONE');
-		});
-
+		node.window.loadFrame('html/creation.html');
 		console.log('Creation');
 	};
 	
 	
 	var evaluation = function() {
-		
-		node.window.loadFrame('html/evaluation.html', function() {
-		
-//			var table = new node.window.Table({auto_update: true});
-//			node.window.write(table.table);
-//			node.onDATA('CF', function(msg) {
-//			var cf_options = { id: 'cf',
-//			width: 300,
-//			height: 300,
-//			features: msg.data.face,
-//			change: false,
-//			controls: false
-//			};
-//			var cf = node.window.getWidget('ChernoffFaces', cf_options);
-//			var evaId = 'eva_' + msg.data.from;
-//			// Add the slider to the container
-//			//var sl = node.window.getSlider(evaId, this.evaAttr);
-//			var sl = node.window.getDiv(evaId);
-//			this.evas[msg.data.from] = sl;
-//			table.addColumn([cf.getCanvas(), sl]);
-//			// How to add jquery slider
-//			$( "#eva_" + msg.data.from ).slider();
-//			// AUTOPLAY
-//			node.random.exec(function() {
-//			var choice = Math.random();
-//			node.window.getElementById(evaId).value = Math.random()*10;
-//			//alert(choice);
-//			}, 10000);
-//			}); 
-
-			
-			//node.emit('DONE');
-	
-		});
-		
+		node.window.loadFrame('html/evaluation.html');
 		console.log('Evaluation');
 	};
 	
@@ -325,7 +256,6 @@ function PeerReviewGame () {
 							table.addColumn(winners);
 						}
 						else {
-							//table.addColumn([' - ' + this.exs[j]]);
 							table.addColumn([' - ']);
 						}
 					}

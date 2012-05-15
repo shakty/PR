@@ -41,20 +41,14 @@
 </body>
 <script>
 	
-	  function addJQuerySliders(init) {
+	  node.game.addJQuerySliders = function (init) {
 			 $( "#cf_controls div.ui-slider" ).each(function() {
        // read initial values from markup and remove that
        var settings = init[this.id];
-       //settings['animate'] = true;
-       
-			 
-			 
        settings.slide = settings.change = function(e, ui) {
          node.emit('CF_CHANGE');
        };
-       
-       var sl = $( this ).slider(settings);
-       
+       $( this ).slider(settings);
      });
 		}
 	
@@ -102,7 +96,7 @@
 		 
 		 // Adding the jQuery sliders
 		 ////////////////////////////
-     addJQuerySliders(init_sc);
+     node.game.addJQuerySliders(init_sc);
 
      
 		  // NDDBBrowser commands
