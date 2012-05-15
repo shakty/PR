@@ -14,6 +14,7 @@ div {
 	color: black;
   border: 3px solid #CCC;
   padding: 5px;
+  text-align: center;
 }
 
 canvas {
@@ -22,3 +23,11 @@ canvas {
   background: white;
 }
 
+.tooltip {
+	float: right;
+	position: absolute; 
+  z-index:24; 
+  background-color: #fff;
+  color: #000;
+  text-decoration: none
+ }

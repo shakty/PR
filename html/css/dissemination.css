@@ -1,7 +1,11 @@
+div#container_exhibition {
+	width: 800px;
+}
+
 table.exhibition {
 	border: 0;
 	padding: 0;
-	margin: 0;
+	margin: 0 auto;
 	text-align: center;
 }
 

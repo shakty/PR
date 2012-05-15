@@ -132,10 +132,7 @@ dl#all_ex  {
 }
 
 dl#all_ex dt {
-  margin-top: 20px;
-}
-
-dl#all_ex dt {
+	margin-top: 20px;
   padding: 5px 3px 3px 10px;
 	background: #CCC;
 	color: #333;
@@ -149,6 +146,7 @@ dl#all_ex dd {
   /*border: 1px solid #CCC;*/
 	font-size: 14px;
 	font-weight: normal;
+	
 }
 
 

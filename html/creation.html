@@ -146,6 +146,33 @@
     		  });
       });
       
+      $( '#all_ex canvas').hover(
+              function (e) {
+                var enlarge = $("<span id='enlarge'>Click to enlarge and copy</span>");
+                var pos = $(this).position();
+                enlarge.addClass('tooltip');
+                enlarge.css({"left": (5 + e.pageX) + "px","top":e.pageY + "px" });
+                  $(this).before(enlarge);
+                  $(this).mousemove(function(e){
+                    console.log('ee');
+                        $('span#enlarge').css({"left": (5 + e.pageX)  + "px","top":e.pageY + "px" });
+                     }); 
+              }, 
+              function () {
+                $(this).parent().find("span#enlarge").remove();
+                $(this).unbind('mousemove');
+          });
+
+      
+      /* jCanvas.hover(
+          function () {
+            $(this).append($("<span>Click to enlarge and copy</span>"));
+          }, 
+          function () {
+            $(this).find("span:last").remove();
+          }); */
+      
+      
    // AUTOPLAY
       node.random.exec(function(){
       var choice = Math.random();

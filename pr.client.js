@@ -155,8 +155,8 @@ function PeerReviewGame () {
 						      var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
 								
 
-				    	          var div = $('<div>', {});
-				    	          
+				    	          var div = $('<div>');
+
 				    	          div.append(cf.canvas);
 				    	          
 				    	          div.dialog({
@@ -177,8 +177,6 @@ function PeerReviewGame () {
 				    	              }
 				    	          }
 				    	          });
-					
-							   
 						   }
 				};
 				
@@ -331,17 +329,8 @@ function PeerReviewGame () {
 							table.addColumn([' - ']);
 						}
 					}
-					
-					// Styling the table
-//					var t = table.select('x', '=', 1);
-//					t.select('y', '=', 0).addClass('first');
-//					t.select('y', '=', 1).addClass('second');
-//					t.select('y', '=', 2).addClass('third');
-					//t.select('y', '>', 2).addClass('other');
 
-					node.window.write(table.parse());
-					
-					// Was table.table
+					node.window.getElementById('container_exhibition').appendChild(table.parse());
 					this.all_ex.addDD(table);
 
 				}
