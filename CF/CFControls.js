@@ -310,6 +310,17 @@
 				value: 1,
 				label: 'Scale head vertically'
 			},
+			
+			// Eye
+			
+			eye_height: {
+				min: 0.1,
+				max: 0.9,
+				step: 0.01,
+				value: 0.4,
+				label: 'Eye and Eyebrow height'
+			},	
+			
 			eye_spacing: {
 				min: 0,
 				max: 50,
@@ -341,15 +352,6 @@
 				value: -0.5,
 				label: 'Eyebrow angle'
 			},
-
-			
-			eye_height: {
-				min: 0.1,
-				max: 0.9,
-				step: 0.01,
-				value: 0.4,
-				label: 'Eye and Eyebrow height'
-			},	
 			
 			// Nose
 			nose_length: {
@@ -471,7 +473,7 @@
 				min: 0,
 				max: 30,
 				step: 0.01,
-				value: 10,
+				value: 5,
 				label: 'Nose width'
 			},
 			
@@ -510,11 +512,6 @@
 				else if (defaults.hasOwnProperty(key)){		
 					defaults[key].value = input[key];
 				}
-				
-//				console.log(key);
-//				console.log(input[key]);
-//				console.log(defaults[key]);
-				
 			}	
 		}
 		return defaults;
@@ -523,8 +520,20 @@
 	CFControls.pinDownFeatures = function (input) {
 		if (!input) return input;
 		for (var key in input) {
-			if (input.hasOwnProperty(key) && CFControls.fixed.hasOwnProperty(key)) {
-				input[key] = CFControls.fixed[key].value;
+			if (input.hasOwnProperty(key)) {
+				if (key === 'mouth_top_y') {
+					if (input.mouth_bottom_y > 0) {
+						input[key] = input.mouth_bottom_y * 0.25; 
+					}
+					else {
+						input[key] = 0;
+						input.mouth_bottom_y = 0;
+					}
+				}
+				else if (CFControls.fixed.hasOwnProperty(key)) {
+					input[key] = CFControls.fixed[key].value;
+					//console.log(key + ' ' + input[key]);
+				}
 			}	
 		}
 		return input;
@@ -584,16 +593,17 @@
 			}
 		}
 		
-		out['eyebrow_length'] = 10;
-		out['nose_width'] = 5;
+
 		out['eye_radius'] = 5;
 		out['pupil_radius'] = 1;
 		out['pupil_scale_y'] = 1;
 		out['pupil_scale_x'] = 1;
-		out['head_radius'] = 30
+		out['head_radius'] = 30;
+		out['eyebrow_length'] = 10;
 		out['eyebrow_eyedistance'] = 3;
-		out['nose_height'] = 0.4;
 		out['eyebrow_spacing'] = 5;
+		out['nose_height'] = 0.4;
+		out['nose_width'] = 5;
 		out['mouth_height'] = 0.75;
 		out['mouth_width'] = 20;
 	

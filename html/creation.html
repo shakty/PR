@@ -41,19 +41,37 @@
 </body>
 <script>
 	
-	  var node = parent.node;
+	  function addJQuerySliders(init) {
+			 $( "#cf_controls div.ui-slider" ).each(function() {
+       // read initial values from markup and remove that
+       var settings = init[this.id];
+       //settings['animate'] = true;
+       
+			 
+			 
+       settings.slide = settings.change = function(e, ui) {
+         node.emit('CF_CHANGE');
+       };
+       
+       var sl = $( this ).slider(settings);
+       
+     });
+		}
 	
-    var creationDiv = document.getElementById('creation');
-    var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
-  
+	  var node = parent.node;
+	 
+	  // Initialize Chernoff Face
+	  ////////////////////////////
 	 
 	  // If we play the first round we start
 		// with a random face, otherwise with 
 		// the last one created
 	  if (!node.game.last_cf) {
 		  var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
+			console.log(init_cf);
 			// some features are fixed in the simplified version
 			init_cf = CFControls.pinDownFeatures(init_cf);
+			console.log('After');
 			console.log(init_cf);
 		}
 		else {
@@ -78,44 +96,22 @@
                  controls: cfc,
       };
       
+		 var creationDiv = document.getElementById('creation');
      node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
-     $('#cf_controls').after(ph.commandsDiv);
-     
-
-     $( "#cf_controls div.ui-slider" ).each(function() {
-       // read initial values from markup and remove that
-       var settings = init_sc[this.id];
-       settings['animate'] = true;
-       
-       settings.slide = function(e, ui) {
-         node.emit('CF_CHANGE');
-       };
-       
-       //console.log(settings);
-       //console.log(this.id);
-       var sl = $( this ).slider(settings);
-       
-     });
-     
 		 
-     node.game.personal_history.add(node.game.cf.getAllValues());
-      
-		 // History of previous exhibits
-     //var historyDiv = node.window.getElementById('history');
-     var historyDiv = document.getElementById('history');
+		 
+		 // Adding the jQuery sliders
+		 ////////////////////////////
+     addJQuerySliders(init_sc);
 
-     if (node.game.all_ex.length > 0) {
-    	  node.game.all_ex.parse();
-        //node.window.write(node.game.all_ex.getRoot(), historyDiv);
-        //$(node.game.all_ex.getRoot()).append(historyDiv);
-        historyDiv.appendChild(node.game.all_ex.getRoot());  
-     }
-     else {
-    	 historyDiv.appendChild(document.createTextNode('No past exhibitions yet.'));
-     }
+     
+		  // NDDBBrowser commands
+      ///////////////////////
       
+      var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
+      $('#cf_controls').after(ph.commandsDiv);
+     
       
-			
       // Adding to history
       node.on(node.game.cf.change, function() {
         node.game.personal_history.add(node.game.cf.getAllValues());
@@ -125,28 +121,33 @@
       node.on(node.game.personal_history.id + '_GOT', function (face) {
         node.game.cf.draw(face);
       });
+		 
+		 
+     node.game.personal_history.add(node.game.cf.getAllValues());
+      
+		 // History of previous exhibits
+		 ///////////////////////////////
+		 
+     var historyDiv = document.getElementById('history');
+
+     if (node.game.all_ex.length > 0) {
+    	  node.game.all_ex.parse();
+        historyDiv.appendChild(node.game.all_ex.getRoot());  
+     }
+     else {
+    	 historyDiv.appendChild(document.createTextNode('No past exhibitions yet.'));
+     }
+   	
 			
-      $( "history canvas").hover(
-         function(){
-          $(this).css({
-            border: '3px solid #CCC'
-          });
-         },
-         function(){
-          $(this).css({
-            border: 0
-          });
-         });
+			// Submission
+			//////////////
+			
 			
       $('#done_box button').click(function(){
     	  $(function() {
     		    // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
     		    // $( "#submission #sub_list:ui-dialog" ).dialog( "destroy" );
-    		  
-//					var a = $( "#submission #sub_list:ui-dialog" );
-//					console.log(a[0]);
-//					 console.log('eeh');
-					
+    			
     		    $( "#submission #sub_list" ).dialog({
     		      resizable: false,
     		      width: 550,
@@ -156,6 +157,11 @@
     		  });
       });
       
+			
+			
+			// Tooltip for enlarge and copy canvas
+			//////////////////////////////////////
+			
       $( '#all_ex canvas').hover(
               function (e) {
                 var enlarge = $("<span id='enlarge'>Click to enlarge and copy</span>");
@@ -173,27 +179,22 @@
           });
 
       
-      /* jCanvas.hover(
-          function () {
-            $(this).append($("<span>Click to enlarge and copy</span>"));
-          }, 
-          function () {
-            $(this).find("span:last").remove();
-          }); */
       
       
-   // AUTOPLAY
+      // AUTOPLAY
+			////////////
+	 
       node.random.exec(function(){
-      var choice = Math.random();
-      if (choice < 0.33) {
-      node.window.getElementById('ex_A').click();
-      }
-      else if (choice < 0.66) {
-      node.window.getElementById('ex_B').click();
-      }
-      else {
-      node.window.getElementById('ex_C').click();
-      }
+	      var choice = Math.random();
+	      if (choice < 0.33) {
+	        node.window.getElementById('ex_A').click();
+	      }
+	      else if (choice < 0.66) {
+	        node.window.getElementById('ex_B').click();
+	      }
+	      else {
+	        node.window.getElementById('ex_C').click();
+	      }
       }, 200000);
       
       
