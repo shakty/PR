@@ -5,40 +5,22 @@
 <script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
 <script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
 <!-- JQUERY UI ENDS -->
-<link rel="stylesheet" type="text/css" href="css/iframe.css">
-<link rel="stylesheet" type="text/css" href="css/creation.css">
-<link rel="stylesheet" type="text/css" href="css/dissemination.css">
 
 <!--  CF -->
 <script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
 <script src="./../CF/CFControls.js" charset="utf-8"></script>
 <!-- CF ends -->
 
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/creation.css">
+<link rel="stylesheet" type="text/css" href="css/dissemination.css">
+
 
 <body>
-	<div id="container_creation">
-    <h2>Create your personal drawing</h2>
-    <div id="creation"></div>
-	</div>
-             
-	 <div id="container_history">
-	   <h2>History of past exhibitions</h2>
-		 <div id="history"></div> 
-		 <div id="done_box">
-       <button>Click here when you are done</button>
-		 </div>
-	</div>
+  <h2>Exhibitions</h2>
+<table id="table_673" class="exhibition"><thead><tr><th>A</th><th>B</th><th>C</th></tr></thead><tbody><tr><td> - </td><td><div><div id="cf_2"><table id="cf_table"><tbody><tr><td><canvas id="cf_2_canvas" width="250" height="250"></canvas></td></tr></tbody></table></div><table id="table_539"><tbody><tr><td>Author: P_72</td></tr><tr><td>Score: 9.00</td></tr></tbody></table></div></td><td><div><div id="cf_3"><table id="cf_table"><tbody><tr><td><canvas id="cf_3_canvas" width="250" height="250"></canvas></td></tr></tbody></table></div><table id="table_372"><tbody><tr><td>Author: P_62</td></tr><tr><td>Score: 4.80</td></tr></tbody></table></div></td></tr></tbody></table></body>
 
-	<div id="submission" style="visibility: hidden;">
-    <dl id="sub_list">
-      <span id="text_sub_list">Select the exhibition you would like to submit your drawing to:</span><br/>
-     <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
-     <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
-     <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
-   </dl>
- </div>
- 
-</body>
+
 <script>
 	
 	  var node = parent.node;
@@ -72,7 +54,7 @@
       };
       
      node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
-     $('#cf_controls').after(ph.commandsDiv);
+     $('#cf_controls').before(ph.commandsDiv);
      
      //console.log(defaults);
      // setup graphic EQ
@@ -94,21 +76,15 @@
 		 
      node.game.personal_history.add(node.game.cf.getAllValues());
       
-		 // History of previous exhibits
-     //var historyDiv = node.window.getElementById('history');
-     var historyDiv = document.getElementById('history');
+      // History of previous exhibits
+      //var historyDiv = node.window.getElementById('history');
+      var historyDiv = document.getElementById('history');
 
-     if (node.game.all_ex.length > 0) {
-    	  node.game.all_ex.parse();
-        //node.window.write(node.game.all_ex.getRoot(), historyDiv);
-        //$(node.game.all_ex.getRoot()).append(historyDiv);
-        historyDiv.appendChild(node.game.all_ex.getRoot());  
-     }
-     else {
-    	 historyDiv.appendChild(document.createTextNode('No past exhibitions yet.'));
-     }
-      
-      
+
+      node.game.all_ex.parse();
+      //node.window.write(node.game.all_ex.getRoot(), historyDiv);
+      //$(node.game.all_ex.getRoot()).append(historyDiv);
+      historyDiv.appendChild(node.game.all_ex.getRoot());
 			
       // Adding to history
       node.on(node.game.cf.change, function() {

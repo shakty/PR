@@ -1,5 +1,5 @@
 table.exhibition {
-	border: 1px solid #CCC;
+	
 }
 
 table.exhibition thead tr th {
@@ -13,6 +13,7 @@ table.exhibition thead tr th {
 
 table.exhibition td {
   width: 250px;
+  margin-bottom: 10px;
   border-right: 3px solid #CCC;
 }
 

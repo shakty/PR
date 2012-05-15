@@ -30,8 +30,7 @@ function PeerReviewGame () {
 		this.evas = {};
 		
 		this.all_ex = new node.window.List({ id: 'all_ex',
-											 title: 'History of previous exhibitions',
-											 lifo: true
+											 lifo: true,
 		});
 		
 		this.personal_history = null;
