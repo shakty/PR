@@ -40,19 +40,27 @@
  
 </body>
 <script>
+
+    var node = parent.node;
 	
-	  node.game.addJQuerySliders = function (init) {
+	  function addJQuerySliders(init) {
 			 $( "#cf_controls div.ui-slider" ).each(function() {
-       // read initial values from markup and remove that
-       var settings = init[this.id];
-       settings.slide = settings.change = function(e, ui) {
-         node.emit('CF_CHANGE');
-       };
-       $( this ).slider(settings);
-     });
-		}
+	       // read initial values from markup and remove that
+	       var settings = init[this.id];
+	       if (settings) {
+		       settings.slide = settings.change = function(e, ui) {
+		         node.emit('CF_CHANGE');
+		       };
+		       $( this ).slider(settings);
+	       }
+	     });
+		};
 	
-	  var node = parent.node;
+	  node.on('COPIED', function(f) {
+		  node.game.personal_history.add(f);
+      node.game.cf.draw(f);
+      addJQuerySliders(CFControls.normalizeFeatures(f));
+	  });
 	 
 	  // Initialize Chernoff Face
 	  ////////////////////////////
@@ -96,7 +104,7 @@
 		 
 		 // Adding the jQuery sliders
 		 ////////////////////////////
-     node.game.addJQuerySliders(init_sc);
+     addJQuerySliders(init_sc);
 
      
 		  // NDDBBrowser commands

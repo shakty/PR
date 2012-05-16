@@ -168,12 +168,8 @@ function PeerReviewGame () {
 				    	            show: "blind",
 				    	            hide: "explode",
 				    	            buttons: {
-				    	              "Copy": function() {
-				    	        	  	
-										node.game.personal_history.add(f);
-										node.game.cf.draw(f);
-										//node.game.addJQuerySliders(f);
-				    	        	  	
+				    	              "Copy": function() {				    	        	  	
+				    	            	node.emit('COPIED', f);
 				    	                $( this ).dialog( "close" );
 				    	              },
 				    	              Cancel: function() {
