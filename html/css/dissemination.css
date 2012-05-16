@@ -1,5 +1,7 @@
 div#container_exhibition {
 	width: 900px;
+	height: 500px;
+	overflow-y: auto;
 }
 
 table.exhibition {
