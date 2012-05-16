@@ -112,7 +112,7 @@
       
       var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
       $('#cf_controls').after(ph.commandsDiv);
-     
+			$('#cf_controls').after($('<span>Undo/redo changes</span>'));
       
       // Adding to history
       node.on(node.game.cf.change, function() {
