@@ -3,46 +3,56 @@
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <link rel="stylesheet" type="text/css" href="css/instructions.css">
 <body>
-	<h1>Welcome to the Art Exhibition Game!</h1>
-	<img src="./images/instructions/painter.jpeg" />
-	<div id="instructions">
-		<p>
-		You just joined a community of artists who decided to prepare 
-		<strong>3 (three)</strong> artistic exhibitions.
-		</p>
-		
-		<p>
-		Your task as a player is to create <strong>1 (one)</strong> work of art, 
-		and to select the best among the ones produced at each round. Each player is
-		therefore at the same time an <em>artist</em> and an <em>art critic</em>.
-		</p>
-		 
-		<p>
-		The game is divided in three steps:
-		
-		<ol>
-			<li>Produce a work of art</li>
-			<li>Submit it to one of three exhibitions (named A, B, or C)</li>
-			<li>Review the paintings produced by other artists </li>
-		</ol>
-		
-		The three steps above are repeated for <strong>50 (fifty)</strong> rounds,
-		and at the end of each you will be shown the works of art put on show on 
-		the three exhibitions.
-		</p>
-		
-		<p>
-		For participating in the game you will rewarded with <strong>0.75 CHF</strong>
-		each time one of your works is exposed in one the three exhibitions.
-		</p>
-		
-		<p>
-			<a href="#" onclick="javascript:parent.node.emit('DONE')">You wil now play
-			 a <strong>test round</strong> during which you will be guided through the
-			 three steps of the game and you learn to use the graphical interface to
-			 produce your painintgs.</a>
-		</p>
-		
-		
+
+  <div id="container_instructions">
+	  <h1>Welcome to the Art Exhibition Game!</h1>
+    <img src="./images/instructions/painter.jpeg" width="200px" />
+		<div id="instructions">			
+			<p>
+			You just became part of a community of 9 painters (including you).
+		  The goal of the community is to collectively decide which paintings can be 
+			exposed in <strong>3 (three)</strong> artistic exhibitions.
+     	</p>
+			 
+			<p>
+			The game is divided in rounds, and in each of these you will act both as an
+			<em>artist</em> and as an <em>art critic</em>. 
+      </p>
+			
+			<p>
+			Each round is divided in three steps, as follows:
+			
+			<ul>
+				<li><strong>Step 1: </strong>Each player produces 1 (one) painting, and submits it to one of three exhibitions (named A, B, or C).
+				  All the three exhibitions are equally prestigious to the players.
+				</li>
+				<li>
+					<strong>Step 2: </strong>Each player reviews 3 (three) of the 8 (eight) paintings produced by the other artists. 
+				  The review is done by assigning a rating on a scale from 1 to 9 to the painting. 
+					Self review is not allowed.
+				</li>
+				<li>
+					<strong>Step 3: </strong>All the paintings that received an average review 
+					score greater than 7 (seven) are put on display in the exhibition to which they were 
+					submitted.
+					</li>
+			</ul>
+			
+			</p>
+			
+			<p>
+			For each paining that is put on display in one of the exhibitions you will 
+			receive <strong>0.XX CHF</strong>.
+			</p>
+			
+			The game will ends after <strong>50 (fifty)</strong> rounds, or after 1 hour.  
+			
+			<p>
+				<a href="#" onclick="javascript:parent.node.emit('DONE')">You wil now play
+				 a <strong>test round</strong> during which you will be guided through the
+				 three steps of the game and you learn to use the graphical interface to
+				 produce your painintgs.</a>
+			</p>
+		</div>
 	</div>
 </body>

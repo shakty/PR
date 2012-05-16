@@ -22,13 +22,7 @@ function PeerReview () {
 		console.log('Instructions');
 	};
 		
-	var creation = function () {
-		
-//		console.log('DUMPINIIINNIGNIGNGI');
-//		console.log(node.game.memory.split().db);
-//		console.log('---------------');
-//		console.log(node.game.memory.split().fetchValues());
-		
+	var creation = function () {		
 		console.log('creation');
 	};
 	

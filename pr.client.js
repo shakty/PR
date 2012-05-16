@@ -11,8 +11,8 @@ function PeerReviewGame () {
 	this.maxPlayers = 8;
 	
 	this.init = function() {			
-		//node.window.setup('PLAYER');
-		node.window.addWidget('WaitScreen');
+		node.window.setup('PLAYER');
+		//node.window.addWidget('WaitScreen');
 		
 		this.cf = null;
 		this.outlet = null;
@@ -206,7 +206,7 @@ function PeerReviewGame () {
 	
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
-		node.emit('DONE');
+		//node.emit('DONE');
 		console.log('Instructions');
 	};
 	

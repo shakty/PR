@@ -1,8 +1,23 @@
-ol {
-	margin: 20px;
+ul {
+	margin: 30px 0 30px 10px;
 
 }
 
 li {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
+}
+
+div#container_instructions {
+  margin: 0 auto;
+  width: 800px;
+	border: 0;
+	background: #fff;
+}
+
+div#instructions {
+	margin: 0 auto;
+	width: 600px;
+	text-align: left;
+	height: 400px;
+	padding: 10px;
 }
