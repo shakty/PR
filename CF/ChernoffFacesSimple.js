@@ -201,11 +201,11 @@
 	FacePainter.prototype.redraw = function (face, x, y) {
 		this.canvas.clear();
 		this.draw(face,x,y);
-	}
+	};
 	
 	FacePainter.prototype.scale = function (x, y) {
 		this.canvas.scale(this.scaleX, this.scaleY);
-	}
+	};
 	
 	// TODO: Improve. It eats a bit of the margins
 	FacePainter.prototype.fit2Canvas = function(face) {
@@ -223,7 +223,7 @@
 		
 		face.scaleX = ratio / 2.5;
 		face.scaleY = ratio / 2.5;
-	}
+	};
 	
 	FacePainter.prototype.drawHead = function (face, x, y) {
 		
@@ -267,7 +267,7 @@
 						color: face.color,
 						lineWidth: face.lineWidth
 		});
-	}
+	};
 	
 	FacePainter.prototype.drawPupils = function (face, x, y) {
 			

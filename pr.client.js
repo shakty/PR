@@ -185,7 +185,7 @@ function PeerReviewGame () {
 				};
 				
 				var container = document.createElement('div');
-				var cf = node.window.addWidget('ChernoffFaces', container, cf_options);
+				var cf = node.window.addWidget('ChernoffFacesSimple', container, cf_options);
 				
 				var details_tbl = new node.window.Table();
 				details_tbl.addColumn(['Author: ' + cell.content.author,

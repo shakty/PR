@@ -29,7 +29,6 @@ window.onload = function(){
 		  id: 'tbl_evaluation',
 	});   
 	
-	//node.window.write(table.table);	
 	document.getElementById('root').appendChild(table.table);
 	
 	
@@ -45,7 +44,7 @@ window.onload = function(){
 	             controls: false
 	  };
 
-  var cf = node.window.getWidget('ChernoffFaces', cf_options);
+  var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
   
   
   var evaId = 'eva_' + msg.data.from;
