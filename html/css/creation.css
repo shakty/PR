@@ -17,27 +17,32 @@ table#cf_table td {
 }
 */
 
+table {
+  border: 0;
+}
+
+h2 {
+	margin: 0;
+	margin-bottom: 3px;
+}
+
 div#cf {
   border: 0;
 }
 
-table {
-  border: 0;
-}
 
 div#container_creation {
 	float: left;
 	background: white;
 	border: 0;
+	margin: 0;
+	padding: 0;
 }
+
 
 div#creation {
-  width: 800px;
-  height: 550px;
-}
-
-div#ph button{
-  width: 100px;
+  width: 790px;
+  //height: 550px;
 }
 
 
@@ -65,9 +70,7 @@ table#cf_table td div div{
 
 /* Undo/Redo */
 
-/* WHY IS IT NOT WORKING?? */
 table#cf_table div#undoredo {
-	border: 5 dashed blue;
 	padding: 3px;
 }
 

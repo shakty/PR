@@ -176,6 +176,7 @@
 	FacePainter.prototype.draw = function (face, x, y) {
 		if (!face) return;
 		this.face = face;
+		// TODO: check the difference here with CF normal
 		this.fit2Canvas(face);
 		this.canvas.scale(face.scaleX, face.scaleY);
 		
