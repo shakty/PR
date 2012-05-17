@@ -18,7 +18,7 @@
        <li> 5 (five) means that you are <em>indifferent</em> </li>
        <li> 9 (nine) means <em>complete like</em> </li>
      </ul>
-	 <div id="root"></div>
+	 <div id="container_evaluation"></div>
 </body>
 
 <script type="text/javascript">
@@ -33,7 +33,7 @@ window.onload = function(){
 		  id: 'tbl_evaluation',
 	});   
 	
-	document.getElementById('root').appendChild(table.table);
+	document.getElementById('container_evaluation').appendChild(table.table);
 	
 	
 	node.onDATA('CF', function(msg) {

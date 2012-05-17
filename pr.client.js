@@ -127,16 +127,19 @@ function PeerReviewGame () {
 		
 		this.renderCF = function (cell) {
 			
-			var w = 250;
-			var h = 250;
 			
-			if (node.game.gameLoop.getName() == 'Creation') {	
-				w = 100;
-				h = 100;
-			}
 			
 			// Check if it is really CF obj
 			if (cell.content.cf) {
+				
+				var w = 200;
+				var h = 200;
+				
+				if (node.game.gameLoop.getName() == 'Creation') {	
+					w = 100;
+					h = 100;
+				}
+				
 				var cf_options = { id: 'cf_' + cell.x,
 						   width: w,
 						   height: h,
@@ -152,32 +155,42 @@ function PeerReviewGame () {
 						                 height: 400,
 						                 features: f,
 					                 	 controls: false,
-						      };
+								};
 						      
-						      var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+								var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
 								
 
 				    	          var div = $('<div class="copyorclose">');
 				    	          $(cf.canvas).css('background', 'white');
 				    	          $(cf.canvas).css('border', '3px solid #CCC'); 
 				    	          $(cf.canvas).css('padding', '5px');
-
+	
 				    	          div.append(cf.canvas);
+				    	          
+				    	          var buttons = [];
+				    	          if (node.game.gameLoop.getName() !== 'Exhibition') {
+				    	        	  buttons.push({
+				    	        		  text: 'copy',
+				    	        		  click: function() {				    	        	  	
+						    	            	node.emit('COPIED', f);
+						    	                $( this ).dialog( "close" );
+						    	              },
+				    	        	  });
+				    	          }
+				    	          
+				    	          buttons.push({
+				    	        	  text: 'Cancel',
+				    	        	  click: function() {
+				    	                $( this ).dialog( "close" );
+				    	              },
+				    	          });
 				    	          
 				    	          div.dialog({
 				    	            width: 460,
 				    	            height: 560,
 				    	            show: "blind",
 				    	            hide: "explode",
-				    	            buttons: {
-				    	              "Copy": function() {				    	        	  	
-				    	            	node.emit('COPIED', f);
-				    	                $( this ).dialog( "close" );
-				    	              },
-				    	              Cancel: function() {
-				    	                $( this ).dialog( "close" );
-				    	              }
-				    	          }
+				    	            buttons: buttons,
 				    	          });
 						   }
 				};
@@ -273,7 +286,7 @@ function PeerReviewGame () {
 				}
 				
 			});
-			node.random.emit('DONE');
+			//node.random.emit('DONE');
 		});
 		
 		
