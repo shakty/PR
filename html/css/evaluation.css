@@ -1,16 +1,22 @@
- #tbl_evaluation {
-   border: 1px black solid;
- };
+/* #tbl_evaluation { */
+/*    border: 1px black solid; */
+/*  }; */
  
- #tbl_evaluation td {
-   width: 200px;
-   border: 1px solid #CCC;
- };
+/* #tbl_evaluation td { */
+/*    width: 200px; */
+/*    border: 1px solid #CCC; */
+/*  }; */
  
- #tbl_evaluation div{
-  border: 0;
-}
+/* #tbl_evaluation div{ */
+/*   border: 0; */
+/* } */
  
+.ui-slider {
+	 height: 3px;
+} 
+
+
+
 /*  .display_container { */
 /*   border: 3px solid #CCC; */
 /*   padding: 5px; */

@@ -45,3 +45,10 @@ div#done_box button{
   width: 100%;
   font-size: 20px;
 }
+
+/* jQuery Sliders */
+
+.ui-slider-horizontal .ui-state-default {
+  height: 20px;
+  width: 10px;
+}
