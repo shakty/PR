@@ -147,15 +147,18 @@
 			
       $('#done_box button').click(function(){
     	  $(function() {
-    		    // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
-    		    // $( "#submission #sub_list:ui-dialog" ).dialog( "destroy" );
-    			
+    		    // Notify the game engine that the button has been
+    		    // clicked. This way any other jQuery dialog can 
+    		    // get closed
+    		    node.emit('CLICKED_DONE');
+    		    
     		    $( "#sub_list" ).dialog({
     		    	autoOpen: false,
     		      resizable: false,
     		      width: 550,
     		      height: 300,
     		      modal: true,
+    		      zindex: 100,
     		    });
     		    
     		    $( "#sub_list" ).dialog('open');

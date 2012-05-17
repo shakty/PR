@@ -157,7 +157,7 @@ function PeerReviewGame () {
 						      var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
 								
 
-				    	          var div = $('<div>');
+				    	          var div = $('<div class="copyorclose">');
 				    	          $(cf.canvas).css('background', 'white');
 				    	          $(cf.canvas).css('border', '3px solid #CCC'); 
 				    	          $(cf.canvas).css('padding', '5px');
@@ -211,7 +211,12 @@ function PeerReviewGame () {
 	};
 	
 	var creation = function() {
-		node.window.loadFrame('html/creation.html');
+		node.window.loadFrame('html/creation.html', function(){
+			node.on('CLICKED_DONE', function(){
+				$( ".copyorclose" ).dialog('close');
+				$( ".copyorclose" ).dialog('destroy');
+			});
+		});
 		console.log('Creation');
 	};
 	
@@ -309,6 +314,8 @@ function PeerReviewGame () {
 					return false;
 				}
 				else {
+					// Close any open dialog box
+					$( ".copyorclose" ).dialog('close');
 					this.last_cf = this.cf.getAllValues();
 					node.set('SUB', ex);
 					node.set('CF', this.last_cf);
