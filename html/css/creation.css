@@ -76,6 +76,13 @@ dl#sub_list dt{
   margin: 10px;
 }
 
+.ui-dialog-buttonset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: inherit;	
+}
+
 
 /* Right Part */
 

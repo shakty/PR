@@ -17,7 +17,7 @@
 
 <body>
 	<div id="container_creation">
-    <h2>Create your personal drawing</h2>
+    <h2>Create your painting</h2>
     <div id="creation"></div>
 	</div>
              
@@ -35,7 +35,6 @@
      <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
      <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
      <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
-     <br /><br /><br /><br /><span>If you committed a mistake, you can press the X button to close this dialog box and modify your submission.</span>
    </dl>
  </div>
  
@@ -157,9 +156,14 @@
     		    	autoOpen: false,
     		      resizable: false,
     		      width: 550,
-    		      height: 310,
+    		      height: 300,
     		      modal: true,
     		      zindex: 100,
+    		      buttons: {
+    		    	  Cancel: function() {
+    		    		  $(this).dialog('close');
+    		    	  }
+    		      }
     		    });
     		    
     		    $( "#sub_list" ).dialog('open');
