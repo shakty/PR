@@ -157,12 +157,12 @@ function PeerReview () {
 			}
 		};
 
-	var testloop = JSUS.clone(gameloop);
-	testloop[4] = {name: 'Test completed',
-				   state: function() {
-						console.log('Test round completed');
-					},
-	};
+//	var testloop = JSUS.clone(gameloop);
+//	testloop[4] = {name: 'Test completed',
+//				   state: function() {
+//						console.log('Test round completed');
+//					},
+//	};
 
 		
 		// LOOPS
@@ -177,20 +177,20 @@ function PeerReview () {
 					name: 	'Instructions'
 				},
 				
-				3: {state: 	testloop,
-					name: 	'Test Game'
-				},
+//				3: {state: 	testloop,
+//					name: 	'Test Game'
+//				},
 					
-				4: {rounds:	10, 
+				3: {rounds:	10, 
 					state: 	gameloop,
 					name: 	'Game'
 				},
 				
-				5: {state:	questionnaire,
+				4: {state:	questionnaire,
 					name: 	'Questionnaire'
 				},
 					
-				6: {state:	endgame,
+				5: {state:	endgame,
 					name: 	'Thank you'
 				}
 		};	

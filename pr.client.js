@@ -230,9 +230,9 @@ function PeerReviewGame () {
 		node.window.loadFrame('html/dissemination.html', function() {
 			
 			var dt_header = 'Round: ' + node.game.gameState.round;
-			if (node.game.gameState.state === 3) {	
-				dt_header = 'Test Round';
-			}
+//			if (node.game.gameState.state === 3) {	
+//				dt_header = 'Test Round';
+//			}
 			
 			this.all_ex.addDT(dt_header);
 			
@@ -241,9 +241,6 @@ function PeerReviewGame () {
 			});
 			
 			table.setHeader(['A','B','C']);
-			//table.setHeader(['Rank','A','B','C']);
-			//table.addColumn([1,2,3]);
-			
 			
 			node.onDATA('WIN_CF', function(msg) {
 				
@@ -345,18 +342,18 @@ function PeerReviewGame () {
 		
 		3: {state: dissemination,
 			name: 'Exhibition',
-			timer: 100000
+			timer: 100000,
 		}
 	};
 
 
-	var testloop = JSUS.clone(gameloop);
-	testloop[4] = {name: 'Test completed',
-				   state: function() {
-						node.window.loadFrame('html/testgame_completed.html');
-						node.DONE();
-					},
-	};
+//	var testloop = JSUS.clone(gameloop);
+//	testloop[4] = {name: 'Test completed',
+//				   state: function() {
+//						node.window.loadFrame('html/testgame_completed.html');
+//						node.DONE();
+//					},
+//	};
 	
 	
 	
@@ -365,7 +362,7 @@ function PeerReviewGame () {
 			
 			
 			1: {state:	pregame,
-				name:	'Game will start soon'
+				name:	'Game will start soon',
 			},
 			
 			2: {state: 	instructions,
@@ -373,22 +370,22 @@ function PeerReviewGame () {
 				timer: 	60000,
 			},
 			
-			3: {state: testloop,
-				name: 'TEST: Game',
-			},
+//			3: {state: testloop,
+//				name: 'TEST: Game',
+//			},
 				
-			4: {rounds:	10, 
+			3: {rounds:	10, 
 				state: 	gameloop,
-				name: 	'Game'
+				name: 	'Game',
 			},
 			
-			5: {state:	questionnaire,
+			4: {state:	questionnaire,
 				name: 	'Questionnaire',
-				timer: 	1200
+				timer: 	1200,
 			},
 				
-			6: {state:	endgame,
-				name: 	'Thank you'
+			5: {state:	endgame,
+				name: 	'Thank you',
 			}
 			
 	};	
