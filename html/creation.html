@@ -55,6 +55,29 @@
 	       }
 	     });
 		};
+		
+		function initSubmitDialog() {
+			  var dialog_options = {
+	                autoOpen: false,
+	                resizable: false,
+	                width: 550,
+	                height: 300,
+	                modal: true,
+	                zindex: 100,  
+	             };
+	                 
+			  if (node.game.timer.gameTimer.timeLeft) {
+				  dialog_options.buttons = {
+              Cancel: function() {
+                  $(this).dialog('close');
+          }};
+				  dialog_options.closeOnEscape = false;
+				}
+			  console.log(dialog_options);
+			
+	      $( "#sub_list" ).dialog(dialog_options);
+		}
+		
 	
 	  node.on('COPIED', function(f) {
 		  node.game.personal_history.add(f);
@@ -151,21 +174,18 @@
     		    // clicked. This way any other jQuery dialog can 
     		    // get closed
     		    node.emit('CLICKED_DONE');
-    		    
-    		    $( "#sub_list" ).dialog({
-    		    	autoOpen: false,
-    		      resizable: false,
-    		      width: 550,
-    		      height: 300,
-    		      modal: true,
-    		      zindex: 100,
-    		      buttons: {
-    		    	  Cancel: function() {
-    		    		  $(this).dialog('close');
-    		    	  }
-    		      }
+
+    		    // If time is up reopen the dialog immediately
+    		    // if it gets closed
+    		    $( "#sub_list" ).bind( "dialogclose", function(event, ui) {
+    		    	 $( "#sub_list" ).dialog('destroy');
+    		    	if (!node.game.timer.gameTimer.timeLeft) {
+    		    		initSubmitDialog();
+    		    		$( "#sub_list" ).dialog('open');
+    		    	}
     		    });
-    		    
+
+    		    initSubmitDialog();
     		    $( "#sub_list" ).dialog('open');
     		    
     		  });
