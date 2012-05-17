@@ -22,3 +22,22 @@ div#instructions {
 	padding: 10px;
 	overflow-y: auto;
 }
+
+img {
+	display: block;
+	width: 200px;
+	border: 3px solid #CCC;
+	text-align: center;
+	margin: 10px auto;
+}
+
+span#scrolldown {
+	display: block;
+	font-weight: bold;
+	margin: 20px;
+	text-align: center;
+}
+
+h3 {
+	margin-top: 30px;
+}

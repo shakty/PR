@@ -6,9 +6,12 @@
 
   <div id="container_instructions">
 	  <h1>Welcome to the Art Exhibition Game!</h1>
-    <img src="./images/instructions/painter.jpeg" width="200px" />
+   
 		<div id="instructions">			
+		  <img src="./images/instructions/painter.jpeg" width="200px" style/>
+		  <span id="scrolldown">(Scroll the page to read the whole text)</span>
 			<p>
+			<h3>Introduction</h3>
 			You just became part of a community of 9 painters (including you).
 		  The goal of the community is to collectively decide which paintings can be 
 			exposed in <strong>3 (three)</strong> artistic exhibitions.
@@ -20,6 +23,8 @@
       </p>
 			
 			<p>
+			<h3>The game</h3>
+			
 			Each round is divided in three steps, as follows:
 			
 			<ul>
@@ -41,18 +46,25 @@
 			</p>
 			
 			<p>
-			For each paining that is put on display in one of the exhibitions you will 
+			<h3>Earning</h3>
+			
+			For each painting of yours that is put on display in one of the exhibitions you will 
 			receive <strong>0.XX CHF</strong>.
 			</p>
 			
 			The game will ends after <strong>50 (fifty)</strong> rounds, or after 1 hour.  
 			
 			<p>
-				<a href="#" onclick="javascript:parent.node.emit('DONE')">You wil now play
+			<h3>Go to the game</h3>
+				You will now play
 				 a <strong>test round</strong> during which you will be guided through the
 				 three steps of the game and you learn to use the graphical interface to
-				 produce your painintgs.</a>
+				 produce your painintgs.
 			</p>
+			<div id="done_box">
+       <button onclick="javascript:parent.node.emit('DONE')">Click here when you are done</button>
+     </div>
 		</div>
+		
 	</div>
 </body>

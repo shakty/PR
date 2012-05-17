@@ -114,17 +114,6 @@ div#history {
   overflow-y: auto;
 }
 
-div#done_box {
-  height: 100px;
-	padding: 0;
-}
-
-div#done_box button{
-  height: 100%;
-  width: 100%;
-	font-size: 20px;
-}
-
 /* Exhibitions */
 
 
