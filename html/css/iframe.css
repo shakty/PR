@@ -48,6 +48,10 @@ div#done_box button{
 
 /* jQuery Sliders */
 
+.ui-slider {
+  height: 3px;
+} 
+
 .ui-slider-horizontal .ui-state-default {
   height: 20px;
   width: 10px;
