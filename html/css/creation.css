@@ -128,9 +128,7 @@ dl#all_ex dt canvas{
 }
 
 table.exhibition th {
-	/*width: 350px;*/
 	height: 30px;
-	font-size: 16px;
 }
 
 table.exhibition td {
@@ -139,30 +137,13 @@ table.exhibition td {
 }
 
 
-dl#all_ex table tr {
+table.exhibition tr {
   padding: 0;
 	margin: 0;
 	text-align: center;
   padding: 0;
   margin: 0;
-  /*width: 120px;*/
   border-right: 3px solid #CCC;
 	border-bottom: 1px solid #CCC;
   
 }
-
-
-dl#all_ex table td:last-child {
-  border-right: 0;
-}
-
-dl#all_ex table td div {
-	padding: 0;
-	border: 0;
-	margin: 0;
-  /*width: 60px;*/
-}
-
-
-
-
