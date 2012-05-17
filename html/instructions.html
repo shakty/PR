@@ -15,7 +15,7 @@
 				You just became part of a community of 9 painters (including you).
 			  The goal of the community is to collectively decide which paintings can be 
 				exposed in <strong>3 (three)</strong> artistic exhibitions (named A, B, or C).
-	      The three exhibitions have all the same value for the players.
+	      The three exhibitions have all the same value for the members of the community.
      	</p>
 			 
 			<p>
@@ -28,11 +28,11 @@
 			The game is divided in rounds, and each round is divided in three steps:
 			
 			<ul>
-				<li><strong>Step 1: </strong>Each player produces 1 (one) painting, and submits it to one of three exhibitions.
+				<li><strong>Step 1: </strong>Each player creates 1 (one) painting, and submits it to one of three exhibitions.
 				</li>
 				<li>
 					<strong>Step 2: </strong>Each player reviews 3 (three) of the 8 (eight) paintings produced by the other artists. 
-				  The review is done by assigning a rating on a scale from 1 (one)to 9 (nine) to each painting. 
+				  The review is done by assigning a rating on a scale from 1 (one) to 9 (nine) to each painting. 
 					Self review is not allowed.
 				</li>
 				<li>
@@ -45,18 +45,33 @@
 			</p>
 			
 			<p>
-			<h3>Other rules and earning</h3>
+			<h3>Other rules</h3>
 			<ul>
 			   <li>You have a limited amout of time to complete each step of the game. The time left will be displayed on the screen.</li>
 			   <li>At each new round, when creating a new painting, you will continue from your last submission.</li>
 			   <li>You are allowed to use any painting from the past exhibitions as a base for your next creation.</li>
-			   <li>For each painting of yours that is put on display in one of the exhibitions you will 
-			   be paid <strong>0.XX CHF</strong>.</li>
-			   <li>For each painting of your that is not put on display you will get 0 (zero) CHF.</li>
-			   <li>The game will ends either after <strong>50 (fifty)</strong> rounds, or after 1 hour.</li>
 			</ul>
 			</p>
 			
+			<p>
+      <h3>Earnings</h3>
+      <ul>
+        <li>For participating in the game you will receive a fixed monetary compensation of <strong>XX CHF</strong>, plus 
+            a variable amount based on your performance in the game</li>  
+        <li>For each painting of yours that is put on display in one of the exhibitions you will 
+            be paid <strong>0.XX CHF</strong>.</li>
+        <li>For each painting of yours that is not put on display you will be paid <strong>0 (zero) CHF</strong>.</li>
+        <li>In case of misconduct, cheating or disturbing behavior during the game, you will not be paid any money.</li>
+      </ul>
+      </p>
+       
+      
+			<p>
+      <h3>Termination</h3>
+      <ul>
+         <li>The game will ends either after <strong>50 (fifty)</strong> rounds, or after <strong>1 hour</strong>.</li>
+      </ul>
+      </p>
 <!-- 			<p> -->
 <!-- 			<h3>Go to the game</h3> -->
 <!-- 				You will now play -->
@@ -65,12 +80,25 @@
 <!-- 				 produce your paintings. -->
 <!-- 			</p> -->
 
-      <h3>Graphical example of the interface to create paintings</h3>
-
-			<img src="./images/instructions/create_edited.png" width="500px"/>
-			<img src="./images/instructions/hist_edited.png" width="500px" />
-			<img src="./images/instructions/hist_copy_edited.png" width="500px" />
-			
+      <p>
+      <h3>Graphical examples of the interface to create paintings</h3>
+      <ol>
+        <li>
+            Each player produces his or her paintings by moving a set of sliders as illustrated in the picture below.
+			      <img src="./images/instructions/create_edited.png" class="snapshot"/>
+			  </li>
+			  <li>
+			      During the creation of the painting, each player is provided with the an overview of the past exhibitions.
+			      <img src="./images/instructions/hist_edited.png" class="snapshot" />
+			  </li>
+			  <li>
+			     Players can click on a painting to display it in its original dimensions. Furthermore, during the creation phase,
+			     it is allowed to select a past painting as the base of the current work of art.
+			     <img src="./images/instructions/hist_copy_edited.png" class="snapshot" />
+ 			 </li>
+			 </ol>
+			</p>
+			<h3>Proceed to the game</h3>
 			<div id="done_box">
        <button onclick="javascript:parent.node.emit('DONE')">If you understood the instructions, click here to start the game</button>
      </div>

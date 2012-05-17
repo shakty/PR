@@ -1,4 +1,4 @@
-ul {
+ul, ol {
 	margin: 30px 0 30px 10px;
 
 }
@@ -18,7 +18,7 @@ div#instructions {
 	margin: 0 auto;
 	width: 600px;
 	text-align: left;
-	height: 400px;
+	height: 500px;
 	padding: 10px;
 	overflow-y: auto;
 }
@@ -28,6 +28,11 @@ img {
 	border: 3px solid #CCC;
 	text-align: center;
 	margin: 10px auto;
+}
+
+img.snapshot {
+  width: 500px;
+  margin: 30px auto;
 }
 
 span#scrolldown {
