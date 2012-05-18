@@ -10,8 +10,8 @@ function PeerReview () {
 	this.automatic_step = true;
 	
 	this.init = function() {
-		this.threshold = 3;
-		this.reviewers = 1;
+		this.threshold = 7;
+		this.reviewers = 3;
 	};
 	
 	var pregame = function () {
@@ -28,28 +28,34 @@ function PeerReview () {
 	
 	var evaluation = function(){
 		
+		var R =  (this.pl.length > 3) ? this.reviewers
+									  : (this.pl.length > 2) ? 2 : 1;
+		
 		// TODO: expose these methods from the node obj
 		var faces = this.memory.select('state', '=', this.previous())
 							   .select('key', '=', 'CF')
 							   .fetch();
 		
-		var matches = [[1,2]];
-		do {
-			matches = node.utils.matchN(faces, this.reviewers);
+		//var matches = [[1,2]];
+		//do {
+			//matches = node.utils.matchN(faces, this.reviewers);
 //			console.log('---');
 //			console.log(matches);
-		} while (!matches[matches.length-1][1]);
+		//} while (!matches[matches.length-1][1]);
 		
-//		console.log('STEEEE');
-//		console.log(matches);
+		matches = node.JSUS.latinSquare(faces.length, R);
+		console.log('STEEEE');
+		console.log(matches);
 //		
+		
+		
 		for (var i=0; i < matches.length; i++) {
 			// idx=1 is the other player
 			// TODO: find a way to automatize it
 			var data = {face: matches[i][0].value,
 						from: matches[i][0].player
 			};
-			//console.log(matches[i][0].player + ' ' + matches[i][1].player);
+			console.log(matches[i][0].player + ' ' + matches[i][1].player);
 			node.say(data, 'CF', matches[i][1].player);
 		}
 		
