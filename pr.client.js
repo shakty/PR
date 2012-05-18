@@ -281,7 +281,7 @@ function PeerReviewGame () {
 				
 				else {
 					var str = 'No painting was considered good enough to be put on display';
-					node.window.write(str);
+					node.window.write(str, node.window.getElementById("container_exhibition"));
 					this.all_ex.addDD(str);
 				}
 				

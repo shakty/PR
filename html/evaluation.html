@@ -6,6 +6,9 @@
 <script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
 <!-- JQUERY UI ENDS -->
 
+<!-- To avoid: "attempt to run compile-and-go script on a cleared scope" -->
+<script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <link rel="stylesheet" type="text/css" href="css/evaluation.css">
 
@@ -39,7 +42,6 @@ window.onload = function(){
 	
 	document.getElementById('container_evaluation').appendChild(table.table);
 	
-	
 	node.onDATA('CF', function(msg) {
 	  
 	  var cf_options = { id: 'cf',
@@ -52,51 +54,50 @@ window.onload = function(){
 	             controls: false
 	  };
 
-  var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
-  
-  
-  var evaId = 'eva_' + msg.data.from;
-  var diplayEvaId = 'display_' + msg.data.from;
-  var displayContId = 'display_cont_' + msg.data.from;
-  
-  // Add the slider to the container
-  
-  var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
-  var display_container = node.window.getDiv(displayContId);
-  var display = node.window.addTextInput(display_container, diplayEvaId, {
-     disabled: "disabled",
-     style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
-  });
-  
-  var labelText = 'Your current evaluation: ';
-  node.window.addLabel(display_container, display, null, labelText);  
-  
-  this.evas[msg.data.from] = display; 
-  table.addColumn([sl, display_container, cf.getCanvas()]);
-  // How to add jquery slider   
-  
-
-
-  
-  $( "#" + evaId).slider({
-	  value: 5,
-    min: 1,
-    max: 9,
-    step: 0.1,
-    slide: function( event, ui ) {
-      $( "#" + diplayEvaId ).val( ui.value );
-    }
-  });
-  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
-  
-  
-  //AUTOPLAY
-  node.random.exec(function() {
-	  $( "#" + evaId ).slider( "value",  Math.random()*10);
-	  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
-  }, 2000);
-  
-});
+    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+	
+	  var evaId = 'eva_' + msg.data.from;
+	  var diplayEvaId = 'display_' + msg.data.from;
+	  var displayContId = 'display_cont_' + msg.data.from;
+	  
+	  // Add the slider to the container
+	  
+	  var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
+	  var display_container = node.window.getDiv(displayContId);
+	  var display = node.window.addTextInput(display_container, diplayEvaId, {
+	     disabled: "disabled",
+	     style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
+	  });
+	  
+	  var labelText = 'Your current evaluation: ';
+	  node.window.addLabel(display_container, display, null, labelText);  
+	  
+	  this.evas[msg.data.from] = display; 
+	  table.addColumn([sl, display_container, cf.getCanvas()]);
+	  // How to add jquery slider   
+	  
+	
+	
+	  
+	  $( "#" + evaId).slider({
+		  value: 5,
+	    min: 1,
+	    max: 9,
+	    step: 0.1,
+	    slide: function( event, ui ) {
+	      $( "#" + diplayEvaId ).val( ui.value );
+	    }
+	  });
+	  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
+	  
+	  
+	  //AUTOPLAY
+	  node.random.exec(function() {
+		  $( "#" + evaId ).slider( "value",  Math.random()*10);
+		  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+	  }, 2000);
+	  
+	});
 
 	node.random.emit('DONE', 10000);
 	
