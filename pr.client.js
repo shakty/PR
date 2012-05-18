@@ -296,7 +296,7 @@ function PeerReviewGame () {
 	
 	var questionnaire = function() {
 		node.window.loadFrame('html/postgame.html');
-		node.random.emit('DONE');
+		//node.random.emit('DONE');
 		console.log('Postgame');
 	};
 	
@@ -387,14 +387,14 @@ function PeerReviewGame () {
 //				name: 'TEST: Game',
 //			},
 				
-			3: {rounds:	10, 
+			3: {rounds:	1, 
 				state: 	gameloop,
 				name: 	'Game',
 			},
 			
 			4: {state:	questionnaire,
 				name: 	'Questionnaire',
-				timer: 	1200,
+				timer: 	15000000,
 			},
 				
 			5: {state:	endgame,
