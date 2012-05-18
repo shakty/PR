@@ -33,6 +33,14 @@
 
 window.onload = function(){
 
+  // Avoid ESC to break the connection  
+  $(this).keypress(function(e){
+    if(e.keyCode == 27){
+        return false;
+    }
+  });
+
+
 	var node = parent.node;
 	
 	var table = new node.window.Table({

@@ -1,5 +1,10 @@
 <!doctype html>
 <title>The Art Exhibition Game</title>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <body>
 	<h1>Welcome to the "Art Exhibition Game"</h1>
@@ -7,3 +12,13 @@
 		The game has not started yet. We are waiting for all the players to connect. Please be patient. 
 	</div>
 </body>
+<script>
+     // Avoid ESC to break the connection
+    $(document).ready(function(){
+      $(this).keypress(function(e){
+        if(e.keyCode == 27){
+            return false;
+        }
+        });
+    });
+</script>

@@ -41,71 +41,82 @@
 </body>
 <script>
 
-    var node = parent.node;
-	
-	  function addJQuerySliders(init) {
-			 $( "#cf_controls div.ui-slider" ).each(function() {
-	       // read initial values from markup and remove that
-	       var settings = init[this.id];
-	       if (settings) {
-		       settings.slide = settings.change = function(e, ui) {
-		         node.emit('CF_CHANGE');
-		       };
-		       $( this ).slider(settings);
-	       }
-	     });
-		};
-		
-		function initSubmitDialog() {
-			  var dialog_options = {
-	                autoOpen: false,
-	                resizable: false,
-	                width: 550,
-	                height: 300,
-	                modal: true,
-	                zindex: 100,  
-	             };
-	                 
-			  if (node.game.timer.gameTimer.timeLeft) {
-				  dialog_options.buttons = {
+    
+    $(document).ready(function() {
+			
+		  // Avoid ESC to break the connection	
+      $(this).keypress(function(e){
+        if(e.keyCode == 27){
+            return false;
+        }
+      });
+			
+			
+			 var node = parent.node;
+  
+    function addJQuerySliders(init) {
+       $( "#cf_controls div.ui-slider" ).each(function() {
+         // read initial values from markup and remove that
+         var settings = init[this.id];
+         if (settings) {
+           settings.slide = settings.change = function(e, ui) {
+             node.emit('CF_CHANGE');
+           };
+           $( this ).slider(settings);
+         }
+       });
+    };
+    
+    function initSubmitDialog() {
+        var dialog_options = {
+                  autoOpen: false,
+                  resizable: false,
+                  width: 550,
+                  height: 300,
+                  modal: true,
+                  zindex: 100,  
+               };
+                   
+        if (node.game.timer.gameTimer.timeLeft) {
+          dialog_options.buttons = {
               Cancel: function() {
                   $(this).dialog('close');
           }};
-				  dialog_options.closeOnEscape = false;
-				}
-			  console.log(dialog_options);
-			
-	      $( "#sub_list" ).dialog(dialog_options);
-		}
-		
-	
-	  node.on('COPIED', function(f) {
-		  node.game.personal_history.add(f);
+          dialog_options.closeOnEscape = false;
+        }
+        console.log(dialog_options);
+      
+        $( "#sub_list" ).dialog(dialog_options);
+    }
+    
+  
+    node.on('COPIED', function(f) {
+      node.game.personal_history.add(f);
       node.game.cf.draw(f);
       addJQuerySliders(CFControls.normalizeFeatures(f));
-	  });
-	 
-	  // Initialize Chernoff Face
-	  ////////////////////////////
-	 
-	  // If we play the first round we start
-		// with a random face, otherwise with 
-		// the last one created
-	  if (!node.game.last_cf) {
-		  var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
-			console.log(init_cf);
-			// some features are fixed in the simplified version
-			init_cf = CFControls.pinDownFeatures(init_cf);
-			console.log('After');
-			console.log(init_cf);
-		}
-		else {
-			var init_cf = node.game.last_cf;
-		}
+    });
+   
+    // Initialize Chernoff Face
+    ////////////////////////////
+   
+    // If we play the first round we start
+    // with a random face, otherwise with 
+    // the last one created
+    if (!node.game.last_cf) {
+      var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
+      console.log(init_cf);
+      // some features are fixed in the simplified version
+      init_cf = CFControls.pinDownFeatures(init_cf);
+      console.log('After');
+      console.log(init_cf);
+    }
+    else {
+      var init_cf = node.game.last_cf;
+    }
 
     var init_sc = CFControls.normalizeFeatures(init_cf);
-		
-		 
+    
+     
       var sc_options = {
         id: 'cf_controls',
         features: init_sc,
@@ -121,21 +132,21 @@
                  controls: cfc,
       };
       
-		 var creationDiv = document.getElementById('creation');
+     var creationDiv = document.getElementById('creation');
      node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
-		 
-		 
-		 // Adding the jQuery sliders
-		 ////////////////////////////
+     
+     
+     // Adding the jQuery sliders
+     ////////////////////////////
      addJQuerySliders(init_sc);
 
      
-		  // NDDBBrowser commands
+      // NDDBBrowser commands
       ///////////////////////
       
       var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
       $('#cf_controls').after(ph.commandsDiv);
-			$('#cf_controls').after($('<span>Undo/redo changes</span>'));
+      $('#cf_controls').after($('<span>Undo/redo changes</span>'));
       
       // Adding to history
       node.on(node.game.cf.change, function() {
@@ -146,56 +157,56 @@
       node.on(node.game.personal_history.id + '_GOT', function (face) {
         node.game.cf.draw(face);
       });
-		 
-		 
+     
+     
      node.game.personal_history.add(node.game.cf.getAllValues());
       
-		 // History of previous exhibits
-		 ///////////////////////////////
-		 
+     // History of previous exhibits
+     ///////////////////////////////
+     
      var historyDiv = document.getElementById('history');
 
      if (node.game.all_ex.length > 0) {
-    	  node.game.all_ex.parse();
+        node.game.all_ex.parse();
         historyDiv.appendChild(node.game.all_ex.getRoot());  
      }
      else {
-    	 historyDiv.appendChild(document.createTextNode('No past exhibitions yet.'));
+       historyDiv.appendChild(document.createTextNode('No past exhibitions yet.'));
      }
-   	
-			
-			// Submission
-			//////////////
-			
-			
+    
+      
+      // Submission
+      //////////////
+      
+      
       $('#done_box button').click(function(){
-    	  $(function() {
-    		    // Notify the game engine that the button has been
-    		    // clicked. This way any other jQuery dialog can 
-    		    // get closed
-    		    node.emit('CLICKED_DONE');
+        $(function() {
+            // Notify the game engine that the button has been
+            // clicked. This way any other jQuery dialog can 
+            // get closed
+            node.emit('CLICKED_DONE');
 
-    		    // If time is up reopen the dialog immediately
-    		    // if it gets closed
-    		    $( "#sub_list" ).bind( "dialogclose", function(event, ui) {
-    		    	 $( "#sub_list" ).dialog('destroy');
-    		    	if (!node.game.timer.gameTimer.timeLeft) {
-    		    		initSubmitDialog();
-    		    		$( "#sub_list" ).dialog('open');
-    		    	}
-    		    });
+            // If time is up reopen the dialog immediately
+            // if it gets closed
+            $( "#sub_list" ).bind( "dialogclose", function(event, ui) {
+               $( "#sub_list" ).dialog('destroy');
+              if (!node.game.timer.gameTimer.timeLeft) {
+                initSubmitDialog();
+                $( "#sub_list" ).dialog('open');
+              }
+            });
 
-    		    initSubmitDialog();
-    		    $( "#sub_list" ).dialog('open');
-    		    
-    		  });
+            initSubmitDialog();
+            $( "#sub_list" ).dialog('open');
+            
+          });
       });
       
-			
-			
-			// Tooltip for enlarge and copy canvas
-			//////////////////////////////////////
-			
+      
+      
+      // Tooltip for enlarge and copy canvas
+      //////////////////////////////////////
+      
       $( '#all_ex canvas').hover(
               function (e) {
                 var enlarge = $("<span id='enlarge'>Click to enlarge and copy</span>");
@@ -216,21 +227,26 @@
       
       
       // AUTOPLAY
-			////////////
-	 
-//      node.random.exec(function(){
-//	      var choice = Math.random();
-//	      if (choice < 0.33) {
-//	        node.window.getElementById('ex_A').click();
-//	      }
-//	      else if (choice < 0.66) {
-//	        node.window.getElementById('ex_B').click();
-//	      }
-//	      else {
-//	        node.window.getElementById('ex_C').click();
-//	      }
-//      }, 200000);
+      ////////////
+   
+			//      node.random.exec(function(){
+			//        var choice = Math.random();
+			//        if (choice < 0.33) {
+			//          node.window.getElementById('ex_A').click();
+			//        }
+			//        else if (choice < 0.66) {
+			//          node.window.getElementById('ex_B').click();
+			//        }
+			//        else {
+			//          node.window.getElementById('ex_C').click();
+			//        }
+			//      }, 200000);
       
+			
+    });
+
+
+   
       
       
 

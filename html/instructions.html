@@ -1,5 +1,12 @@
 <!doctype html>
 <title>Art Exhibition Game: INSTRUCTIONS</title>
+
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <link rel="stylesheet" type="text/css" href="css/instructions.css">
 <body>
@@ -72,13 +79,7 @@
          <li>The game will ends either after <strong>50 (fifty)</strong> rounds, or after <strong>1 hour</strong>.</li>
       </ul>
       </p>
-<!-- 			<p> -->
-<!-- 			<h3>Go to the game</h3> -->
-<!-- 				You will now play -->
-<!-- 				 a <strong>test round</strong> during which you will be guided through the -->
-<!-- 				 three steps of the game and you learn to use the graphical interface to -->
-<!-- 				 produce your paintings. -->
-<!-- 			</p> -->
+
 
       <p>
       <h3>Graphical examples of the interface to create paintings</h3>
@@ -106,3 +107,13 @@
 		
 	</div>
 </body>
+<script >
+ // Avoid ESC to break the connection
+	$(document).ready(function(){
+		$(this).keypress(function(e){
+			if (e.keyCode == 27) {
+				return false;
+			}
+		});
+	});
+</script>
