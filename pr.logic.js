@@ -139,9 +139,9 @@ function PeerReview () {
 		node.memory.dump('./pr.csv', true);
 		console.log('Game ended');
 		
-		node.random.exec(function(){
-			node.replay(true);
-		},1000);
+//		node.random.exec(function(){
+//			node.replay(true);
+//		},1000);
 	};
 	
 	var gameloop = { // The different, subsequent phases in each round
