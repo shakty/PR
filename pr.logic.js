@@ -86,15 +86,15 @@ function PeerReview () {
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
 	
-				console.log('work: ' + works[j].length);
-				console.log(works[j].first());
-				console.log(works[j].last());
+//				console.log('work: ' + works[j].length);
+//				console.log(works[j].first());
+//				console.log(works[j].last());
 				
 				
 				var mean = works[j].mean('EVA2.value.eva'); 
 				
-				console.log('Mean: ' + mean);
-				console.log('T: ' + this.threshold);
+//				console.log('Mean: ' + mean);
+//				console.log('T: ' + this.threshold);
 				
 				// Threshold
 				if (mean > this.threshold) {	
@@ -130,7 +130,7 @@ function PeerReview () {
 //		console.log('SELECTED');
 //		console.log(selected);
 		//console.log(this.memory.db);
-		node.say(selected, 'WIN_CF', 'ALL')
+		node.say(selected, 'WIN_CF', 'ALL');
 
 		
 		console.log('dissemination');

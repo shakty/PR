@@ -312,7 +312,7 @@ function PeerReviewGame () {
 		
 		1: {name: 'Creation',
 			state: creation,
-			timer: 100000,
+			timer: 80000,
 			done: function (ex) {
 				//console.log('executing crea done');
 		
@@ -338,7 +338,7 @@ function PeerReviewGame () {
 		
 		2: {name: 'Evaluation',
 			state: evaluation,
-			timer: 200000,
+			timer: 30000,
 			done: function () {
 				console.log('executing eva done');
 				for (var i in this.evas) {
@@ -355,7 +355,7 @@ function PeerReviewGame () {
 		
 		3: {state: dissemination,
 			name: 'Exhibition',
-			timer: 100000,
+			timer: 15000,
 		}
 	};
 
@@ -380,7 +380,7 @@ function PeerReviewGame () {
 			
 			2: {state: 	instructions,
 				name: 	'Instructions',
-				timer: 	600000,
+				timer: 	120000,
 			},
 			
 //			3: {state: testloop,
@@ -394,7 +394,7 @@ function PeerReviewGame () {
 			
 			4: {state:	questionnaire,
 				name: 	'Questionnaire',
-				timer: 	15000000,
+				timer: 	300000,
 			},
 				
 			5: {state:	endgame,
