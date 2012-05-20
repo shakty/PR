@@ -76,30 +76,32 @@ function PeerReview () {
 			//console.log(exhibs[i].first().EVA2);
 			
 			// Get the list of works per exhibition
-			var works = exhibs[i].groupBy('EVA2.value');
-//			works.sort();
-//			works.reverse();
+			var works = exhibs[i].groupBy('EVA2.value.for');
 			
-			console.log('-------------------------------------------');
-			console.log('works: ' + works.length);
+			// console.log('-------------------------------------------');
+			// console.log('works: ' + works.length);	
+			// console.log(works);
+			// console.log('-------------------------------------------');
 			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
 	
 //				console.log('work: ' + works[j].length);
+//				for (var k=0; k < works[j].length; k++) {
+//					console.log(works[j].get(k));
+//				}
+//				console.log(works[j].fetchValues());
 //				console.log(works[j].first());
 //				console.log(works[j].last());
 				
 				
 				var mean = works[j].mean('EVA2.value.eva'); 
-				
 //				console.log('Mean: ' + mean);
 //				console.log('T: ' + this.threshold);
 				
 				// Threshold
 				if (mean > this.threshold) {	
 					
-					//var player = works[j].fetch()[0].player;
 					var player = works[j].first().player;
 					
 					var cf = this.memory.select('state', '=', this.previous(2))
