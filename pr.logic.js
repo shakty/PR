@@ -29,7 +29,7 @@ function PeerReview () {
 	var evaluation = function(){
 		
 		var R =  (this.pl.length > 3) ? this.reviewers
-									  : (this.pl.length > 2) ? 2 : 1;
+									  : (this.pl.length > 2) ? 1 : 1;
 		
 		// TODO: expose these methods from the node obj
 		var faces = this.memory.select('state', '=', this.previous())
@@ -38,15 +38,15 @@ function PeerReview () {
 		
 		//console.log(faces);
 		
-		matches = node.JSUS.latinSquare(faces.length, R);
+		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
 		//console.log('STEEEE');
-		//console.log(matches);
+		console.log(matches);
 
 		for (var i=0; i < faces.length; i++) {
 			for (var j=0; j < matches.length; j++) {
-				console.log(matches[j][i]);
+				//console.log(matches[j][i]);
 				var face = faces[matches[j][i]];
-				console.log(face);
+				//console.log(face);
 				var data = {face: face.value,
 							from: face.player
 				};

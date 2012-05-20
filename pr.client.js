@@ -380,7 +380,7 @@ function PeerReviewGame () {
 			
 			2: {state: 	instructions,
 				name: 	'Instructions',
-				timer: 	60000,
+				timer: 	600000,
 			},
 			
 //			3: {state: testloop,
