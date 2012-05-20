@@ -344,7 +344,7 @@ function PeerReviewGame () {
 				for (var i in this.evas) {
 					if (this.evas.hasOwnProperty(i)) {
 						node.set('EVA', {'for': i,
-										 eva: this.evas[i].value
+										 eva: Number(this.evas[i].value)
 						});
 					}
 				}

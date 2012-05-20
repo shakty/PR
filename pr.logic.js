@@ -29,7 +29,7 @@ function PeerReview () {
 	var evaluation = function(){
 		
 		var R =  (this.pl.length > 3) ? this.reviewers
-									  : (this.pl.length > 2) ? 1 : 1;
+									  : (this.pl.length > 2) ? 2 : 1;
 		
 		// TODO: expose these methods from the node obj
 		var faces = this.memory.select('state', '=', this.previous())
@@ -40,7 +40,7 @@ function PeerReview () {
 		
 		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
 		//console.log('STEEEE');
-		console.log(matches);
+		//console.log(matches);
 
 		for (var i=0; i < faces.length; i++) {
 			for (var j=0; j < matches.length; j++) {
@@ -63,7 +63,7 @@ function PeerReview () {
 		// get all the evaluations for each submission
 		var exhibs = this.memory.select('state', '>=', this.previous(2))
 								.join('player', 'value.for', 'EVA2', ['value'])
-								.select('EVA2')
+								.select('EVA2') // TODO: should this be automatic ?
 								.select('key','=','SUB')
 								.sort('value')
 								.groupBy('value');
@@ -80,16 +80,21 @@ function PeerReview () {
 //			works.sort();
 //			works.reverse();
 			
+			console.log('-------------------------------------------');
+			console.log('works: ' + works.length);
+			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
 	
-//				console.log('work');
-//				console.log(works[j].first().EVA2);
+				console.log('work: ' + works[j].length);
+				console.log(works[j].first());
+				console.log(works[j].last());
+				
 				
 				var mean = works[j].mean('EVA2.value.eva'); 
 				
-//				console.log('Mean: ' + mean);
-//				console.log('T: ' + this.threshold);
+				console.log('Mean: ' + mean);
+				console.log('T: ' + this.threshold);
 				
 				// Threshold
 				if (mean > this.threshold) {	
