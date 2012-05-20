@@ -312,7 +312,12 @@ function PeerReviewGame () {
 		
 		1: {name: 'Creation',
 			state: creation,
-			timer: 80000,
+			timer: {
+					milliseconds: 80000,
+					timeup: function() {
+						$('#mainframe').contents().find('#done_box button').click();
+					}
+			},
 			done: function (ex) {
 				//console.log('executing crea done');
 		
