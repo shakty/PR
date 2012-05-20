@@ -274,7 +274,8 @@ function PeerReviewGame () {
 						}
 					}
 
-					node.window.getElementById('container_exhibition').appendChild(table.parse());
+					$('#mainframe').contents().find('#done_box').before(table.parse());
+					//node.window.getElementById('container_exhibition').appendChild(table.parse());
 					this.all_ex.addDD(table);
 
 				}
