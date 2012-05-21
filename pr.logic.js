@@ -113,13 +113,16 @@ function PeerReview () {
 //					console.log(cf);
 					
 					var author = this.pl.select('id', '=', player).first();
-				
-					selected.push({ex: works[j].first().value,
+					
+					// This should always exist
+					if (author) {
+						selected.push({ex: works[j].first().value,
 								   mean: mean.toFixed(2),
 								   author: author.name,
 								   cf: cf.first().value,
 								   id: author.name,
-					});
+						});
+					}
 					
 				}
 				
