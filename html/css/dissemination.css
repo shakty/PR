@@ -1,6 +1,18 @@
 div#container_exhibition {
-	width: 900px;
+	float: left;
+	clear: both;
+	width: 800px;
 	height: 490px;
 	overflow-y: auto;
 	margin-top: 20px;
+}
+
+div#container_done {
+  float: right;
+  height: 100px;
+  width: 400px;
+  border: 0;
+  padding:0;
+  padding-top: 400px;
+  background: white;
 }

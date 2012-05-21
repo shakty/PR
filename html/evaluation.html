@@ -13,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="css/evaluation.css">
 
 <body>
+  <h2>Evaluation</h2>
 	 Express a quality judgement on the paintings just made by other players. Move the slider on a scale from 1 to 9,  where 
    <ul>
      <li> 1 (one) means <em>complete dislike</em> </li>
@@ -24,11 +25,13 @@
    will receive an average evaluation greater or equal than <strong>7 (seven)</strong> 
    will be put on display.
    </p>
-	 <div id="container_evaluation">
-     <div id="done_box">
-       <button>Click here when you are done</button>
-     </div>
-  </div>
+	 <div id="container_evaluation"></div>
+	 <div id="container_done">
+	   <div id="done_box">
+     <button>Click here when you are done</button>
+   </div>
+	 </div>
+	 
 </body>
 
 <script type="text/javascript">
@@ -51,8 +54,8 @@ window.onload = function(){
 		  id: 'tbl_evaluation',
 	});   
 	
-	$('#done_box').before(table.table);
-	//document.getElementById('container_evaluation').appendChild(table.table);
+	//$('#done_box').before(table.table);
+	document.getElementById('container_evaluation').appendChild(table.table);
 	
 	node.onDATA('CF', function(msg) {
 	  

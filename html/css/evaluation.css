@@ -1,29 +1,20 @@
 ul {
-	margin: 20px;
+	margin: 10px;
+}
+
+div#container_evaluation {
+	float: left;
+  width: auto;
 }
 
 
-/* #tbl_evaluation { */
-/*    border: 1px black solid; */
-/*  }; */
- 
-/* #tbl_evaluation td { */
-/*    width: 200px; */
-/*    border: 1px solid #CCC; */
-/*  }; */
- 
-/* #tbl_evaluation div{ */
-/*   border: 0; */
-/* } */
- 
-/* .ui-slider { */
-/* 	 height: 3px; */
-/* }  */
 
-
-
-/*  .display_container { */
-/*   border: 3px solid #CCC; */
-/*   padding: 5px; */
-/*   background: white; */
-/*  }; */
+div#container_done {
+  float: right;
+  height: 530px;
+  width: 400px;
+  border: 0;
+  padding:0;
+  padding-top: 300px;
+  background: white;
+}
