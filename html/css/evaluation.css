@@ -7,11 +7,9 @@ div#container_evaluation {
   width: auto;
 }
 
-
-
 div#container_done {
   float: right;
-  height: 530px;
+  height: 100px;
   width: 400px;
   border: 0;
   padding:0;

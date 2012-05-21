@@ -4,6 +4,7 @@ div#container_exhibition {
 	width: 800px;
 	height: 490px;
 	overflow-y: auto;
+	margin:0;
 	margin-top: 20px;
 }
 
