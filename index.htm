@@ -10,9 +10,11 @@
 <!-- JQUERY UI ENDS -->
 
 <!-- nodeGame starts -->
-<script src="http://localhost:8080/socket.io/socket.io.js"></script> 
-<script src="http://localhost:8080/javascripts/nodegame.js" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script> 
+<script src="/javascripts/nodegame.js" charset="utf-8"></script>
 <!-- nodeGame ends -->
+
+
 
 <!-- PR starts -->
 <script src="pr.client.js" charset="utf-8"></script>
@@ -22,23 +24,17 @@
 <script>
   	window.onload = function(){
 	
-	  // Avoid ESC to break the connection
-	  $(document).ready(function(){
-      $(this).keypress(function(e){
-        if(e.keyCode == 27){
-            return false;
-        }
-        });
-    });
-	
 		// Create the Client		
 		var conf = {
 			name: "P_" + Math.floor(Math.random()*1000),
-			url: "http://localhost:8080/pr",
+			url: "/pr",
 			verbosity: 0,
 			io: {				 
-	  	     reconnect: false
-			} 
+	  	     reconnect: false,
+			},
+			window: {
+				promptOnleave: false,
+			},
 		};
 
     node.play(conf, new PeerReviewGame());

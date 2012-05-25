@@ -39,105 +39,6 @@ function PeerReviewGame () {
 		
 		this.last_cf = null;
 		
-		// DTABLE
-		this.dtable = node.window.addWidget('DynamicTable', 
-											node.window.getElementById('gn_header'),
-											{
-												name: 'Game Summary',
-												replace: true,
-												id: 'pr_summary',
-		});
-		
-		//this.dtable.setLeft(['Mean', 'N. of shows', 'Money Won']);
-		this.dtable.setLeft(['Mean', 'N. of shows']);			
-		var bindings = {
-				x: function (msg) {
-				if (msg.text === 'WIN_CF') {
-					var out = [];
-					for (var i=0; i< msg.data.length; i++) {
-						var author = msg.data[i].author;
-						var x = node.game.pl.select('name', '=', author).first().count;
-						if ('undefined' !== typeof x) {
-							out.push(x);
-						}
-					}
-				}
-				return out;
-			},
-				
-			y: function (msg) {
-				if (msg.text === 'WIN_CF') {
-					return [1,2];
-				}
-			},
-
-			cell: function (msg, cell) {
-				if (msg.text === 'WIN_CF') {
-					if (cell.y === 1) {
-						console.log(cell);
-						console.log('header');
-						console.log(this.header);
-						console.log('cell.x');
-						console.log(cell.x);
-						var hc = this.header[cell.x];
-						if (hc) {
-							var idx = hc.content;
-							if (!cell.history) cell.history = [];
-							for (var i=0; i< msg.data.length; i++) {
-								if (msg.data[i].author === idx) {
-									cell.history.push(msg.data[i].mean);
-								}
-							}
-							var mean = 0;
-							for (var i=0; i < cell.history.length; i++) {
-								mean += new Number(cell.history[i]); 
-							}
-							cell.content = (mean / cell.history.length).toFixed(2);
-						}
-//						else {
-//							cell.content = 'Err';
-//						}
-						
-						
-						
-					}
-					else if (cell.y === 2) {
-						if (!cell.content) {
-							cell.content = 1;
-						}
-						else {
-							cell.content += 1;
-						}
-					
-					}
-//					else {
-//						if (!cell.content) {
-//							cell.content = 1;
-//						}
-//						else {
-//							cell.content += 1;
-//						}
-//					}
-					return cell;	
-				}
-			}
-		};
-		
-		
-		this.dtable.bind('in.say.DATA', bindings);
-		
-		this.dtable.bind('in.say.PLIST', {
-									header: function (msg) {
-										if (msg.data.length === 0) return;
-										var plist = new node.PlayerList({}, msg.data);
-										var out = plist.map(function(player){
-											return player.name;
-										});
-										return out;
-									}
-		});
-		// End TABLE
-		
 		this.renderCF = function (cell) {
 			
 			
@@ -232,7 +133,7 @@ function PeerReviewGame () {
 	
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
-		//node.emit('DONE');
+		node.emit('DONE');
 		console.log('Instructions');
 	};
 	
@@ -327,7 +228,7 @@ function PeerReviewGame () {
 		1: {name: 'Creation',
 			state: creation,
 			timer: {
-					milliseconds: 80000,
+					milliseconds: 10000000000,//80000,
 					timeup: function() {
 						$('#mainframe').contents().find('#done_box button').click();
 					}

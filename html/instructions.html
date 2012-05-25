@@ -7,6 +7,10 @@
 <script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
 <!-- JQUERY UI ENDS -->
 
+<!-- no Escape -->
+<script src="/javascripts/noescape.js" charset="utf-8"></script>
+<!-- no Escape ends -->
+
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <link rel="stylesheet" type="text/css" href="css/instructions.css">
 <body>
@@ -107,13 +111,3 @@
 		
 	</div>
 </body>
-<script >
- // Avoid ESC to break the connection
-	$(document).ready(function(){
-		$(this).keypress(function(e){
-			if (e.keyCode == 27) {
-				return false;
-			}
-		});
-	});
-</script>

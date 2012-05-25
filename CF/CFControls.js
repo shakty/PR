@@ -121,6 +121,54 @@
 		return this.list.parse();
 	};
 	
+//	Controls.prototype.populate = function () {
+//		var that = this;
+//		
+//		function addAttributes(attributes) {}
+//		
+//		
+//		for (var key in this.features) {
+//			if (this.features.hasOwnProperty(key)) {
+//				// Prepare the attributes vector
+//				var attributes = this.features[key];
+//				
+//				if ('object' == typeof attributes) {
+//					if ('object' == typeof attributes[0]) {
+//						this.addDT(document.createTextNode(attributes[0]));
+//						
+//					}
+//					
+//				
+//				
+//					var id = key;
+//					if (attributes.id) {
+//						var id = attributes.id;
+//						delete attributes.id;
+//					}
+//								
+//					var container = document.createElement('div');
+//					// Add a different element according to the subclass instantiated
+//					var elem = this.add(container, id, attributes);
+//									
+//					// Fire the onChange event, if one defined
+//					if (this.changeEvent) {
+//						elem.onchange = function() {
+//							node.emit(that.changeEvent);
+//						};
+//					}
+//					
+//					if (attributes.label) {
+//						node.window.addLabel(container, elem, null, attributes.label);
+//					}
+//					
+//					// Element added to the list
+//					this.list.addDT(container);
+//				}
+//				
+//			}
+//		}
+//	};
+	
 	Controls.prototype.populate = function () {
 		var that = this;
 		
@@ -297,16 +345,16 @@
 			// Head
 
 			head_scale_x: {
-				min: 0.2,
+				min: 0.001,
 				max: 2,
-				step: 0.01,
+				step: 0.001,
 				value: 0.5,
 				label: 'Scale head horizontally'
 			},
 			head_scale_y: {
-				min: 0.2,
+				min: 0.01,
 				max: 2,
-				step: 0.01,
+				step: 0.001,
 				value: 1,
 				label: 'Scale head vertically'
 			},
@@ -314,8 +362,8 @@
 			// Eye
 			
 			eye_height: {
-				min: 0.1,
-				max: 0.9,
+				min: 0,
+				max: 2,
 				step: 0.01,
 				value: 0.4,
 				label: 'Eye and Eyebrow height'
@@ -323,53 +371,87 @@
 			
 			eye_spacing: {
 				min: 0,
-				max: 50,
+				max: 40,
 				step: 0.01,
 				value: 10,
 				label: 'Eye spacing'
 			},
 			eye_scale_x: {
-				min: 0.2,
-				max: 2,
+				min: 0.01,
+				max: 4,
 				step: 0.01,
 				value: 1,
 				label: 'Scale eyes horizontally'
 			},
 			eye_scale_y: {
-				min: 0.2,
-				max: 2,
+				min: 0.01,
+				max: 4,
 				step: 0.01,
 				value: 1,
 				label: 'Scale eyes vertically'
 			},
 			
 			// Eyebrow
+			eyebrow_length: {
+				min: 0,
+				max: 50,
+				step: 0.01,
+				value: 10,
+				label: 'Eyebrow length'
+			},
 			
 			eyebrow_angle: {
-				min: -2,
-				max: 2,
+				min: -4,
+				max: 4,
 				step: 0.01,
 				value: -0.5,
 				label: 'Eyebrow angle'
 			},
 			
-			// Nose
-			nose_length: {
-				min: 0.2,
-				max: 18,
+			eyebrow_eyedistance: {
+				min: 0,
+				max: 50,
 				step: 0.01,
-				value: 15,
-				label: 'Nose length'
+				value: 3, // From the top of the eye
+				label: 'Eyebrow from eye'
+			},
+			
+			eyebrow_spacing: {
+				min: 0,
+				max: 50,
+				step: 0.01,
+				value: 5,
+				label: 'Eyebrow spacing'
 			},
 
 			// Mouth 
-			mouth_shape: {
-				min: 0,
-				max: 30,
-				step: 1,
-				value: 0,
-				label: 'Mouth Shape'
-			}		
+
+			mouth_top_y: {
+				min: -60,
+				max: 60,
+				step: 0.01,
+				value: -2,
+				label: 'Upper lip'
+			},
+			mouth_bottom_y: {
+				min: -60,
+				max: 60,
+				step: 0.01,
+				value: 20,
+				label: 'Lower lip'
+			},
+			
+			// Head
+
+			head_radius: {
+				min: 10,
+				max: 100,
+				step: 0.01,
+				value: 30,
+				label: 'Zooom in'
+			},
+			
+
 	};
 	
 
@@ -394,15 +476,6 @@
 	
 	
 	CFControls.fixed = {
-			// Head
-
-			head_radius: {
-				min: 10,
-				max: 100,
-				step: 0.01,
-				value: 30,
-				label: 'Face radius'
-			},
 			
 			// Eye
 			eye_radius: {
@@ -436,47 +509,6 @@
 				label: 'Scale pupils vertically'
 			},
 			
-			// Eyebrow
-			eyebrow_length: {
-				min: 1,
-				max: 30,
-				step: 0.01,
-				value: 10,
-				label: 'Eyebrow length'
-			},
-			eyebrow_eyedistance: {
-				min: 0.3,
-				max: 10,
-				step: 0.01,
-				value: 3, // From the top of the eye
-				label: 'Eyebrow from eye'
-			},
-			
-			eyebrow_spacing: {
-				min: 0,
-				max: 20,
-				step: 0.01,
-				value: 5,
-				label: 'Eyebrow spacing'
-			},
-			
-			// Nose
-			nose_height: {
-				min: 0.4,
-				max: 1,
-				step: 0.01,
-				value: 0.4,
-				label: 'Nose height'
-			},
-
-			nose_width: {
-				min: 0,
-				max: 30,
-				step: 0.01,
-				value: 5,
-				label: 'Nose width'
-			},
-			
 			// Mouth
 			mouth_height: {
 				min: 0.2,
@@ -491,7 +523,32 @@
 				step: 0.01,
 				value: 20,
 				label: 'Mouth width'
-			},
+			},	
+			
+		// Nose
+		nose_length: {
+			min: 0.2,
+			max: 18,
+			step: 0.01,
+			value: 0, //15,
+			label: 'Nose length'
+		},
+		
+		nose_height: {
+			min: 0.4,
+			max: 1,
+			step: 0.01,
+			value: 0, //0.4,
+			label: 'Nose height'
+		},
+
+		nose_width: {
+			min: 0,
+			max: 30,
+			step: 0.01,
+			value: 0, //5,
+			label: 'Nose width'
+		},
 	};
 	
 	
@@ -505,13 +562,16 @@
 		var defaults = node.JSUS.clone(CFControls.defaults);
 		for (var key in input) {
 			if (input.hasOwnProperty(key)) {
-				
-				if (key === 'mouth_bottom_y') {
-					defaults.mouth_shape.value = input[key]; 
-				}
-				else if (defaults.hasOwnProperty(key)){		
+				if (defaults.hasOwnProperty(key)){		
 					defaults[key].value = input[key];
 				}
+				
+//				if (key === 'mouth_bottom_y') {
+//					defaults.mouth_shape.value = input[key]; 
+//				}
+//				else if (defaults.hasOwnProperty(key)){		
+//					defaults[key].value = input[key];
+//				}
 			}	
 		}
 		return defaults;
@@ -521,19 +581,25 @@
 		if (!input) return input;
 		for (var key in input) {
 			if (input.hasOwnProperty(key)) {
-				if (key === 'mouth_top_y') {
-					if (input.mouth_bottom_y > 0) {
-						input[key] = input.mouth_bottom_y * 0.25; 
-					}
-					else {
-						input[key] = 0;
-						input.mouth_bottom_y = 0;
-					}
-				}
-				else if (CFControls.fixed.hasOwnProperty(key)) {
+//				if (key === 'mouth_top_y') {
+//					if (input.mouth_bottom_y > 0) {
+//						input[key] = input.mouth_bottom_y * 0.25; 
+//					}
+//					else {
+//						input[key] = 0;
+//						input.mouth_bottom_y = 0;
+//					}
+//				}
+//				else if (CFControls.fixed.hasOwnProperty(key)) {
+//					input[key] = CFControls.fixed[key].value;
+//					//console.log(key + ' ' + input[key]);
+//				}
+				
+				if (CFControls.fixed.hasOwnProperty(key)) {
 					input[key] = CFControls.fixed[key].value;
 					//console.log(key + ' ' + input[key]);
 				}
+				
 			}	
 		}
 		return input;
@@ -551,43 +617,44 @@
 					var value = $(el).slider('value');
 //					console.log('key');
 //					console.log(value);
+					out[key] = value;
 					
-					if (key == 'mouth_shape') {
-						
-						//console.log('KEY: ' + key, 'DEBUG');
-						//console.log('VALUE: ' + el.value, 'DEBUG');
-						var ms = CFControls.defaults.mouth_shape;
-						var span = Math.abs(ms.max - ms.min);
-						var x = value * 0.25;
-						var y = value;
-						
-//						if (value < limit) {
-//							y = value;
-//						}
-//						else if (value < 2*limit) {
-//							y = limit;
-//							x = value - limit;
-//						}
-//						else if (value < 3*limit) {
-//							x = limit;
-//							y = 3*limit - value;
-//						}
-//						else {
-//							x = 0;
-//							y = value - 4*limit;
-//						}
-						
-						//var values = d2xy(value, CFControls.others.mouth_top_y, CFControls.others.mouth_bottom_y);
-						out['mouth_top_y'] = x;
-						out['mouth_bottom_y'] = y;
-					}
-					else {
-						
-//						console.log('KEY: ' + key);
-//						console.log('VALUE: ' + value);
+//					if (key == 'mouth_shape') {
 //						
-						out[key] = value;
-					}
+//						//console.log('KEY: ' + key, 'DEBUG');
+//						//console.log('VALUE: ' + el.value, 'DEBUG');
+//						var ms = CFControls.defaults.mouth_shape;
+//						var span = Math.abs(ms.max - ms.min);
+//						var x = value * 0.25;
+//						var y = value;
+//						
+////						if (value < limit) {
+////							y = value;
+////						}
+////						else if (value < 2*limit) {
+////							y = limit;
+////							x = value - limit;
+////						}
+////						else if (value < 3*limit) {
+////							x = limit;
+////							y = 3*limit - value;
+////						}
+////						else {
+////							x = 0;
+////							y = value - 4*limit;
+////						}
+//						
+//						//var values = d2xy(value, CFControls.others.mouth_top_y, CFControls.others.mouth_bottom_y);
+//						out['mouth_top_y'] = x;
+//						out['mouth_bottom_y'] = y;
+//					}
+//					else {
+//						
+////						console.log('KEY: ' + key);
+////						console.log('VALUE: ' + value);
+////						
+//						out[key] = value;
+//					}
 				}
 				
 			}
@@ -598,14 +665,15 @@
 		out['pupil_radius'] = 1;
 		out['pupil_scale_y'] = 1;
 		out['pupil_scale_x'] = 1;
-		out['head_radius'] = 30;
-		out['eyebrow_length'] = 10;
-		out['eyebrow_eyedistance'] = 3;
-		out['eyebrow_spacing'] = 5;
-		out['nose_height'] = 0.4;
-		out['nose_width'] = 5;
-		out['mouth_height'] = 0.75;
-		out['mouth_width'] = 20;
+		//out['head_radius'] = 30;
+		//out['eyebrow_length'] = 10;
+		//out['eyebrow_eyedistance'] = 3;
+		//out['eyebrow_spacing'] = 5;
+		out['nose_height'] = 0; //0.4;
+		out['nose_width'] = 0; //5;
+		out['nose_length'] = 0;
+		//out['mouth_height'] = 0.75;
+		//out['mouth_width'] = 20;
 	
 		
 		return out;

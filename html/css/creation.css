@@ -45,10 +45,19 @@ canvas#cf_canvas {
 	margin: 0 auto;
 }
 
+/* Controls */
+
+dl#cf_controls {
+  //height: 400px;
+  width: 220px;
+  text-align: center;
+  overflow: auto;
+}
+
 /* Sliders */
 
 table#cf_table td div div{
-	width: 220px;
+	width: 180px;
 	height: 3px;
 	margin-top: 3px;
 	margin-bottom: 5px;

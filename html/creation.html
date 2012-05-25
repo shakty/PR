@@ -5,9 +5,16 @@
 <script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
 <script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
 <!-- JQUERY UI ENDS -->
+
+<!-- no Escape -->
+<script src="/javascripts/noescape.js" charset="utf-8"></script>
+<!-- no Escape ends -->
+
+
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <link rel="stylesheet" type="text/css" href="css/creation.css">
 <link rel="stylesheet" type="text/css" href="css/exhibition.css">
+
 
 <!--  CF -->
 <script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
@@ -41,18 +48,15 @@
 </body>
 <script>
 
+  
     
-    $(document).ready(function() {
-			
-		  // Avoid ESC to break the connection	
-      $(this).keypress(function(e){
-        if(e.keyCode == 27){
-            return false;
-        }
-      });
-			
+     $(document).ready(function() {
 			
 			 var node = parent.node;
+      
+      
+      //node.window.noEscape(window);
+      
   
     function addJQuerySliders(init) {
        $( "#cf_controls div.ui-slider" ).each(function() {
@@ -144,22 +148,22 @@
       // NDDBBrowser commands
       ///////////////////////
       
-      var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
-      $('#cf_controls').after(ph.commandsDiv);
-      $('#cf_controls').after($('<span>Undo/redo changes</span>'));
+//       var ph = node.game.personal_history = node.window.getWidget('NDDBBrowser', {id: 'ph'});
+//       $('#cf_controls').after(ph.commandsDiv);
+//       $('#cf_controls').after($('<span>Undo/redo changes</span>'));
       
-      // Adding to history
-      node.on(node.game.cf.change, function() {
-        node.game.personal_history.add(node.game.cf.getAllValues());
-      });
+//       //Adding to history
+//       node.on(node.game.cf.change, function() {
+//         node.game.personal_history.add(node.game.cf.getAllValues());
+//       });
       
-      // Pulling back from history
-      node.on(node.game.personal_history.id + '_GOT', function (face) {
-        node.game.cf.draw(face);
-      });
+//       //Pulling back from history
+//       node.on(node.game.personal_history.id + '_GOT', function (face) {
+//         node.game.cf.draw(face);
+//       });
      
      
-     node.game.personal_history.add(node.game.cf.getAllValues());
+//      node.game.personal_history.add(node.game.cf.getAllValues());
       
      // History of previous exhibits
      ///////////////////////////////
