@@ -258,7 +258,7 @@ function PeerReviewGame () {
 		
 		2: {name: 'Evaluation',
 			state: evaluation,
-			timer: 30000,
+			timer: 300000,
 			done: function () {
 				console.log('executing eva done');
 				for (var i in this.evas) {

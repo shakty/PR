@@ -39,8 +39,8 @@ function PeerReview () {
 		//console.log(faces);
 		
 		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
-		//console.log('STEEEE');
-		//console.log(matches);
+//		console.log('STEEEE');
+//		console.log(matches);
 
 		for (var i=0; i < faces.length; i++) {
 			for (var j=0; j < matches.length; j++) {

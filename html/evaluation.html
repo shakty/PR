@@ -7,7 +7,7 @@
 <!-- JQUERY UI ENDS -->
 
 <!-- no Escape -->
-<script src="/javascripts/noescape.js" charset="utf-8"></script>
+<!--  <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
 <!-- no Escape ends -->
 
 <!-- To avoid: "attempt to run compile-and-go script on a cleared scope" -->
@@ -43,7 +43,7 @@
 
 window.onload = function(){
 
-	var node = parent.node;
+	var node = parent.node	
 	
 	var table = new node.window.Table({
 		  auto_update: true,
@@ -55,6 +55,8 @@ window.onload = function(){
 	
 	node.onDATA('CF', function(msg) {
 	  
+		console.log(msg);
+		
 	  var cf_options = { id: 'cf',
 	             width: 300,
 	             height: 300,
@@ -87,9 +89,6 @@ window.onload = function(){
 	  table.addColumn([sl, display_container, cf.getCanvas()]);
 	  // How to add jquery slider   
 	  
-	
-	
-	  
 	  $( "#" + evaId).slider({
 		  value: 5,
 	    min: 1,
@@ -101,12 +100,12 @@ window.onload = function(){
 	  });
 	  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
 	  
-	  
+
 	  //AUTOPLAY
-	 /*  node.random.exec(function() {
-		  $( "#" + evaId ).slider( "value",  Math.random()*10);
-		  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
-	  }, 2000); */
+	  //  node.random.exec(function() {
+		//  $( "#" + evaId ).slider( "value",  Math.random()*10);
+		//  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+	  // }, 2000); 
 	  
 	});
 
