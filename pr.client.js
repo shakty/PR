@@ -180,6 +180,9 @@ function PeerReviewGame () {
 										.reverse()
 										.fetch();
 					
+						console.log('WINNERS');
+						console.log(winners);
+						
 						if (winners.length > 0) {
 							table.addColumn(winners);
 						}
@@ -188,6 +191,7 @@ function PeerReviewGame () {
 						}
 					}
 
+					//debugger;
 					//$('#mainframe').contents().find('#done_box').before(table.parse());
 					node.window.getElementById('container_exhibition').appendChild(table.parse());
 					this.all_ex.addDD(table);

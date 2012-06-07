@@ -132,8 +132,8 @@ function PeerReview () {
 			}
 		}
 
-//		console.log('SELECTED');
-//		console.log(selected);
+		console.log('SELECTED');
+		console.log(selected);
 		//console.log(this.memory.db);
 		node.say(selected, 'WIN_CF', 'ALL');
 
