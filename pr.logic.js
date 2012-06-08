@@ -132,11 +132,14 @@ function PeerReview () {
 			}
 		}
 
-		console.log('SELECTED');
-		console.log(selected);
+//		console.log('SELECTED');
+//		console.log(selected);
 		//console.log(this.memory.db);
 		node.say(selected, 'WIN_CF', 'ALL');
 
+		console.log(node.game.memory.key);
+		console.log(node.game.memory.state);
+		console.log(node.game.memory.player);
 		
 		console.log('dissemination');
 	};
@@ -146,7 +149,9 @@ function PeerReview () {
 	};
 	
 	var endgame = function() {
-		node.memory.dump('./pr.csv', true);
+		node.memory.dump('./out/pr.csv');
+		node.memory.dumpAllIndexes('./out/');
+		
 		console.log('Game ended');
 		
 //		node.random.exec(function(){
@@ -193,7 +198,7 @@ function PeerReview () {
 //					name: 	'Test Game'
 //				},
 					
-				3: {rounds:	10, 
+				3: {rounds:	3, 
 					state: 	gameloop,
 					name: 	'Game'
 				},

@@ -123,18 +123,9 @@
       });
       
    // AUTOPLAY
-      node.random.exec(function(){
-      var choice = Math.random();
-      if (choice < 0.33) {
-      node.window.getElementById('ex_A').click();
-      }
-      else if (choice < 0.66) {
-      node.window.getElementById('ex_B').click();
-      }
-      else {
-      node.window.getElementById('ex_C').click();
-      }
-      }, 200000);
+   node.random.exec(function(){
+	    node.DONE();
+   }, 6000);
       
       
       

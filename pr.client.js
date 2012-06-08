@@ -156,7 +156,7 @@ function PeerReviewGame () {
 	var dissemination = function(){
 		node.window.loadFrame('html/dissemination.html', function() {
 			
-			var dt_header = 'Round: ' + node.game.gameState.round;
+			var dt_header = 'Round: ' + node.state.round;
 //			if (node.game.gameState.state === 3) {	
 //				dt_header = 'Test Round';
 //			}
@@ -180,8 +180,8 @@ function PeerReviewGame () {
 										.reverse()
 										.fetch();
 					
-						console.log('WINNERS');
-						console.log(winners);
+//						console.log('WINNERS');
+//						console.log(winners);
 						
 						if (winners.length > 0) {
 							table.addColumn(winners);
@@ -205,7 +205,7 @@ function PeerReviewGame () {
 				}
 				
 			});
-			//node.random.emit('DONE');
+			node.random.emit('DONE');
 		});
 		
 		
@@ -214,9 +214,11 @@ function PeerReviewGame () {
 	};
 	
 	var questionnaire = function() {
-		node.window.loadFrame('html/postgame.html');
-		//node.random.emit('DONE');
+		node.window.loadFrame('html/postgame.html');		
 		console.log('Postgame');
+
+		// AutoPlay
+		node.random.emit('DONE');
 	};
 	
 	var endgame = function() {
@@ -311,7 +313,7 @@ function PeerReviewGame () {
 //				name: 'TEST: Game',
 //			},
 				
-			3: {rounds:	10, 
+			3: {rounds:	3, 
 				state: 	gameloop,
 				name: 	'Game',
 			},
