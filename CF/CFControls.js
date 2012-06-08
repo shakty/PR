@@ -660,7 +660,9 @@
 			}
 		}
 		
-
+		// Face color
+		out.color = node.player.color;
+		
 		out['eye_radius'] = 5;
 		out['pupil_radius'] = 1;
 		out['pupil_scale_y'] = 1;

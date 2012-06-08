@@ -108,16 +108,22 @@
     // the last one created
     if (!node.game.last_cf) {
       var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
-      console.log(init_cf);
+      //console.log(init_cf);
+      
       // some features are fixed in the simplified version
       init_cf = CFControls.pinDownFeatures(init_cf);
-      console.log('After');
-      console.log(init_cf);
+      
+      //console.log('After');
+      //console.log(init_cf);
     }
     else {
       var init_cf = node.game.last_cf;
     }
 
+    // Important
+    // Set the player color
+    init_cf.color = node.player.color;
+    
     var init_sc = CFControls.normalizeFeatures(init_cf);
     
      

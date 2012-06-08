@@ -28,20 +28,46 @@
 <script>
   	window.onload = function(){
 	
-		// Create the Client		
-		var conf = {
-			name: "P_" + Math.floor(Math.random()*1000),
-			url: "/pr",
-			verbosity: 0,
-			io: {				 
-	  	     reconnect: false,
-			},
-			window: {
-				promptOnleave: false,
-			},
-		};
-
-    node.play(conf, new PeerReviewGame());
+  		var pc = JSUS.getQueryString('n');
+  		
+  		if (!pc || pc < 2 || pc > 11) {
+  			alert('Oopps! Something went wrong. Please contact the experimenter.');
+  			throw new Exception();
+  		}
+  		
+  		var color = (pc < 5) ? "green" : (pc < 8) ? "red" : "black"; 
+  		
+  		var names = ['Johnson', 
+  		             'Jackson',
+  		             'Kerry',
+  		             'Michaelson',
+  		             'McCotton',
+  		             'Bradbury',
+  		             'Howard',
+  		             'Walbright',
+  		             'Chestner',
+  		            ];
+  		
+  		var name = names[pc-2];
+  		
+			// Create the Client		
+			var conf = {
+				url: "/pr",
+				verbosity: 0,
+				io: {				 
+		  	     reconnect: false,
+				},
+				window: {
+					promptOnleave: false,
+				},
+				player: {
+					pc: pc,
+					color: color,
+					name: name, //"P_" + Math.floor(Math.random()*1000),
+				}
+			};
+	
+	    node.play(conf, new PeerReviewGame());
     
 	}
 </script>
