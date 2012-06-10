@@ -8,7 +8,7 @@ function PeerReviewGame () {
 	this.auto_wait = true;
 	
 	this.minPlayers = 2;
-	this.maxPlayers = 8;
+	this.maxPlayers = 10;
 	
 	this.init = function() {			
 		node.window.setup('PLAYER');
@@ -40,9 +40,7 @@ function PeerReviewGame () {
 		this.last_cf = null;
 		
 		this.renderCF = function (cell) {
-			
-			
-			
+
 			// Check if it is really CF obj
 			if (cell.content.cf) {
 				
@@ -86,10 +84,6 @@ function PeerReviewGame () {
 				    	        	  buttons.push({
 				    	        		  text: 'copy',
 				    	        		  click: function() {	
-				    	        			  
-				    	        			  console.log('CELL');
-				    	        			  console.log(cell);
-				    	        			  
 						    	            	node.emit('COPIED', f);
 						    	            	node.set('COPIED', {
 						    	            		author: cell.content.author,
@@ -244,25 +238,25 @@ function PeerReviewGame () {
 		1: {name: 'Creation',
 			state: creation,
 			timer: {
-					milliseconds: 10000000000,//80000,
+					milliseconds: 5000, //80000,
 					timeup: function() {
 						$('#mainframe').contents().find('#done_box button').click();
 					}
 			},
 			done: function (ex) {
 				//console.log('executing crea done');
-		
-				if (!JSUS.in_array(ex, ['A','B','C'])) {
-					alert('You must select an outlet for your creation NOW!!');
-					if (this.timer.timeLeft <= 0) { 
-						this.timer.restart({timer: 5000});
-					};
+				var exs = ['A','B','C'];
+				if (!JSUS.in_array(ex, exs)) {
+					// time is up without the player 
+					//having selected one of the three exhibitions
+					node.window.getElementById('done_button_box').click();
 					return false;
 				}
 				else {
 					// Close any open dialog box
 					$( ".copyorclose" ).dialog('close');
 					this.last_cf = this.cf.getAllValues();
+					this.last_ex = ex;
 					node.set('SUB', ex);
 					node.set('CF', this.last_cf);
 					return true;
@@ -274,7 +268,7 @@ function PeerReviewGame () {
 		
 		2: {name: 'Evaluation',
 			state: evaluation,
-			timer: 300000,
+			timer: 30000,
 			done: function () {
 				console.log('executing eva done');
 				for (var i in this.evas) {

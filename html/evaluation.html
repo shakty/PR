@@ -20,9 +20,9 @@
   <h2>Evaluation</h2>
 	 Express a quality judgement on the paintings just made by other players. Move the slider on a scale from 1 to 9,  where 
    <ul>
-     <li> 1 (one) means <em>complete dislike</em> </li>
+     <li> 0 (one) means <em>complete dislike</em> </li>
      <li> 5 (five) means that you are <em>indifferent</em> </li>
-     <li> 9 (nine) means <em>complete like</em> </li>
+     <li> 10 (nine) means <em>complete like</em> </li>
    </ul>
    <p>
    The same paintings will be reviewed also by other players, and each painting that 
@@ -44,6 +44,7 @@
 window.onload = function(){
 
 	var node = parent.node	
+	node.window.noEscape(window);
 	
 	var table = new node.window.Table({
 		  auto_update: true,
@@ -55,8 +56,6 @@ window.onload = function(){
 	
 	node.onDATA('CF', function(msg) {
 	  
-		console.log(msg);
-		
 	  var cf_options = { id: 'cf',
 	             width: 300,
 	             height: 300,
@@ -91,8 +90,8 @@ window.onload = function(){
 	  
 	  $( "#" + evaId).slider({
 		  value: 5,
-	    min: 1,
-	    max: 9,
+	    min: 0,
+	    max: 10,
 	    step: 0.1,
 	    slide: function( event, ui ) {
 	      $( "#" + diplayEvaId ).val( ui.value );
