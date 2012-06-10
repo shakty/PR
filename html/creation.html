@@ -80,10 +80,8 @@ $(document).ready(function() {
                   modal: true,
                   zindex: 100,
                   closeOnEscape: false,
-                  close: function() {
-                	  if (!node.game.timer.gameTimer.timeLeft) {
-                		  return false;
-                	  }
+                  close: function() { 
+                	  return false;
                   },
                };
         
@@ -95,20 +93,18 @@ $(document).ready(function() {
           }};
          
         }
-        
-        // reset timer: total time - 20 secs
-        // var timePassed = node.game.timer.gameTimer.milliseconds - 20000;
-        // node.game.timer.gameTimer.timePassed = timePassed;
+
         node.game.timer.gameTimer.restart({
         	milliseconds: 20000,
         	timeup: function() {
+        		  // submit to the last one, if any
                 if (node.game.last_ex) {
                 	node.DONE(node.game.last_ex);
                 }
                 else {
                 	var exs = ['A','B','C'];
-                	var ex = exs[node.JSUS.randomInt(0,2)];
-                	//alert('E')
+                	var ex = exs[node.JSUS.randomInt(3)-1];
+                	alert(ex)
                 	node.DONE(ex);
                 }
               }

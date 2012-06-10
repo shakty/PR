@@ -2,18 +2,41 @@
 <title>Monitor Page for PR Game</title>
 <body>
   <div id="root"></div> 
-<script src="http://localhost:8080/socket.io/socket.io.js"></script>
-<script src="http://localhost:8080/javascripts/nodegame.js" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/nodegame.js" charset="utf-8"></script>
 
 
-<script src="pr.monitor.js" charset="utf-8"></script>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="/PR/lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="/PR/lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="/PR/lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+
+<script src="/PR/ember-0.9.8.1.min.js" type="text/javascript"></script>
+<script src="/PR/lib/ember-data-latest.min.js" type="text/javascript"></script>
+<script src="/PR/lib/underscore-1.3.3.min.js" type="text/javascript"></script>
+<script src="/PR/pr.monitor.js" charset="utf-8"></script>
+
+<script type="text/x-handlebars" data-template-name="PaymentWidget">
+  <fieldset id="payment">
+  <legend>Payment</legend>
+  <ul>
+    {{#each App.players}}
+      <li>
+        <span>Player {{id}}: {{balance}} CHF</span>
+      </li>
+    {{/each}}
+  </ul>
+  </fieldset>
+</script>
 
 <script>
     window.onload = function(){
    
     var conf = {
       name: "P_" + Math.floor(Math.random()*100),
-      url: "http://localhost:8080/pr/admin",
+      url: "/pr/admin",
       verbosity: 0
     };
       

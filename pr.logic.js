@@ -128,6 +128,7 @@ function PeerReview () {
 								   cf: cf.first().value,
 								   id: author.name,
 								   round: node.game.gameState.toHash('S.r'),
+								   pc: author.pc,
 						});
 					}
 					
@@ -154,6 +155,7 @@ function PeerReview () {
 	var endgame = function() {
 		node.memory.dump('./out/pr.csv');
 		node.memory.dumpAllIndexes('./out/');
+		node.dumpPL('./out/PL.csv');
 		
 		console.log('Game ended');
 		

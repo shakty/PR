@@ -153,7 +153,7 @@
 		this.fp.redraw(fv);
 	
 		var sc_options = {
-				features: JSUS.mergeOnValue(FaceVector.defaults, fv),
+				features: JSUS.mergeOnKey(FaceVector.defaults, fv, 'value'),
 				change: this.change
 		};
 		this.sc.init(sc_options);

@@ -137,7 +137,8 @@ function PeerReviewGame () {
 	
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
-		node.emit('DONE');
+		// Auto Play
+		//node.emit('DONE');
 		console.log('Instructions');
 	};
 	
@@ -209,7 +210,8 @@ function PeerReviewGame () {
 				}
 				
 			});
-			node.random.emit('DONE');
+			// Auto play
+			//node.random.emit('DONE');
 		});
 		
 		
@@ -310,7 +312,7 @@ function PeerReviewGame () {
 			
 			2: {state: 	instructions,
 				name: 	'Instructions',
-				timer: 	150000,
+				timer: 	300000,
 			},
 			
 //			3: {state: testloop,
