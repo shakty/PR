@@ -102,14 +102,14 @@ window.onload = function(){
 	  
 
 	  //AUTOPLAY
-	  node.random.exec(function() {
-		  $( "#" + evaId ).slider( "value",  Math.random()*10);
-		  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
-	  }, 1000); 
+// 	  node.random.exec(function() {
+// 		  $( "#" + evaId ).slider( "value",  Math.random()*10);
+// 		  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+// 	  }, 1000); 
 	  
 	});
 	
-	node.random.emit('DONE', 10000);
+// 	node.random.emit('DONE', 10000);
 	
 }
 

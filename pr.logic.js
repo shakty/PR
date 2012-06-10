@@ -114,6 +114,12 @@ function PeerReview () {
 					
 					var author = this.pl.select('id', '=', player).first();
 					
+					
+//					console.log('STATE')
+//					console.log(node.game.state);
+//					console.log(node.game.gameState);
+//					console.log(node.state);
+					
 					// This should always exist
 					if (author) {
 						selected.push({ex: works[j].first().value,
@@ -121,6 +127,7 @@ function PeerReview () {
 								   author: author.name,
 								   cf: cf.first().value,
 								   id: author.name,
+								   round: node.game.gameState.toHash('S.r'),
 						});
 					}
 					
@@ -137,10 +144,6 @@ function PeerReview () {
 		//console.log(this.memory.db);
 		node.say(selected, 'WIN_CF', 'ALL');
 
-		console.log(node.game.memory.key);
-		console.log(node.game.memory.state);
-		console.log(node.game.memory.player);
-		
 		console.log('dissemination');
 	};
 	

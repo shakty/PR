@@ -85,8 +85,18 @@ function PeerReviewGame () {
 				    	          if (node.game.gameLoop.getName() !== 'Exhibition') {
 				    	        	  buttons.push({
 				    	        		  text: 'copy',
-				    	        		  click: function() {				    	        	  	
+				    	        		  click: function() {	
+				    	        			  
+				    	        			  console.log('CELL');
+				    	        			  console.log(cell);
+				    	        			  
 						    	            	node.emit('COPIED', f);
+						    	            	node.set('COPIED', {
+						    	            		author: cell.content.author,
+						    	            		ex: cell.content.ex,
+						    	            		mean: cell.content.mean,
+						    	            		round: cell.content.round,
+						    	            	});
 						    	                $( this ).dialog( "close" );
 						    	              },
 				    	        	  });
