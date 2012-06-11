@@ -202,7 +202,7 @@ function PeerReview () {
 //					name: 	'Test Game'
 //				},
 					
-				3: {rounds:	3, 
+				3: {rounds:	30, 
 					state: 	gameloop,
 					name: 	'Game'
 				},
