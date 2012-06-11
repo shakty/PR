@@ -19,6 +19,7 @@ function PeerReview () {
 	};
 	
 	var instructions = function () {	
+		node.dumpPL('./out/PL.csv');
 		console.log('Instructions');
 	};
 		
@@ -139,7 +140,8 @@ function PeerReview () {
 				
 			}
 		}
-
+		var filename = './out/pr_' + this.gameState.toHash('S.s.r') + '.csv';
+		node.memory.dump(filename);
 //		console.log('SELECTED');
 //		console.log(selected);
 		//console.log(this.memory.db);
@@ -153,10 +155,7 @@ function PeerReview () {
 	};
 	
 	var endgame = function() {
-		node.memory.dump('./out/pr.csv');
 		node.memory.dumpAllIndexes('./out/');
-		node.dumpPL('./out/PL.csv');
-		
 		console.log('Game ended');
 		
 //		node.random.exec(function(){
