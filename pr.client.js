@@ -8,7 +8,7 @@ function PeerReviewGame () {
 	this.auto_wait = true;
 	
 	this.minPlayers = 2;
-	this.maxPlayers = 8;
+	this.maxPlayers = 10;
 	
 	this.init = function() {			
 		node.window.setup('PLAYER');
@@ -40,9 +40,7 @@ function PeerReviewGame () {
 		this.last_cf = null;
 		
 		this.renderCF = function (cell) {
-			
-			
-			
+
 			// Check if it is really CF obj
 			if (cell.content.cf) {
 				
@@ -85,8 +83,14 @@ function PeerReviewGame () {
 				    	          if (node.game.gameLoop.getName() !== 'Exhibition') {
 				    	        	  buttons.push({
 				    	        		  text: 'copy',
-				    	        		  click: function() {				    	        	  	
+				    	        		  click: function() {	
 						    	            	node.emit('COPIED', f);
+						    	            	node.set('COPIED', {
+						    	            		author: cell.content.author,
+						    	            		ex: cell.content.ex,
+						    	            		mean: cell.content.mean,
+						    	            		round: cell.content.round,
+						    	            	});
 						    	                $( this ).dialog( "close" );
 						    	              },
 				    	        	  });
@@ -133,7 +137,8 @@ function PeerReviewGame () {
 	
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
-		node.emit('DONE');
+		// Auto Play
+		//node.emit('DONE');
 		console.log('Instructions');
 	};
 	
@@ -205,7 +210,8 @@ function PeerReviewGame () {
 				}
 				
 			});
-			node.random.emit('DONE');
+			// Auto play
+			//node.random.emit('DONE');
 		});
 		
 		
@@ -234,25 +240,30 @@ function PeerReviewGame () {
 		1: {name: 'Creation',
 			state: creation,
 			timer: {
-					milliseconds: 10000000000,//80000,
+					milliseconds: function() {
+						console.log(node.state.round)
+						if ( node.state.round < 2) return 80000;
+						if ( node.state.round < 3) return 60000;
+						return 50000;
+					},
 					timeup: function() {
 						$('#mainframe').contents().find('#done_box button').click();
 					}
 			},
 			done: function (ex) {
 				//console.log('executing crea done');
-		
-				if (!JSUS.in_array(ex, ['A','B','C'])) {
-					alert('You must select an outlet for your creation NOW!!');
-					if (this.timer.timeLeft <= 0) { 
-						this.timer.restart({timer: 5000});
-					};
+				var exs = ['A','B','C'];
+				if (!JSUS.in_array(ex, exs)) {
+					// time is up without the player 
+					//having selected one of the three exhibitions
+					node.window.getElementById('done_button_box').click();
 					return false;
 				}
 				else {
 					// Close any open dialog box
 					$( ".copyorclose" ).dialog('close');
 					this.last_cf = this.cf.getAllValues();
+					this.last_ex = ex;
 					node.set('SUB', ex);
 					node.set('CF', this.last_cf);
 					return true;
@@ -264,7 +275,7 @@ function PeerReviewGame () {
 		
 		2: {name: 'Evaluation',
 			state: evaluation,
-			timer: 300000,
+			timer: 30000,
 			done: function () {
 				console.log('executing eva done');
 				for (var i in this.evas) {
@@ -306,7 +317,7 @@ function PeerReviewGame () {
 			
 			2: {state: 	instructions,
 				name: 	'Instructions',
-				timer: 	150000,
+				timer: 	300000,
 			},
 			
 //			3: {state: testloop,

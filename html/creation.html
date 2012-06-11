@@ -7,7 +7,7 @@
 <!-- JQUERY UI ENDS -->
 
 <!-- no Escape -->
-<script src="/javascripts/noescape.js" charset="utf-8"></script>
+<!-- <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
 <!-- no Escape ends -->
 
 
@@ -32,7 +32,7 @@
 	   <h2>History of past exhibitions</h2>
 		 <div id="history"></div> 
 		 <div id="done_box">
-       <button>Click here when you are done</button>
+       <button id="done_button_box">Click here when you are done.</button>
 		 </div>
 	</div>
 
@@ -42,6 +42,8 @@
      <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
      <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
      <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
+     <br/>
+     <span id="warn_sub_list">After 20 seconds an automatic submission will be done for you.</span>
    </dl>
  </div>
  
@@ -50,12 +52,10 @@
 
   
     
-     $(document).ready(function() {
+$(document).ready(function() {
 			
-			 var node = parent.node;
-      
-      
-      //node.window.noEscape(window);
+		var node = parent.node;
+    node.window.noEscape(window);
       
   
     function addJQuerySliders(init) {
@@ -78,17 +78,37 @@
                   width: 550,
                   height: 300,
                   modal: true,
-                  zindex: 100,  
+                  zindex: 100,
+                  closeOnEscape: false,
+                  close: function() { 
+                	  return false;
+                  },
                };
-                   
+        
         if (node.game.timer.gameTimer.timeLeft) {
+        	var left = node.game.timer.gameTimer.timeLeft;
           dialog_options.buttons = {
               Cancel: function() {
-                  $(this).dialog('close');
+                  $(this).dialog('close'); 
           }};
-          dialog_options.closeOnEscape = false;
+         
         }
-        console.log(dialog_options);
+
+        node.game.timer.gameTimer.restart({
+        	milliseconds: 20000,
+        	timeup: function() {
+        		  // submit to the last one, if any
+                if (node.game.last_ex) {
+                	node.DONE(node.game.last_ex);
+                }
+                else {
+                	var exs = ['A','B','C'];
+                	var ex = exs[node.JSUS.randomInt(3)-1];
+                	alert(ex)
+                	node.DONE(ex);
+                }
+              }
+        })
       
         $( "#sub_list" ).dialog(dialog_options);
     }
