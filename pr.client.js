@@ -331,7 +331,7 @@ function PeerReviewGame () {
 			
 			4: {state:	questionnaire,
 				name: 	'Questionnaire',
-				timer: 	300000,
+				timer: 	600000,
 			},
 				
 			5: {state:	endgame,
