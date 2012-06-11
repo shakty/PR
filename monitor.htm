@@ -2,18 +2,18 @@
 <title>Monitor Page for PR Game</title>
 <body>
   <div id="root"></div> 
-<script src="http://localhost:8080/socket.io/socket.io.js"></script>
-<script src="http://localhost:8080/javascripts/nodegame.js" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/nodegame.js" charset="utf-8"></script>
 
 
-<script src="pr.monitor.js" charset="utf-8"></script>
+<script src="/PR/pr.monitor.js" charset="utf-8"></script>
 
 <script>
     window.onload = function(){
    
     var conf = {
       name: "P_" + Math.floor(Math.random()*100),
-      url: "http://localhost:8080/pr/admin",
+      url: "/pr/admin",
       verbosity: 0
     };
       
