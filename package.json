@@ -1,7 +1,7 @@
 {
     "name": "peerreview"
   , "description": "Peer Review Game"
-  , "version": "0.1"
+  , "version": "1.0.0"
   , "main" : "./pr.js"
   , "homepage": "http://nodegame.org"
   , "keywords": ["peerreview", "science", "experiment", "discrimination","quality","evaluation"]
@@ -10,4 +10,5 @@
         { "name": "Stefano Balietti", "email": "futur.dorko@gmail.com" }
     ]
   , "engines": { "node": ">= 0.4.0" }
+	, "dependencies": { "ya-csv": ">= 0.9.0"}
 }
