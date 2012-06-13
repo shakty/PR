@@ -124,7 +124,12 @@ reader.on('data', function(data) {
     					is: cf[3],
     					paused: cf[4],
     				},
-		    		player: cf[5],
+		    		player: {
+		    			name: data.name,
+		    			id: data.id,
+		    			pc: data.pc,
+		    			color: data.color,
+		    		},
 					key: 'CF',
 					value: face,
 					time: cf[33],
@@ -139,7 +144,7 @@ reader.on('data', function(data) {
     readerPL.on('end', function(){
     	read++;
     	if (read == 9) {
-    		console.log(nddb);
+//    		console.log(nddb);
     		console.log(nddb.length);
     		nddb.save('./all_cf.nddb');
     	}

@@ -620,7 +620,7 @@ db.rebuildIndexes();
 	if (!e) return;
 	var fp = new FacePainter();
 	//console.log(e);
-	var filename = e.player + '_' + e.state.round + '.png';
+	var filename = e.player.pc + '_' + e.state.round + '.png';
 	var face = e.value;
 	var out = fs.createWriteStream(__dirname + '/faces/' + filename);
 	var stream = fp.canvas.canvas.createPNGStream();
