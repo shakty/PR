@@ -225,7 +225,7 @@ function PeerReviewGame () {
 		console.log('Postgame');
 
 		// AutoPlay
-		node.random.emit('DONE');
+		//node.random.emit('DONE');
 	};
 	
 	var endgame = function() {
@@ -325,14 +325,14 @@ function PeerReviewGame () {
 //				name: 'TEST: Game',
 //			},
 				
-			3: {rounds:	3, 
+			3: {rounds:	30, 
 				state: 	gameloop,
 				name: 	'Game',
 			},
 			
 			4: {state:	questionnaire,
 				name: 	'Questionnaire',
-				timer: 	300000,
+				timer: 	600000,
 			},
 				
 			5: {state:	endgame,

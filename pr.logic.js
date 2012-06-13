@@ -140,12 +140,12 @@ function PeerReview () {
 				
 			}
 		}
+
 		
-
-		node.memory.dump('./out/pr.csv');
-		node.memory.dumpAllIndexes('./out/');
-		node.game.memory.clear(true);
-
+		console.log(node.game.memory.key.CF.first());
+		
+		var filename = './out/pr_' + this.gameState.toHash('S.s.r') + '.csv';
+		node.memory.dump(filename);
 //		console.log('SELECTED');
 //		console.log(selected);
 		//console.log(this.memory.db);
@@ -159,9 +159,6 @@ function PeerReview () {
 	};
 	
 	var endgame = function() {
-//		node.memory.dump('./out/pr.csv');
-//		node.memory.dumpAllIndexes('./out/');
-		
 		console.log('Game ended');
 		
 //		node.random.exec(function(){
@@ -208,7 +205,7 @@ function PeerReview () {
 //					name: 	'Test Game'
 //				},
 					
-				3: {rounds:	3, 
+				3: {rounds:	30, 
 					state: 	gameloop,
 					name: 	'Game'
 				},

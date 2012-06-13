@@ -19,3 +19,6 @@ npm-debug.log
 .~*
 
 .tmp_*
+
+
+/analysis/out/
