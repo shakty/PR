@@ -19,6 +19,7 @@ function PeerReview () {
 	};
 	
 	var instructions = function () {	
+		node.dumpPL('./out/PL.csv');
 		console.log('Instructions');
 	};
 		
@@ -139,6 +140,11 @@ function PeerReview () {
 				
 			}
 		}
+		
+
+		node.memory.dump('./out/pr.csv');
+		node.memory.dumpAllIndexes('./out/');
+		node.game.memory.clear(true);
 
 //		console.log('SELECTED');
 //		console.log(selected);
@@ -153,9 +159,8 @@ function PeerReview () {
 	};
 	
 	var endgame = function() {
-		node.memory.dump('./out/pr.csv');
-		node.memory.dumpAllIndexes('./out/');
-		node.dumpPL('./out/PL.csv');
+//		node.memory.dump('./out/pr.csv');
+//		node.memory.dumpAllIndexes('./out/');
 		
 		console.log('Game ended');
 		
