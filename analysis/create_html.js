@@ -120,11 +120,6 @@ var cells = rows.selectAll("td")
 		});
 
 
-
-
-
-
-
 fs.writeFile('./index.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
