@@ -88,6 +88,7 @@ var cells = rows.selectAll("td")
         		content += '<br/>';
         		content += '<span style="text-align: center;">' + avg + '</span>';
         		content += '<span style="text-align: center;">' + item.ex + '</span>';
+        		content += '&nbsp;<span style="text-align: center;">' + item.state.round + '</span>';
         		return content;
         		
 	        		
