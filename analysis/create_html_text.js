@@ -17,6 +17,7 @@ db.h('key', function(gb) {
 	return gb.key;
 });
 
+
 db.load('./all_cf_sub_eva.nddb');
 
 db.each(function(e){
@@ -26,14 +27,7 @@ db.each(function(e){
 db.sort(['player.pc', 'state.round']);
 db.rebuildIndexes();
 
-for (var i in db.player) {
-	if (db.player.hasOwnProperty(i)) {
-		db.player[i].sort('state.round');
-		
-	}
-}
-
-var outs = players = db.groupBy('player.id');
+var outs =  players = db.groupBy('player.id');
 
 //for (var i=0; i < outs.length; i++) {
 //	console.log('??????????????????????')
@@ -69,55 +63,38 @@ var rows = tbody.selectAll("tr")
 
 //// create a cell in each row for each column
 
-var item, border, filename;
+var item, border, filename, pub, avg, style, content;
 var cells = rows.selectAll("td")
     .data(players)
     .enter()
     .append("td")
-    	.append('img')
-	        .attr('src', function(pl) {
+    	.html(function(pl) {
 	        	
 	        	// BUG
 	        	if (pl.nddb_pointer > 29) {
 	        		pl.nddb_pointer = 0;
 	        	}
 	        	item = pl.get();
-	        	console.log(pl.nddb_pointer + ' ' + item.state.round);
 				//Update pointer
 				pl.next();
-	        	if (item) {
-	        		filename = './faces/' + item.player.pc + '_' + item.state.round + '.png';
-	            	//console.log(filename)
-	            	return filename;
-	        	}
 	        	
-	        })
-			.attr('width',150)
-			.style('margin', '3px')
-			.style('border', function(pl){
-				// BUG
-	        	if (pl.nddb_pointer > 28) {
-	        		pl.nddb_pointer = 0;
-	        	}
-	        	
-				item = pl.get();
-				
-				border = (item.published) ? '3px solid yellow'
-										  : '3px solid #CCC';
-				
-				//Update pointer
-				pl.next();
-				return border;
-			})
-		.text(function(pl){
-			// BUG
-	        	if (pl.nddb_pointer > 29) {
-	        		pl.nddb_pointer = 0;
-	        	}
-	        	item = pl.get();
-	        	pl.next();
-	        	return item.avg;
-		});
+        		filename = './faces/' + item.player.pc + '_' + item.state.round + '.png';
+            	//console.log(filename)
+        		pub = item.published ? 'P' : 'NP';
+        		avg = item.avg;
+        		style =  "width: 150px; margin: 3px; border: 3px solid ";
+        		style+= item.published ? "yellow;" : "#CCC";
+        		content = '<img src="' + filename + '" style="' + style + '"/>';
+        		content += '<br/>';
+        		content += '<span style="text-align: center;">' + avg + '</span>';
+        		content += '<span style="text-align: center;">' + item.ex + '</span>';
+        		return content;
+        		
+	        		
+	        });
+//			.attr('width',150)
+//			.style('margin', '3px')
+			
 
 
 
@@ -125,7 +102,7 @@ var cells = rows.selectAll("td")
 
 
 
-fs.writeFile('./index.htm', window.document.innerHTML, function(err) {
+fs.writeFile('./index_text.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {
