@@ -36,7 +36,9 @@ reader.setColumnNames([
 // BEGIN
 /////////////
 
-var db = new NDDB();
+var pl = new NDDB(),
+	db = new NDDB(),
+	dbeva = new NDDB();
 
 db.h('player', function(gb) {
 	return gb.player;
@@ -48,6 +50,18 @@ db.h('key', function(gb) {
 	return gb.key;
 });
 
+pl.h('id', function(gb) {
+	return gb.id;
+});
+
+pl.load('./pl.nddb');
+//pl.sort('pc');
+var pnames = pl.map(function(p){
+	return "P_" + p.pc;
+});
+
+
+
 reader.on('data', function(data) {
 	
     var pleva = {
@@ -56,54 +70,124 @@ reader.on('data', function(data) {
     		eva: Number(data.score),
     		round: Number(data.round),
     };
-    	
-    
     db.insert(pleva);
     //console.log(face);
 });
 
 
 reader.on('end', function(){
-
-	var dbeva = new NDDB();
 	
 	var players = db.groupBy('player');
 	
 	J.each(players, function(p){
 		var rounds = p.groupBy('round');
+		
 		J.each(rounds, function(r){
 			var player = r.first().player;
 			var round = r.first().round;
 			var mean_eva = r.mean('eva');
 			var stddev_eva = r.stddev('eva');
 			dbeva.insert({
-				player: player,
+				player: "" + player,
 				round: round,
 				eva_mean: mean_eva,
 				eva_stddev: stddev_eva,
 			});
-			console.log(player + ' - ' + round + ': ' + mean_eva + ' | ' + stddev_eva);
+			//console.log(player + ' - ' + round + ': ' + mean_eva + ' | ' + stddev_eva);
 		});
 	});
 	
 	db.save('./nddbs/mean_eva_per_round.nddb');
-	console.log('wrote file.');
+	console.log('wrote nddb file.');
+	
+	
+	
+	
+	writeRoundStatsFull('./csv/eva_x_round_x_player.csv');
+	
+	writeRoundStats('./csv/test.csv');
+	//writeCsv('./csv/test.csv', dbeva.fetchValues(), {headers: J.keys(dbeva.first())});
+	
+	console.log('wrote csv file');
 });
 
+
+function writeRoundStatsFull(path) {
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream( path, {'flags': 'a'}));
+	writer.writeRecord(['round'].concat(pnames));
+	
+	var rounds = db.groupBy('round');
+	
+	J.each(rounds, function(r){
+		var players = r.groupBy('player');
+		
+		for (var i = 0; i < 3; i++) {
+			var evas = [players[i].first().round];
+			for (var j = 0; j < 9; j++) {
+				evas.push(players[j].db[i].eva);
+			}
+			writer.writeRecord(evas);
+		}
+		
+			
+			//console.log(player + ' - ' + round + ': ' + mean_eva + ' | ' + stddev_eva);
+	});
+}
+
+function writeRoundStats(path) {
+	var round = 1;
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream( path, {'flags': 'a'}));
+	writer.writeRecord(pnames);
+	
+	while (round < 31) {
+		var round_stuff = dbeva.select('round','=',round);
+		var evas = round_stuff.map(function(p){
+			return p.eva_mean;
+		});
+		writer.writeRecord(evas);
+		round++;
+	}  
+}
 
 
 /**
  * Takes an obj and write it down to a csv file;
  */
-//node.fs.writeCsv = function (path, obj) {
-//	var writer = csv.createCsvStreamWriter(fs.createWriteStream( path, {'flags': 'a'}));
-//	var i;
-//    for (i=0;i<obj.length;i++) {
-//		writer.writeRecord(obj[i]);
-//	}
-//};
-//
-//node.fs.writeCsv(path, node.game.memory.split().fetchValues());
+writeCsv = function (path, obj, options) {
+	options = options || {};
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream( path, {'flags': 'a'}));
+	
+	// Add headers, if requested, and if found
+	options.writeHeaders = options.writeHeaders || true;
+	if (options.writeHeaders) {
+		var headers = [];
+		if (J.isArray(options.headers)) {
+			headers = options.headers;
+		}
+		else if (J.isArray(obj)) {
+			headers = J.keys(obj[0]);
+		}
+		
+		if (headers.length) {
+			writer.writeRecord(headers);
+		}
+		else {
+			console.log('Could not find headers', 'WARN');
+		}
+	}
+	
+	var i;
+    for (i = 0; i < obj.length; i++) {
+    	console.log(obj[i]);
+		writer.writeRecord(obj[i]);
+	}
+};
+
+
+
 //
 //fs.writeFile('./csv/eva_rounds.csv', window.document.innerHTML, function(err) {
 //    if(err) {

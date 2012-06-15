@@ -78,6 +78,7 @@ readerCF.setColumnNames(columnsCF);
 
 
 var nddb = new NDDB();
+var pl = new NDDB();
 
 nddb.h('player', function(gb) {
 	return gb.pc;
@@ -96,12 +97,16 @@ nddb.h('key', function(gb) {
 var read = 0;
 
 reader.on('data', function(data) {
+
+
+	pl.insert(data);
 	
     //console.log(data);
     var readerPL = csv.createCsvFileReader('./out/player_' + data.id + '.csv', options);
     
     readerPL.on('data', function(cf) {
 
+    	
     	if (cf[6] === 'CF') {
     		//console.log(cf);
     		var face = {};
@@ -147,6 +152,7 @@ reader.on('data', function(data) {
 //    		console.log(nddb);
     		console.log(nddb.length);
     		nddb.save('./all_cf.nddb');
+    		pl.save('./pl.nddb');
     	}
     });
     
