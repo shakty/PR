@@ -17,11 +17,16 @@ node_modules
 npm-debug.log
 
 .~*
+*~
 
 .tmp_*
 
 
 /analysis/out/
 /analysis/faces/
+/analysis/csv/
 
+
+*.nddb
+*.jpg
 *.png
