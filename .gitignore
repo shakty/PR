@@ -24,8 +24,8 @@ npm-debug.log
 
 /analysis/out/
 /analysis/faces/
-/analysis/csv/
-
+#/analysis/csv/
+/analysis/csv/img/*
 
 *.nddb
 *.jpg
