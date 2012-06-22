@@ -134,6 +134,9 @@ function faceDistance(f1, f2) {
 	    'mouth_top_y',
 	    'mouth_bottom_y',
 	];
+	
+	// TODO: use J.map when ready
+	J.each(features(f), function)
 }
 
 
