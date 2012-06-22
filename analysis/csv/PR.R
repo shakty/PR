@@ -1,5 +1,8 @@
 # Analysis of the distribution of evaluation scores
 
+## Evaluations
+##############
+
 # Working Dir
 rm(list=ls())
 setwd('/home/stefano/PR/analysis/csv') 
@@ -50,4 +53,51 @@ dev.off()
 
 
 
+# Submissions
+#############
 
+# x player
+subPlayers <- read.csv(file="sub_x_round_x_player.csv", head=TRUE, sep=",")
+
+
+
+plot.ts(subPlayers,type='o',xy.lines=FALSE)
+
+x = summary(subPlayers)
+x
+
+hist(x)
+spineplot(x)
+
+lines(c(, y = NULL, type = "h", lwd = 2, ...)
+
+mean(subPlayers)
+
+
+#tsubPlayers = table(subPlayers)
+#tsubPlayers
+
+
+plot(summary(subPlayers))
+
+# x round
+subRounds <- read.csv(file="sub_x_round.csv", head=TRUE, sep=",")
+summary(subRounds)
+
+plot(subRounds)
+
+boxplot(subRounds)
+
+
+tsubRounds = table(subRounds)
+tsubRounds
+
+summary(tsubRounds)
+
+# x ex
+subExRound <- read.csv(file="sub_x_ex_round.csv", head=TRUE, sep=",")
+summary(subExRound)
+      
+subExRound
+      
+plot.ts(subExRound)

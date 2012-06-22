@@ -118,6 +118,25 @@ function writeRoundStats(path) {
 }
 
 
+function faceDistance(f1, f2) {
+	var features = [
+	    'head_radius',
+	    'head_scale_x',
+	    'head_scale_y',
+	    'eye_height',
+	    'eye_spacing',
+	    'eye_scale_x',
+	    'eye_scale_y',
+	    'eyebrow_length',
+	    'eyebrow_eyedistance',
+	    'eyebrow_angle',
+	    'eyebrow_spacing',
+	    'mouth_top_y',
+	    'mouth_bottom_y',
+	];
+}
+
+
 /**
  * Takes an obj and write it down to a csv file;
  */
