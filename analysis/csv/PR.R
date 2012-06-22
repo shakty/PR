@@ -82,7 +82,24 @@ plot(summary(subPlayers))
 
 # x round
 subRounds <- read.csv(file="sub_x_round.csv", head=TRUE, sep=",")
+
+subRounds
+
 summary(subRounds)
+
+      
+
+# Stacked Bar Plot with Colors and Legend
+counts <- table(summary(subRounds), seq(1,90))
+counts
+#counts <- table(subRounds,rm.NA=TRUE)
+
+
+      
+barplot(c(subRounds$R_02,subRounds$R_03), main="Frequencies of submissions",
+  xlab="Rounds", legend = colnames(counts)) 
+
+# col=c("darkblue","red", "lightblue")
 
 plot(subRounds)
 

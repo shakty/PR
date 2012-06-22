@@ -136,7 +136,9 @@ function faceDistance(f1, f2) {
 	];
 	
 	// TODO: use J.map when ready
-	J.each(features(f), function)
+//	var dists = J.map(features, function(f){
+//		return f1[]
+//	});
 }
 
 
