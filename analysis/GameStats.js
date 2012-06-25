@@ -6,18 +6,32 @@ var fs = require('fs'),
 	d3 = require('d3');
 
 
-// Load DATA
-var db = new NDDB();
+var db, pl;
 
-db.h('player', function(gb) {
-	return gb.player.id;
-});
-db.h('state', function(gb) {
-	return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
-});
-db.h('key', function(gb) {
-	return gb.key;
-});
+function GameStats(options) {
+	options = options || {};
+	
+	this.pl = pl = options.pl;
+	
+	this.db = db = new NDDB();
+	db.import(options.data);
+	
+	db.h('player', function(gb) {
+		return gb.player.id;
+	});
+	db.h('state', function(gb) {
+		return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
+	});
+	db.h('key', function(gb) {
+		return gb.key;
+	});
+	
+	db.rebuildIndexes();
+
+}
+
+
+
 
 
 db.load('./all_cf_sub_eva.nddb');

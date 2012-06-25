@@ -242,7 +242,6 @@ function PeerReviewGame () {
 			state: creation,
 			timer: {
 					milliseconds: function() {
-						console.log(node.state.round)
 						if ( node.state.round < 2) return 80000;
 						if ( node.state.round < 3) return 60000;
 						return 50000;

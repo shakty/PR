@@ -118,3 +118,17 @@ summary(subExRound)
 subExRound
       
 plot.ts(subExRound)
+
+
+# face distance
+################
+      
+diffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player.csv", head=TRUE, sep=",")
+summary(diffFacesPlayers)
+boxplot(diffFacesPlayers)
+      
+plot.ts(diffFacesPlayers, type='o',ylim=rep(c(0,200),4))
+
+plot.ts(diffFacesPlayers, type='o', ylim=c(0,200), plot.type="multiple")
+
+
