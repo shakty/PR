@@ -122,13 +122,102 @@ plot.ts(subExRound)
 
 # face distance
 ################
-      
-diffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player.csv", head=TRUE, sep=",")
+
+
+# player with the previous submission      
+diffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player_self.csv", head=TRUE, sep=",")
 summary(diffFacesPlayers)
 boxplot(diffFacesPlayers)
       
+
 plot.ts(diffFacesPlayers, type='o',ylim=rep(c(0,200),4))
 
-plot.ts(diffFacesPlayers, type='o', ylim=c(0,200), plot.type="multiple")
+plot.ts(diffFacesPlayers, type='o', ylim=range(diffFacesPlayers), plot.type="single")
 
 
+# player with the average submission of the round
+avgDiffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player_mean.csv", head=TRUE, sep=",")
+summary(avgDiffFacesPlayers)
+boxplot(avgDiffFacesPlayers)
+      
+
+plot.ts(avgDiffFacesPlayers, type='o',ylim=rep(c(0,200),4))
+
+plot.ts(avgDiffFacesPlayers, type='o', ylim=range(avgDiffFacesPlayers), plot.type="single")  
+
+
+# Specific parts: head
+
+avgDiffHeadPlayers <- read.csv(file="diff_head_x_round_x_player_mean.csv", head=TRUE, sep=",")
+summary(avgDiffHeadPlayers)
+boxplot(avgDiffHeadPlayers)
+      
+
+plot.ts(avgDiffHeadPlayers, type='o',ylim=rep(c(0,200),4))
+
+plot.ts(avgDiffHeadPlayers, type='o', ylim=range(avgDiffHeadPlayers), plot.type="single") 
+
+
+# Specific parts: eyes
+
+avgDiffEyesPlayers <- read.csv(file="diff_eyes_x_round_x_player_mean.csv", head=TRUE, sep=",")
+summary(avgDiffEyesPlayers)
+boxplot(avgDiffEyesPlayers)
+      
+
+plot.ts(avgDiffEyesPlayers, type='o',ylim=rep(c(0,200),4))
+
+plot.ts(avgDiffEyesPlayers, type='o', ylim=range(avgDiffEyesPlayers), plot.type="single")
+
+
+# Specific parts: eyebrows
+
+avgDiffEyebrowsPlayers <- read.csv(file="diff_eyebrows_x_round_x_player_mean.csv", head=TRUE, sep=",")
+summary(avgDiffEyebrowsPlayers)
+boxplot(avgDiffEyebrowsPlayers)
+      
+
+plot.ts(avgDiffEyebrowsPlayers, type='o',ylim=c(0,1))
+
+plot.ts(avgDiffEyebrowsPlayers, type='o', ylim=range(avgDiffEyebrowsPlayers), plot.type="single")
+
+      
+# Specific parts: mouth
+
+avgDiffMouthsPlayers <- read.csv(file="diff_mouth_x_round_x_player_mean.csv", head=TRUE, sep=",")
+summary(avgDiffMouthsPlayers)
+boxplot(avgDiffMouthsPlayers)
+      
+
+plot.ts(avgDiffMouthsPlayers, type='o',ylim=rep(c(0,200),4))
+
+plot.ts(avgDiffMouthsPlayers, type='o', ylim=range(avgDiffMouthsPlayers), plot.type="single")        
+
+
+# Specific parts: zoom
+
+avgDiffZoomPlayers <- read.csv(file="diff_zoom_x_round_x_player_mean.csv", head=TRUE, sep=",")
+summary(avgDiffZoomPlayers)
+boxplot(avgDiffZoomPlayers)
+      
+
+plot.ts(avgDiffZoomPlayers, type='o',ylim=rep(c(0,200),4))
+
+plot.ts(avgDiffZoomPlayers, type='o', ylim=range(avgDiffZoomPlayers), plot.type="single") 
+legend(2000,9.5, seq(2,11))
+
+      
+
+legend(2000,9.5, # places a legend at the appropriate place
+       c("Health","Defense"), # puts text in the legend
+       lty=c(1,1), # gives the legend appropriate symbols (lines)
+       lwd=c(2.5,2.5), col=c("blue","red")) # gives the legend lines the correct color and width      
+
+
+# All single features
+
+
+singleFeatures = list.files("./single/")
+
+
+      
