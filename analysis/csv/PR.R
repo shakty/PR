@@ -203,8 +203,8 @@ boxplot(avgDiffZoomPlayers)
 
 plot.ts(avgDiffZoomPlayers, type='o',ylim=rep(c(0,200),4))
 
-plot.ts(avgDiffZoomPlayers, type='o', ylim=range(avgDiffZoomPlayers), plot.type="single") 
-legend(2000,9.5, seq(2,11))
+plot.ts(avgDiffZoomPlayers, type='o', ylim=range(avgDiffZoomPlayers), plot.type="single", legend=TRUE) 
+
 
       
 
@@ -217,7 +217,38 @@ legend(2000,9.5, # places a legend at the appropriate place
 # All single features
 
 
+
+
+plotDiffFeatures <- function(file) {
+  fileName = sprintf("./single/%s", file)
+  diffs <- read.csv(file=fileName, head=TRUE, sep=",")
+  summary(diffs)
+
+  # Boxplot
+  imgName = sprintf("%s%s%s", "./single/img/", file, "_boxplot.jpg")
+  jpeg(imgName, quality=100, width=600)
+  boxplot(diffs, main=file)
+  dev.off()
+
+  # TS
+
+  #separate
+  imgName = sprintf("%s%s%s", "./single/img/", file, "_ts_multiple.jpg")
+  jpeg(imgName, quality=100, width=600)
+  plot.ts(diffs, type='o', main=file, legend=TRUE, ylim=c(0,1))
+  dev.off()
+  
+  #together
+  imgName = sprintf("%s%s%s", "./single/img/", file, "_ts_single.jpg")
+  jpeg(imgName, quality=100, width=600)
+  plot.ts(diffs, type='o', ylim=c(0,1), plot.type="single", legend=TRUE, main=file) 
+  dev.off()
+  
+}
+
 singleFeatures = list.files("./single/")
 
-
+for (f in singleFeatures) {
+  plotDiffFeatures(f)
+}
       
