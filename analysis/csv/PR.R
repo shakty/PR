@@ -5,7 +5,9 @@
 
 # Working Dir
 rm(list=ls())
-setwd('/home/stefano/PR/analysis/csv') 
+setwd('/home/stefano/PR/analysis/csv')
+setwd('/home/balistef/PR/analysis/csv')
+
 
 # Load file
 players <- read.csv(file="test.csv", head=TRUE, sep=",")
@@ -61,19 +63,28 @@ subPlayers <- read.csv(file="sub_x_round_x_player.csv", head=TRUE, sep=",")
 
 
 
-plot.ts(subPlayers,type='o',xy.lines=FALSE)
+plot.ts(subPlayers,type='o',xy.lines=FALSE, plot.type="single")
 
 x = summary(subPlayers)
 x
 
+y = table(subPlayers$P_02)
+y
+
+barplot(y)
+
+
+c = tapply(subPlayers, c('A','B','C'), table)
+
 hist(x)
+
 spineplot(x)
 
 lines(c(, y = NULL, type = "h", lwd = 2, ...)
 
 mean(subPlayers)
 
-
+      
 #tsubPlayers = table(subPlayers)
 #tsubPlayers
 
@@ -128,7 +139,11 @@ plot.ts(subExRound)
 diffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player_self.csv", head=TRUE, sep=",")
 summary(diffFacesPlayers)
 boxplot(diffFacesPlayers)
-      
+
+# mean x round
+avgRoundFaceDiffPrevious = rowMeans(diffFacesPlayers, na.rm = FALSE, dims = 1)
+plot.ts(avgRoundFaceDiffPrevious, type='o', main="Average face difference per round", ylab="Normalized (0-1) face difference")
+
 
 plot.ts(diffFacesPlayers, type='o',ylim=rep(c(0,200),4))
 
@@ -139,8 +154,11 @@ plot.ts(diffFacesPlayers, type='o', ylim=range(diffFacesPlayers), plot.type="sin
 avgDiffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player_mean.csv", head=TRUE, sep=",")
 summary(avgDiffFacesPlayers)
 boxplot(avgDiffFacesPlayers)
-      
 
+# mean x round
+avgRoundFaceDiff = rowMeans(avgDiffFacesPlayers, na.rm = FALSE, dims = 1)
+plot.ts(avgRoundFaceDiff, type='o', main="Average face difference per round", ylab="Normalized (0-1) face difference")
+      
 plot.ts(avgDiffFacesPlayers, type='o',ylim=rep(c(0,200),4))
 
 plot.ts(avgDiffFacesPlayers, type='o', ylim=range(avgDiffFacesPlayers), plot.type="single")  
@@ -243,6 +261,16 @@ plotDiffFeatures <- function(file) {
   jpeg(imgName, quality=100, width=600)
   plot.ts(diffs, type='o', ylim=c(0,1), plot.type="single", legend=TRUE, main=file) 
   dev.off()
+
+  #mean diff x round
+  meanDiffRound = rowMeans(diffs, na.rm = FALSE, dims = 1)
+  imgName = sprintf("%s%s%s", "./single/img/", file, "_ts_single_mean_x_round.jpg")
+  jpeg(imgName, quality=100, width=600)
+  mainName = sprintf("%s mean per round", file)
+  plot.ts(meanDiffRound, type='o', ylim=c(0,1), plot.type="single", legend=TRUE, main=mainName) 
+  dev.off()
+
+
   
 }
 
@@ -252,3 +280,24 @@ for (f in singleFeatures) {
   plotDiffFeatures(f)
 }
       
+
+
+# COPIES
+
+
+copies <- read.csv(file="copy/copy_x_round_x_player.csv", head=TRUE, sep=",")
+
+copies
+
+      plot.ts(copies, type='o',ylim=c(0,30)) 
+
+      plot.ts(copies, type='o',ylim=c(0,30), plot.type="single")
+      
+      realCopies = copies[copies > 0]
+
+      realCopies
+      
+summary(copies)
+boxplot(realCopies)
+      
+#copiesEncoded
