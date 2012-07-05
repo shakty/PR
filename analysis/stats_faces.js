@@ -167,11 +167,10 @@ var cf_features = {
 ///
 
 
-//writeRoundStats();
+writeRoundStats();
+//computeAllSingleFeaturesDistance();
 
-computeAllSingleFeaturesDistance();
-
-function writeRoundStats(path) {
+function writeRoundStats() {
 	
 	var p_self_file = 'diff_faces_x_round_x_player_self.csv';
 	var p_mean_file = 'diff_faces_x_round_x_player_mean.csv';
@@ -180,14 +179,14 @@ function writeRoundStats(path) {
 	
 	
 	// PLAYER STATS SELF
-	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_self_file));
+	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/global/' + p_self_file));
 	pWriter.writeRecord(pnames);	
 	var round = 1;
 	var old_faces, faces, round_stuff;
 	while (round < 31) {
 		
 		// Divided by player
-		round_stuff = db.select('state.round','=',round).sort('player');
+		round_stuff = db.select('state.round', '=', round).sort('player');
 		faces = round_stuff.map(function(p){
 			if (round !== 1) {
 				var face = db.select('state.round','=',(round-1))
@@ -198,13 +197,13 @@ function writeRoundStats(path) {
 		});
 		
 		pWriter.writeRecord(faces);
-		//console.log(faces);
+		console.log(faces);
 		round++;
 	}
 	console.log("wrote " + p_self_file);
 
 	// PLAYER STATS AVG DIFF IN ROUND
-	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_mean_file));
+	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/global/' + p_mean_file));
 	pWriter.writeRecord(pnames);	
 	round = 1;
 	while (round < 31) {
@@ -244,11 +243,11 @@ function writeRoundStats(path) {
 		p_head_file = 'diff_head_x_round_x_player_mean.csv',
 		p_zoom_file = 'diff_zoom_x_round_x_player_mean.csv';
 	
-	var pEyesWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_eyes_file)),
-		pEyebrowsWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_eyebrows_file)),
-		pMouthWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_mouth_file)),
-		pHeadWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_head_file)),
-		pZoomWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + p_zoom_file));
+	var pEyesWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_eyes_file)),
+		pEyebrowsWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_eyebrows_file)),
+		pMouthWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_mouth_file)),
+		pHeadWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_head_file)),
+		pZoomWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_zoom_file));
 		
 	
 	pEyesWriter.writeRecord(pnames);
@@ -364,10 +363,6 @@ function writeRoundStats(path) {
 		pMouthWriter.writeRecord(mouths);
 		pHeadWriter.writeRecord(heads);
 		pZoomWriter.writeRecord(zooms);
-		
-		
-		// ALL SINGLE FEATURES
-		featureDistance(round_stuff, round);
 		
 		round++;
 	}

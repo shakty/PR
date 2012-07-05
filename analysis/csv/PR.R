@@ -1,13 +1,8 @@
-# Analysis of the distribution of evaluation scores
+# Init
+source('PR_init.R')
 
 ## Evaluations
 ##############
-
-# Working Dir
-rm(list=ls())
-setwd('/home/stefano/PR/analysis/csv')
-setwd('/home/balistef/PR/analysis/csv')
-
 
 # Load file
 players <- read.csv(file="test.csv", head=TRUE, sep=",")
@@ -17,7 +12,7 @@ boxplot(players)
 ohne10 = players
 rm(ohne10$P_10)
 
-jpeg('img/players_boxplot.jpg',quality=100,width=600)
+jpeg('eva/img/players_boxplot.jpg',quality=100,width=600)
 boxplot(players,main="Distribution of evaluation scores per player")
 dev.off()
 
@@ -34,7 +29,7 @@ dev.off()
 # ROUNDS
 rounds <- read.csv(file="eva_x_round.csv", head=TRUE, sep=",")
 summary(rounds)
-jpeg('img/round_evas_boxplot.jpg',quality=100,width=600)
+jpeg('eva/img/round_evas_boxplot.jpg',quality=100,width=600)
 boxplot(rounds, main="Distribution of evaluation scores per round",ylab="Evaluation score")
 dev.off()
 
@@ -48,7 +43,7 @@ abline(lm(c(1:30) ~ meanRounds))
 
 varRounds = apply(rounds, MARGIN=2, sd)
 varRounds
-jpeg('img/round_evas_var.jpg',quality=100,width=600)
+jpeg('eva/img/round_evas_var.jpg',quality=100,width=600)
 plot(varRounds, main="Evaluation standard deviation per round",ylab="Evaluation score",ylim=c(0,10))
 lines(varRounds)
 dev.off()     
@@ -59,7 +54,7 @@ dev.off()
 #############
 
 # x player
-subPlayers <- read.csv(file="sub_x_round_x_player.csv", head=TRUE, sep=",")
+subPlayers <- read.csv(file="sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
 
 
 
@@ -71,7 +66,9 @@ x
 y = table(subPlayers$P_02)
 y
 
-barplot(y)
+
+
+barplot(x, beside = TRUE, col = colors, legend = rownames(subPlayers), ylim = c(0,10))
 
 
 c = tapply(subPlayers, c('A','B','C'), table)
@@ -92,7 +89,7 @@ mean(subPlayers)
 plot(summary(subPlayers))
 
 # x round
-subRounds <- read.csv(file="sub_x_round.csv", head=TRUE, sep=",")
+subRounds <- read.csv(file="sub/sub_x_round.csv", head=TRUE, sep=",")
 
 subRounds
 
@@ -136,18 +133,27 @@ plot.ts(subExRound)
 
 
 # player with the previous submission      
-diffFacesPlayers <- read.csv(file="diff_faces_x_round_x_player_self.csv", head=TRUE, sep=",")
+diffFacesPlayers <- read.csv(file="diff/global/diff_faces_x_round_x_player_self.csv", head=TRUE, sep=",")
+
+
+      
 summary(diffFacesPlayers)
-boxplot(diffFacesPlayers)
+jpeg('diff/global/img/diff_faces_x_round_x_player_self.jpg', quality=100, width=600)      
+boxplot(diffFacesPlayers, main="Distributions of difference between two subsequent submissions")
+dev.off()
+
+      
 
 # mean x round
 avgRoundFaceDiffPrevious = rowMeans(diffFacesPlayers, na.rm = FALSE, dims = 1)
 plot.ts(avgRoundFaceDiffPrevious, type='o', main="Average face difference per round", ylab="Normalized (0-1) face difference")
 
 
-plot.ts(diffFacesPlayers, type='o',ylim=rep(c(0,200),4))
+plot.ts(diffFacesPlayers, type='o', ylim=rep(c(0,200),9))
 
-plot.ts(diffFacesPlayers, type='o', ylim=range(diffFacesPlayers), plot.type="single")
+plot.ts(diffFacesPlayers, type='o', ylim = c(0,0.6), plot.type="single",  col = colors)
+legend(0.5,0.6, colnames(diffFacesPlayers), col = colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
+
 
 
 # player with the average submission of the round
@@ -161,143 +167,45 @@ plot.ts(avgRoundFaceDiff, type='o', main="Average face difference per round", yl
       
 plot.ts(avgDiffFacesPlayers, type='o',ylim=rep(c(0,200),4))
 
-plot.ts(avgDiffFacesPlayers, type='o', ylim=range(avgDiffFacesPlayers), plot.type="single")  
+plot.ts(avgDiffFacesPlayers, type='o', col = colors, ylim=range(avgDiffFacesPlayers), plot.type="single")
+legend(0.5,0.5, colnames(diffFacesPlayers), col = colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
 
 
-# Specific parts: head
-
-avgDiffHeadPlayers <- read.csv(file="diff_head_x_round_x_player_mean.csv", head=TRUE, sep=",")
-summary(avgDiffHeadPlayers)
-boxplot(avgDiffHeadPlayers)
+# Features grouped in parts
+plotDiffFeaturesDir("./diff/global/") 
       
-
-plot.ts(avgDiffHeadPlayers, type='o',ylim=rep(c(0,200),4))
-
-plot.ts(avgDiffHeadPlayers, type='o', ylim=range(avgDiffHeadPlayers), plot.type="single") 
-
-
-# Specific parts: eyes
-
-avgDiffEyesPlayers <- read.csv(file="diff_eyes_x_round_x_player_mean.csv", head=TRUE, sep=",")
-summary(avgDiffEyesPlayers)
-boxplot(avgDiffEyesPlayers)
-      
-
-plot.ts(avgDiffEyesPlayers, type='o',ylim=rep(c(0,200),4))
-
-plot.ts(avgDiffEyesPlayers, type='o', ylim=range(avgDiffEyesPlayers), plot.type="single")
-
-
-# Specific parts: eyebrows
-
-avgDiffEyebrowsPlayers <- read.csv(file="diff_eyebrows_x_round_x_player_mean.csv", head=TRUE, sep=",")
-summary(avgDiffEyebrowsPlayers)
-boxplot(avgDiffEyebrowsPlayers)
-      
-
-plot.ts(avgDiffEyebrowsPlayers, type='o',ylim=c(0,1))
-
-plot.ts(avgDiffEyebrowsPlayers, type='o', ylim=range(avgDiffEyebrowsPlayers), plot.type="single")
-
-      
-# Specific parts: mouth
-
-avgDiffMouthsPlayers <- read.csv(file="diff_mouth_x_round_x_player_mean.csv", head=TRUE, sep=",")
-summary(avgDiffMouthsPlayers)
-boxplot(avgDiffMouthsPlayers)
-      
-
-plot.ts(avgDiffMouthsPlayers, type='o',ylim=rep(c(0,200),4))
-
-plot.ts(avgDiffMouthsPlayers, type='o', ylim=range(avgDiffMouthsPlayers), plot.type="single")        
-
-
-# Specific parts: zoom
-
-avgDiffZoomPlayers <- read.csv(file="diff_zoom_x_round_x_player_mean.csv", head=TRUE, sep=",")
-summary(avgDiffZoomPlayers)
-boxplot(avgDiffZoomPlayers)
-      
-
-plot.ts(avgDiffZoomPlayers, type='o',ylim=rep(c(0,200),4))
-
-plot.ts(avgDiffZoomPlayers, type='o', ylim=range(avgDiffZoomPlayers), plot.type="single", legend=TRUE) 
-
-
-      
-
-legend(2000,9.5, # places a legend at the appropriate place
-       c("Health","Defense"), # puts text in the legend
-       lty=c(1,1), # gives the legend appropriate symbols (lines)
-       lwd=c(2.5,2.5), col=c("blue","red")) # gives the legend lines the correct color and width      
-
-
+# Features grouped in parts
+plotDiffFeaturesDir("./diff/parts/")
+       
 # All single features
-
-
-
-
-plotDiffFeatures <- function(file) {
-  fileName = sprintf("./single/%s", file)
-  diffs <- read.csv(file=fileName, head=TRUE, sep=",")
-  summary(diffs)
-
-  # Boxplot
-  imgName = sprintf("%s%s%s", "./single/img/", file, "_boxplot.jpg")
-  jpeg(imgName, quality=100, width=600)
-  boxplot(diffs, main=file)
-  dev.off()
-
-  # TS
-
-  #separate
-  imgName = sprintf("%s%s%s", "./single/img/", file, "_ts_multiple.jpg")
-  jpeg(imgName, quality=100, width=600)
-  plot.ts(diffs, type='o', main=file, legend=TRUE, ylim=c(0,1))
-  dev.off()
-  
-  #together
-  imgName = sprintf("%s%s%s", "./single/img/", file, "_ts_single.jpg")
-  jpeg(imgName, quality=100, width=600)
-  plot.ts(diffs, type='o', ylim=c(0,1), plot.type="single", legend=TRUE, main=file) 
-  dev.off()
-
-  #mean diff x round
-  meanDiffRound = rowMeans(diffs, na.rm = FALSE, dims = 1)
-  imgName = sprintf("%s%s%s", "./single/img/", file, "_ts_single_mean_x_round.jpg")
-  jpeg(imgName, quality=100, width=600)
-  mainName = sprintf("%s mean per round", file)
-  plot.ts(meanDiffRound, type='o', ylim=c(0,1), plot.type="single", legend=TRUE, main=mainName) 
-  dev.off()
-
-
-  
-}
-
-singleFeatures = list.files("./single/")
-
-for (f in singleFeatures) {
-  plotDiffFeatures(f)
-}
+plotDiffFeaturesDir("./diff/single/")
+      
       
 
 
 # COPIES
 
 
+#plotDiffFeaturesDir("./copy/")
+      
 copies <- read.csv(file="copy/copy_x_round_x_player.csv", head=TRUE, sep=",")
+realCopies = copies      
+realCopies[realCopies == 0] = NA
 
-copies
+jpeg('copy/img/ts_copy_multiple.jpg', quality=100, width=600) 
+plot.ts(copies, type='o',ylim=c(0,30),  ylab="The copied face is from N round ago", xlab="Round", main="How old are the copied faces by each player?")
+dev.off()
 
-      plot.ts(copies, type='o',ylim=c(0,30)) 
-
-      plot.ts(copies, type='o',ylim=c(0,30), plot.type="single")
+jpeg('copy/img/ts_copy_single.jpg', quality=100, width=600)       
+plot.ts(copies, type='o',ylim=c(0,30), plot.type="single", ylab="The copied face is from N round ago", xlab="Round", col = colors, main="How old are the copied faces by each player?")
+legend(0.5,30, colnames(copies), col = colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
+dev.off()
       
-      realCopies = copies[copies > 0]
-
-      realCopies
+# biased      
+# boxplot(copies)
       
-summary(copies)
-boxplot(realCopies)
+jpeg('copy/img/boxplot_copy.jpg', quality=100, width=600)  
+boxplot(realCopies, main="How old are the copied faces by each player?", ylab="The copied face is from N round ago", xlab="Player")
+dev.off()
       
 #copiesEncoded
