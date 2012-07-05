@@ -51,13 +51,16 @@ function createListofImages(imgDir, out) {
 }
 
 // SINGLE FEATURES
-createListofImages('./csv/diff/single/img/', './index_diff_faces_single.htm');
+//createListofImages('./csv/diff/single/img/', './index_diff_faces_single.htm');
 
 // GROUPED
-createListofImages('./csv/diff/parts/img/', './index_diff_faces_grouped.htm');
+//createListofImages('./csv/diff/parts/img/', './index_diff_faces_grouped.htm');
 
 // GLOBAL
-createListofImages('./csv/diff/global/img/', './index_diff_faces_global.htm');
+//createListofImages('./csv/diff/global/img/', './index_diff_faces_global.htm');
 
 // COPY
-createListofImages('./csv/copy/img/', './index_copy_in_time.htm');
+//createListofImages('./csv/copy/img/', './index_copy_in_time.htm');
+
+// SELF
+createListofImages('./csv/diff/self/img/', './index_diff_faces_self.htm');

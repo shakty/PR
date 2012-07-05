@@ -168,37 +168,40 @@ var cf_features = {
 
 
 writeRoundStats();
-//computeAllSingleFeaturesDistance();
 
 function writeRoundStats() {
 	
-	var p_self_file = 'diff_faces_x_round_x_player_self.csv';
-	var p_mean_file = 'diff_faces_x_round_x_player_mean.csv';
-	var rfile = 'diff_faces_x_round.csv';
-//	var efile = 'sub_x_ex_round.csv';
-	
-	var round = 1;
+
 	// PLAYER STATS SELF
-	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/global/' + p_self_file));
-	pWriter.writeRecord(pnames);	
-	
+	var round = 2; // IMPORTANT 2
 	var old_faces, faces, round_stuff;
-	
 	while (round < 31) {
 
+		if (round < 10) {
+			var p_self_file = './csv/diff/self/diff_players_0' + round + '.csv';
+		}
+		else {
+			var p_self_file = './csv/diff/self/diff_players_' + round + '.csv';
+		}
+		var pWriter = csv.createCsvStreamWriter(fs.createWriteStream(p_self_file));
+		pWriter.writeRecord(pnames);	
+		
 		// Divided by player
 		round_stuff = db.select('state.round', '=', round).sort('player');
 
-		for (var R = 1; R < 30; R++) {
+		for (var R = 1; R < round; R++) {
 			faces = round_stuff.map(function(p) {
-				if (round !== 1) {
-					var face = db.select('state.round','=',(round - R))
-									.select('player.id', '=', p.player.id).first('value');
-			
-					return weightedFaceDistance(face, p.value);		
-				}
+				var face = db.select('state.round','=',(round - R))
+								.select('player.id', '=', p.player.id).first('value');
+		
+				return weightedFaceDistance(face, p.value);		
 			});
 			
+			var players = round_stuff.map(function(p){
+				return p.player.pc;
+			}); 
+			
+			console.log(players);
 			pWriter.writeRecord(faces);
 			console.log(faces);
 		}
@@ -209,44 +212,44 @@ function writeRoundStats() {
 	console.log("wrote " + p_self_file);
 
 }
-
-function computeAllSingleFeaturesDistance() {
-	
-	var file, writer, row, round_stuff, round;
-	for (var f in cf_features) {
-		if (cf_features.hasOwnProperty(f)) {
-			round = 1;
-			file = './csv/single/diff_' + f + '_x_round_x_player_mean.csv';
-			writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
-			writer.writeRecord(pnames);	
-			while (round < 31) {
-				
-				round_stuff = db.select('state.round','=',round).sort('player');
-				row = round_stuff.map(function(p){
-					
-					var face = db.select('state.round', '=', round)
-									.select('player.id', '=', p.player.id).first('value');
-			
-					round_diff = round_stuff.map(function(r) {
-						if (r.player.id === p.player.id) return;
-						return weightedDistance([f], face, r.value);
-					});
-					
-					var meanRoundDiff = 0;
-					J.each(round_diff, function(d){
-						meanRoundDiff += d;
-					});
-					
-					return meanRoundDiff / 8;
-				});
-				
-				writer.writeRecord(row);
-				
-				round++;
-			}
-		}
-	}
-}
+//
+//function computeAllSingleFeaturesDistance() {
+//	
+//	var file, writer, row, round_stuff, round;
+//	for (var f in cf_features) {
+//		if (cf_features.hasOwnProperty(f)) {
+//			round = 1;
+//			file = './csv/single/diff_' + f + '_x_round_x_player_mean.csv';
+//			writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
+//			writer.writeRecord(pnames);	
+//			while (round < 31) {
+//				
+//				round_stuff = db.select('state.round','=',round).sort('player');
+//				row = round_stuff.map(function(p){
+//					
+//					var face = db.select('state.round', '=', round)
+//									.select('player.id', '=', p.player.id).first('value');
+//			
+//					round_diff = round_stuff.map(function(r) {
+//						if (r.player.id === p.player.id) return;
+//						return weightedDistance([f], face, r.value);
+//					});
+//					
+//					var meanRoundDiff = 0;
+//					J.each(round_diff, function(d){
+//						meanRoundDiff += d;
+//					});
+//					
+//					return meanRoundDiff / 8;
+//				});
+//				
+//				writer.writeRecord(row);
+//				
+//				round++;
+//			}
+//		}
+//	}
+//}
 
 function weightedFaceDistance(f1, f2) {
 	var features = [

@@ -177,11 +177,13 @@ plotDiffFeaturesDir("./diff/global/")
 # Features grouped in parts
 plotDiffFeaturesDir("./diff/parts/")
        
-# All single features
+# All single feature
 plotDiffFeaturesDir("./diff/single/")
       
       
-
+# All players vs self
+plotDiffFeaturesDir("./diff/self/")      
+      
 
 # COPIES
 
