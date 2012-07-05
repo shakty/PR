@@ -209,8 +209,6 @@ boxplot(realCopies, main="How old are the copied faces by each player?", ylab="T
 dev.off()
 
 copies <- read.csv(file="copy/copy_diffs.csv", head=TRUE, sep=",")
-copies
-
 
 jpeg('copy/img/diffs_distr.jpg', quality=100, width=600)  
 hist(x=copies$DIFFS, breaks=10, xlab="Normalized difference between copied faces", main="Distribution of normalized differences between copied faces" )
