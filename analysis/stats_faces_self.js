@@ -185,230 +185,29 @@ function writeRoundStats() {
 	var old_faces, faces, round_stuff;
 	
 	while (round < 31) {
-		
+
 		// Divided by player
 		round_stuff = db.select('state.round', '=', round).sort('player');
-		faces = round_stuff.map(function(p){
-			if (round !== 1) {
-				var face = db.select('state.round','=',(round-1))
-								.select('player.id', '=', p.player.id).first('value');
+
+		for (var R = 1; R < 30; R++) {
+			faces = round_stuff.map(function(p) {
+				if (round !== 1) {
+					var face = db.select('state.round','=',(round - R))
+									.select('player.id', '=', p.player.id).first('value');
+			
+					return weightedFaceDistance(face, p.value);		
+				}
+			});
+			
+			pWriter.writeRecord(faces);
+			console.log(faces);
+		}
 		
-				return weightedFaceDistance(face, p.value);		
-			}
-		});
-		
-		pWriter.writeRecord(faces);
-		console.log(faces);
+
 		round++;
 	}
 	console.log("wrote " + p_self_file);
-	
-	
 
-	// PLAYER STATS AVG DIFF IN ROUND
-	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/global/' + p_mean_file));
-	pWriter.writeRecord(pnames);	
-	round = 1;
-	while (round < 31) {
-		
-		// Divided by player
-		round_stuff = db.select('state.round','=',round).sort('player');
-		faces = round_stuff.map(function(p){
-		
-			var face = db.select('state.round','=',(round))
-							.select('player.id', '=', p.player.id).first('value');
-	
-			round_diff = round_stuff.map(function(r) {
-				if (r.player.id === p.player.id) return;
-				return weightedFaceDistance(face, r.value);
-			});
-			
-			var meanRoundDiff = 0;
-			J.each(round_diff, function(d){
-				meanRoundDiff += d;
-			});
-			
-			return meanRoundDiff / 8;
-		});
-		
-		pWriter.writeRecord(faces);
-		//console.log(faces);
-		round++;
-	}
-	console.log("wrote " + p_mean_file);
-	
-	
-	// PLAYERS STATS AVG PER GROUP OF FEATURES
-	
-	var p_eyes_file = 'diff_eyes_x_round_x_player_mean.csv',
-		p_eyebrows_file = 'diff_eyebrows_x_round_x_player_mean.csv',
-		p_mouth_file = 'diff_mouth_x_round_x_player_mean.csv',
-		p_head_file = 'diff_head_x_round_x_player_mean.csv',
-		p_zoom_file = 'diff_zoom_x_round_x_player_mean.csv';
-	
-	var pEyesWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_eyes_file)),
-		pEyebrowsWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_eyebrows_file)),
-		pMouthWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_mouth_file)),
-		pHeadWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_head_file)),
-		pZoomWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/diff/parts/' + p_zoom_file));
-		
-	
-	pEyesWriter.writeRecord(pnames);
-	pEyebrowsWriter.writeRecord(pnames);
-	pMouthWriter.writeRecord(pnames);
-	pHeadWriter.writeRecord(pnames);
-	pZoomWriter.writeRecord(pnames);
-	
-	
-	
-	round = 1;
-	while (round < 31) {
-		
-		round_stuff = db.select('state.round','=',round).sort('player');
-		
-		// Eyes
-		eyes = round_stuff.map(function(p){
-		
-			var face = db.select('state.round','=',(round))
-							.select('player.id', '=', p.player.id).first('value');
-	
-			round_diff = round_stuff.map(function(r) {
-				if (r.player.id === p.player.id) return;
-				return eyeDistance(face, r.value);
-			});
-			
-			var meanRoundDiff = 0;
-			J.each(round_diff, function(d){
-				meanRoundDiff += d;
-			});
-			
-			return meanRoundDiff / 8;
-		});
-		
-		// Eyebrows
-		eyebrows = round_stuff.map(function(p){
-		
-			var face = db.select('state.round','=',(round))
-							.select('player.id', '=', p.player.id).first('value');
-	
-			round_diff = round_stuff.map(function(r) {
-				if (r.player.id === p.player.id) return;
-				return eyebrowDistance(face, r.value);
-			});
-			
-			var meanRoundDiff = 0;
-			J.each(round_diff, function(d){
-				meanRoundDiff += d;
-			});
-			
-			return meanRoundDiff / 8;
-		});
-		
-		// Mouth
-		mouths = round_stuff.map(function(p){
-		
-			var face = db.select('state.round','=',(round))
-							.select('player.id', '=', p.player.id).first('value');
-	
-			round_diff = round_stuff.map(function(r) {
-				if (r.player.id === p.player.id) return;
-				return mouthDistance(face, r.value);
-			});
-			
-			var meanRoundDiff = 0;
-			J.each(round_diff, function(d){
-				meanRoundDiff += d;
-			});
-			
-			return meanRoundDiff / 8;
-		});
-		
-		// Head
-		heads = round_stuff.map(function(p){
-		
-			var face = db.select('state.round','=',(round))
-							.select('player.id', '=', p.player.id).first('value');
-	
-			round_diff = round_stuff.map(function(r) {
-				if (r.player.id === p.player.id) return;
-				return headDistance(face, r.value);
-			});
-			
-			var meanRoundDiff = 0;
-			J.each(round_diff, function(d){
-				meanRoundDiff += d;
-			});
-			
-			return meanRoundDiff / 8;
-		});
-		
-		// Head
-		zooms = round_stuff.map(function(p){
-		
-			var face = db.select('state.round','=',(round))
-							.select('player.id', '=', p.player.id).first('value');
-	
-			round_diff = round_stuff.map(function(r) {
-				if (r.player.id === p.player.id) return;
-				return zoomDistance(face, r.value);
-			});
-			
-			var meanRoundDiff = 0;
-			J.each(round_diff, function(d){
-				meanRoundDiff += d;
-			});
-			
-			return meanRoundDiff / 8;
-		});
-		
-		pEyesWriter.writeRecord(eyes);
-		pEyebrowsWriter.writeRecord(eyebrows);
-		pMouthWriter.writeRecord(mouths);
-		pHeadWriter.writeRecord(heads);
-		pZoomWriter.writeRecord(zooms);
-		
-		round++;
-	}
-	console.log("wrote all face-parts files");
-	
-	
-	// ROUND STATS
-//	var rWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + rfile));
-//	rWriter.writeRecord(rnames);
-//
-//	for (var pl in db.player) {
-//		if (db.player.hasOwnProperty(pl)) {
-//			
-//			db.player[pl].sort('round');
-//			var exs_pl = db.player[pl].map(function(p) {
-//				for 
-//				return p.ex;
-//			});
-//			rWriter.writeRecord(exs_pl);
-//			
-//		}
-//	}
-//	console.log("wrote " + rfile);
-	
-//	// ROUND STATS
-//	var rWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + efile));
-//	rWriter.writeRecord(['A','B','C']);
-//
-//	round = 1;
-//	while (round < 31) {
-//		
-//		// Divided by player
-//		var round_stuff = db.select('state.round','=',round).sort('ex');
-//		var subs = [];
-//		subs.push(round_stuff.select('ex', '=', 'A').count());
-//		subs.push(round_stuff.select('ex', '=', 'B').count());
-//		subs.push(round_stuff.select('ex', '=', 'C').count());
-//	
-//		rWriter.writeRecord(subs);
-//		round++;
-//	}
-//	console.log("wrote " + efile);
-	
 }
 
 function computeAllSingleFeaturesDistance() {
