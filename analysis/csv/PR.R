@@ -207,5 +207,14 @@ dev.off()
 jpeg('copy/img/boxplot_copy.jpg', quality=100, width=600)  
 boxplot(realCopies, main="How old are the copied faces by each player?", ylab="The copied face is from N round ago", xlab="Player")
 dev.off()
+
+copies <- read.csv(file="copy/copy_diffs.csv", head=TRUE, sep=",")
+copies
+
+
+jpeg('copy/img/diffs_distr.jpg', quality=100, width=600)  
+hist(x=copies$DIFFS, breaks=10, xlab="Normalized difference between copied faces", main="Distribution of normalized differences between copied faces" )
+d <- density(copies$DIFFS, from=0) # returns the density data
+lines(d) # plots the results
+dev.off()      
       
-#copiesEncoded
