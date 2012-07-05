@@ -37,18 +37,15 @@ db.rebuildIndexes();
 var exhs = JSUS.implodeObj(db.ex),
 	exnames = ['A','B','C'];
 
-//for (var i=0; i<JSUS.size(db.ex); i++) {
-//	ex = db.ex[exnames[i]];
-//	db.ex[exnames[i]] = ex.groupBy('state.round');
-//
-//	//db.ex[exnames[i]].sort('state.round');
-//}
+var ONLY_PUBLISHED = false;
 
+var index_file = (ONLY_PUBLISHED) ? './index_exh_pub.htm'
+								: './index_exh.htm';
 
 var states = db.groupBy('state');
 
-console.log('Rounds: ' + states.length);
-console.log('Exhibitions: ' + exhs.length);
+//console.log('Rounds: ' + states.length);
+//console.log('Exhibitions: ' + exhs.length);
 
 var html = d3.select('html');
 
@@ -121,7 +118,9 @@ var cells = rows.selectAll("td")
 	        	
 				if (items && items.length) {
 					content = '';
-					items.each(function(item){
+					items.each(function(item) {
+						if (ONLY_PUBLISHED && !item.published) return;
+						
 						content += '<div style="float: left">';
 						filename = './faces/' + item.player.pc + '_' + item.state.round + '.png';
 		            	//console.log(filename)
@@ -132,7 +131,7 @@ var cells = rows.selectAll("td")
 		        		content += '<br/>';
 		        		content += '<span style="text-align: center;">' + avg + '</span>';
 //		        		content += '&nbsp;<span style="text-align: center;">' + item.ex + '</span>';
-//		        		content += '&nbsp;<span style="text-align: center;">' + item.state.round + '</span>';		        		
+		        		content += '&nbsp;<span style="text-align: center;">' + item.state.round + '</span>';		        		
 		        		content += '&nbsp;<span style="text-align: center;">' + item.player.pc + '</span>';
 		        		content += '</div>';
 		        		
@@ -158,10 +157,10 @@ var cells = rows.selectAll("td")
 
 
 
-fs.writeFile('./index_exh.htm', window.document.innerHTML, function(err) {
+fs.writeFile(index_file, window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {
-        console.log("The file was saved!");
+        console.log("File was saved! " + index_file);
     }
 }); 
