@@ -1,7 +1,7 @@
 # Working Dir
 rm(list=ls())
-setwd('/home/stefano/PR/analysis/csv')
-#setwd('/home/balistef/PR/analysis/csv')
+#setwd('/home/stefano/PR/analysis/csv')
+setwd('/home/balistef/PR/analysis/csv')
 
 # Player colors
 colors = c("lightgreen", "green", "darkgreen", "indianred", "red", "darkred", "lightblue", "blue", "darkblue")
