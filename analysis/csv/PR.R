@@ -5,6 +5,7 @@ source('PR_init.R')
 ##############
 
 # Load file
+
 players <- read.csv(file="test.csv", head=TRUE, sep=",")
 summary(players)
 boxplot(players)
@@ -183,7 +184,10 @@ plotDiffFeaturesDir("./diff/single/")
       
 # All players vs self
 plotDiffFeaturesDir("./diff/self/")      
-      
+
+
+# All players vs self
+plotDiffFeaturesDir("./diff/pubs/")        
 
 # COPIES
 
