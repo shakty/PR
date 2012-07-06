@@ -1,0 +1,120 @@
+<!doctype html>
+<title>Art Exhibition Game</title>
+<!-- <link rel="stylesheet" type="text/css" href="http://localhost:8080/stylesheets/reset.css"> -->
+<link rel="stylesheet" type="text/css" href="/stylesheets/player.css"> 
+<link rel="stylesheet" type="text/css" href="/PR/html/css/main.css"> 
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="/PR/lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="/PR/lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="/PR/lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!-- Shelf.JS STARTS -->
+<script src="/PR/lib/cycle.js" charset="utf-8"></script>
+<script src="/PR/lib/shelf.js" charset="utf-8"></script>
+<!-- Shelf.JS ENDS -->
+
+<!-- nodeGame starts -->
+<script src="/socket.io/socket.io.js"></script> 
+<script src="/javascripts/nodegame.js" charset="utf-8"></script>
+<!-- nodeGame ends -->
+
+<!--  CF -->
+<script src="./CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./CF/CFControls.js" charset="utf-8"></script>
+<!-- CF ends -->
+
+
+<!-- PR starts -->
+<script src="/PR/pr.client.js" charset="utf-8"></script>
+<!-- PR ends -->
+<!-- <iframe id="mainframe" name="mainframe"></iframe> -->
+<body id="root">
+<script>
+  	window.onload = function(){
+  		
+  		 function addJQuerySliders(init) {
+  	       $( "#cf_controls div.ui-slider" ).each(function() {
+  	         // read initial values from markup and remove that
+  	         var settings = init[this.id];
+  	         if (settings) {
+  	           settings.slide = settings.change = function(e, ui) {
+  	             node.emit('CF_CHANGE');
+  	           };
+  	           $( this ).slider(settings);
+  	         }
+  	       });
+  	    };
+  		
+  		var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
+        //console.log(init_cf);
+        
+        // some features are fixed in the simplified version
+        init_cf = CFControls.pinDownFeatures(init_cf);
+  		
+        var init_sc = CFControls.normalizeFeatures(init_cf);  
+        
+  		var sc_options = {
+  		        id: 'cf_controls',
+  		        features: init_sc,
+  		        change: 'CF_CHANGE',
+  		      };
+  		    
+  		var cfc = new CFControls(sc_options);
+	
+  		var root = document.getElementById('root');
+  		var cf = new W.widgets.ChernoffFacesSimple({
+  			width: 500, 
+  		  height:500,
+  		  controls: cfc,
+  		});
+  		cf.append(root); 
+  		
+  		/* var pc = JSUS.getQueryString('n');
+  		
+  		if (!pc || pc < 2 || pc > 11) {
+  			alert('Oopps! Something went wrong. Please contact the experimenter.');
+  			throw new Exception();
+  		}
+  		
+  		var color = (pc < 5) ? "green" : (pc < 8) ? "red" : "black"; 
+  		
+  		var names = ['Johnson', 
+  		             'Jackson',
+  		             'Kerry',
+  		             'Michaelson',
+  		             'McCotton',
+  		             'Bradbury',
+  		             'Howard',
+  		             'Walbright',
+  		             'Chestner',
+  		            ];
+  		
+  		var name = names[pc-2]; */
+  		
+  		var name = 'Ciao';
+  		var pc = "02";
+  		var color = "blue";
+  		
+			// Create the Client		
+			var conf = {
+				url: "/pr",
+				verbosity: 10,
+				io: {				 
+		  	     reconnect: false,
+				},
+				window: {
+				//	promptOnleave: false,
+				},
+				player: {
+					pc: pc,
+					color: color,
+					name: name, //"P_" + Math.floor(Math.random()*1000),
+				}
+			};
+	
+	    node.play(conf, new PeerReviewGame()); 
+    
+	}
+</script>
+</body>
