@@ -664,7 +664,8 @@
 		}
 		
 		// Face color
-		out.color = node.player.color;
+		//out.color = node.player.color;
+		out.color = "blue";
 		
 		out['eye_radius'] = 5;
 		out['pupil_radius'] = 1;
@@ -677,12 +678,14 @@
 		out['nose_height'] = 0; //0.4;
 		out['nose_width'] = 0; //5;
 		out['nose_length'] = 0;
+		out['lineWidth'] = 1;
 		//out['mouth_height'] = 0.75;
 		//out['mouth_width'] = 20;
 	
 		
 //		console.log('HERE!!!')
-//		console.log(out)
+//		console.log(out['eye_spacing'])
+//		console.log(out['head_radius'])
 		
 		return out;
 	};

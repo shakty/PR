@@ -248,6 +248,15 @@
 		var spacing = face.eye_spacing;
 			
 		var radius = face.eye_radius;
+		
+		console.log("X")
+		console.log(x)
+		console.log(x - spacing)
+//		console.log(spacing)
+//		console.log(face.head_radius)
+//		console.log(face.eye_scale_x)
+		console.log('---')
+		
 		//console.log(face);
 		this.canvas.drawOval({
 						x: x - spacing,

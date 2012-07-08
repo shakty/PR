@@ -287,12 +287,32 @@ function displayDiff() {
 	var f1 = cfc_left.getAllValues();
 	var f2 = cfc_right.getAllValues();
 
+	var zratio = f2.head_radius / 100;
+	
+	console.log('RATIO')
+	console.log(zratio);
+	
+	console.log(cf_right.fp.canvas.width)
+	
+	var TEST = (1 / zratio) * (f2.eye_radius * (2 - f2.eye_scale_x) + f2.eye_spacing + f2.lineWidth);
+	
+	console.log(TEST);
+	
+	if (TEST >= 250) {
+		console.log('NO EYE')
+	}
+	else {
+		console.log('EYE')
+	}
+	
 	diff = weightedFaceDistance(f1,f2);
-	console.log(diff);
+	//console.log(diff);
 }
 
 node.on('CF_CHANGE_LEFT', function(){
 	displayDiff();
+	
+	
 });
 node.on('CF_CHANGE_RIGHT', function(){
   displayDiff();
