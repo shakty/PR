@@ -66,5 +66,7 @@ function createListofImages(imgDir, out) {
 //createListofImages('./csv/diff/self/img/', './index_diff_faces_self.htm');
 
 // PUBS
-createListofImages('./csv/diff/pubs/img/', './index_diff_faces_pubs.htm');
+//createListofImages('./csv/diff/pubs/img/', './index_diff_faces_pubs.htm');
+
+createListofImages('./csv/diff/previouspub/img/', './index_diff_faces_previouspub.htm');
 

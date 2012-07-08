@@ -55,21 +55,39 @@ dev.off()
 #############
 
 # x player
-subPlayers <- read.csv(file="sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
-
-
+subPlayers <- read.table(file="sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
+subPlayers
 
 plot.ts(subPlayers,type='o',xy.lines=FALSE, plot.type="single")
 
-x = summary(subPlayers)
-x
+roundSubs <- apply(subPlayers, 1, table, dnn= c('A1','B2','C3'), row.names = c('A1','B1','C1'))
+roundSubs
 
-y = table(subPlayers$P_02)
-y
+rr <- data.frame(roundSubs, useNA="yes")
+rr
+
+playerSubs <- apply(subPlayers, 2, table)
+playerSubs
 
 
+for (r in roundSubs) {
+  barplot(roundSubs[r])
+}
 
-barplot(x, beside = TRUE, col = colors, legend = rownames(subPlayers), ylim = c(0,10))
+barplot(playerSubs)
+
+barplot(as.matrix(roundSubs))
+
+
+#oldpar = par(mar=c(5,4,4,8), xpd=T)
+#par(oldpar)
+barplot(playerSubs,
+        col = brewer.pal(3,"Set1"),
+        border="white",
+        ylim=c(0,35),
+        legend.text = c('A','B','C'),
+        args.legend = list(bty="n", horiz=TRUE, x="top"))
+
 
 
 c = tapply(subPlayers, c('A','B','C'), table)
@@ -189,6 +207,10 @@ plotDiffFeaturesDir("./diff/self/")
 # All players vs self
 plotDiffFeaturesDir("./diff/pubs/")        
 
+# All players vs self
+plotDiffFeaturesDir("./diff/previouspub/")        
+
+      
 # COPIES
 
 

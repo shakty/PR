@@ -164,15 +164,20 @@ var cf_features = {
 
 };
 
-///
+/// BEGIN
 
+// Every round with all the previous ones
+//writeRoundStats();
 
-writeRoundStats();
+// Every round with the immediately previous one
+writePreviousRoundStats();
+
+/// END
 
 function getPublishedFaces(round) {
 	if (!round) return false;
 	
-	return db.select('state.round', '=', round).select('published');
+	return db.select('state.round', '=', round).select('published', '=', true);
 }
 
 function getAvgDistanceFromPubFaces(face, round) {
@@ -181,7 +186,7 @@ function getAvgDistanceFromPubFaces(face, round) {
 	
 	// TODO: check this
 	// If there are no pubs in the previous round diff = 1
-	if (!pubs || !pubs.length) return 1;
+	if (!pubs || !pubs.length) return 'NA';
 
 	var diffs = 0; 
 	
@@ -217,9 +222,9 @@ function writeRoundStats() {
 				return getAvgDistanceFromPubFaces(p.value, (round-R));		
 			});
 			
-			var players = round_stuff.map(function(p){
-				return p.player.pc;
-			}); 
+//			var players = round_stuff.map(function(p){
+//				return p.player.pc;
+//			}); 
 			
 			pWriter.writeRecord(faces);
 			console.log(faces);
@@ -231,6 +236,42 @@ function writeRoundStats() {
 	console.log("wrote " + p_pubs_file);
 
 }
+
+function writePreviousRoundStats() {
+	
+	var round = 2; // IMPORTANT 2
+	var old_faces, faces, round_stuff;
+	
+	var file = './csv/diff/previouspub/diff_pubs_players_previous.csv';
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
+	writer.writeRecord(pnames);	
+	
+	while (round < 31) {
+
+
+		
+		// Divided by player
+		round_stuff = db.select('state.round', '=', round).sort('player');
+
+		//for (var R = 1; R < round; R++) {
+			faces = round_stuff.map(function(p) {
+				return getAvgDistanceFromPubFaces(p.value, (round-1));		
+			});
+			
+			
+			writer.writeRecord(faces);
+			console.log(faces);
+		//}
+		
+
+		round++;
+	}
+	console.log("wrote " + file);
+
+}
+
+
 //
 //function computeAllSingleFeaturesDistance() {
 //	
