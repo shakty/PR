@@ -56,6 +56,7 @@
 		this.listRoot = null;
 		this.fieldset = null;
 		this.submit = null;
+		this.prefix = "";
 		
 		this.changeEvent = this.id + '_change';
 		
@@ -83,6 +84,7 @@
 				this.changeEvent = options.change;
 			}
 		}
+		this.prefix = options.prefix || this.prefix || "";
 		this.list = new node.window.List(options);
 		this.listRoot = this.list.getRoot();
 		
@@ -184,12 +186,13 @@
 							
 				var container = document.createElement('div');
 				// Add a different element according to the subclass instantiated
-				var elem = this.add(container, id, attributes);
+				var elem = this.add(container, this.prefix + id, attributes);
 								
 				// Fire the onChange event, if one defined
 				if (this.changeEvent) {
 					elem.onchange = function() {
 						node.emit(that.changeEvent);
+						//console.log(that.changeEvent)
 					};
 				}
 				
@@ -325,8 +328,8 @@
 	
 	CFControls = CFControls;
 	
-	CFControls.prototype.__proto__ = jQuerySliderControls.prototype;
-//	CFControls.prototype.__proto__ = SliderControls.prototype;
+//	CFControls.prototype.__proto__ = jQuerySliderControls.prototype;
+	CFControls.prototype.__proto__ = SliderControls.prototype;
 
 	CFControls.prototype.constructor = CFControls;
 	
@@ -554,7 +557,7 @@
 	
 	
 	function CFControls (options) {
-		jQuerySliderControls.call(this, options);
+		SliderControls.call(this, options);
 	};
 	
 	CFControls.normalizeFeatures = function (input) {
@@ -609,12 +612,12 @@
 		var out = {};
 		for (var key in this.features) {	
 			if (this.features.hasOwnProperty(key)) {
-				var el = node.window.getElementById(key);
+				var el = node.window.getElementById(this.prefix + key);
 				
 				if (el) {
 					
-					//var value = Number(el.value);
-					var value = $(el).slider('value');
+					var value = Number(el.value);
+//					var value = $(el).slider('value');
 //					console.log('key');
 //					console.log(value);
 					out[key] = value;
@@ -677,6 +680,9 @@
 		//out['mouth_height'] = 0.75;
 		//out['mouth_width'] = 20;
 	
+		
+//		console.log('HERE!!!')
+//		console.log(out)
 		
 		return out;
 	};

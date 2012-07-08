@@ -47,6 +47,7 @@
 		var that = this;
 		this.changeFunc = function () {
 			that.draw(that.sc.getAllValues());
+			//console.log(that.id + ' CHANGING')
 		};
 		
 		this.features = null;

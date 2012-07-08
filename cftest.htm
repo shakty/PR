@@ -21,7 +21,7 @@
 
 <!--  CF -->
 <script src="./CF/ChernoffFacesSimple.js" charset="utf-8"></script>
-<script src="./CF/CFControls.js" charset="utf-8"></script>
+<script src="./CF/CFControlsTest.js" charset="utf-8"></script>
 <!-- CF ends -->
 
 
@@ -29,22 +29,24 @@
 <script src="/PR/pr.client.js" charset="utf-8"></script>
 <!-- PR ends -->
 <!-- <iframe id="mainframe" name="mainframe"></iframe> -->
-<body id="root">
+<body>
+<div id="left" style="float: left; clear: left;"></div>
+<div id="right" style="float: right; clear: right;"></div>
 <script>
   	window.onload = function(){
   		
-  		 function addJQuerySliders(init) {
-  	       $( "#cf_controls div.ui-slider" ).each(function() {
-  	         // read initial values from markup and remove that
-  	         var settings = init[this.id];
-  	         if (settings) {
-  	           settings.slide = settings.change = function(e, ui) {
-  	             node.emit('CF_CHANGE');
-  	           };
-  	           $( this ).slider(settings);
-  	         }
-  	       });
-  	    };
+//  		 function addJQuerySliders(init) {
+//  	       $( "#cf_controls div.ui-slider" ).each(function() {
+//  	         // read initial values from markup and remove that
+//  	         var settings = init[this.id];
+//  	         if (settings) {
+//  	           settings.slide = settings.change = function(e, ui) {
+//  	             node.emit('CF_CHANGE');
+//  	           };
+//  	           $( this ).slider(settings);
+//  	         }
+//  	       });
+//  	    };
   		
   		var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
         //console.log(init_cf);
@@ -52,49 +54,56 @@
         // some features are fixed in the simplified version
         init_cf = CFControls.pinDownFeatures(init_cf);
   		
-        var init_sc = CFControls.normalizeFeatures(init_cf);  
+      var init_sc = CFControls.normalizeFeatures(init_cf);  
         
-  		var sc_options = {
-  		        id: 'cf_controls',
-  		        features: init_sc,
-  		        change: 'CF_CHANGE',
-  		      };
+
   		    
-  		var cfc = new CFControls(sc_options);
-	
-  		var root = document.getElementById('root');
-  		var cf = new W.widgets.ChernoffFacesSimple({
+  		
+	 // LEFT
+            var sc_options = {
+            id: 'cf_controls_left',
+            features: init_sc,
+            change: 'CF_CHANGE_LEFT',
+          };	
+  		var root = document.getElementById('left');
+  		var cfc_left = new CFControls(sc_options);
+			var cf_left = new W.widgets.ChernoffFacesSimple({
   			width: 500, 
   		  height:500,
-  		  controls: cfc,
+  		  controls: cfc_left,
+				id: "left",
+				change: 'CF_CHANGE_LEFT',
+				prefix: 'left_',
+				features: init_sc,
   		});
-  		cf.append(root); 
+  		cf_left.append(root); 
+  	
+		 // RIGHT
+		 var sc_options = {
+            id: 'cf_controls_right',
+            features: init_sc,
+            change: 'CF_CHANGE_RIGHT',
+						prefix: 'right_',
+          };  
+		 var root = document.getElementById('right');
+     var cfc_right = new CFControls(sc_options); 	
+	   var cf_right = new W.widgets.ChernoffFacesSimple({
+        width: 500, 
+        height:500,
+        controls: cfc_right,
+				id: "right",
+        change: 'CF_CHANGE_RIGHT',
+				features: init_sc,
+      });
+      cf_right.append(root); 
   		
-  		/* var pc = JSUS.getQueryString('n');
-  		
-  		if (!pc || pc < 2 || pc > 11) {
-  			alert('Oopps! Something went wrong. Please contact the experimenter.');
-  			throw new Exception();
-  		}
-  		
-  		var color = (pc < 5) ? "green" : (pc < 8) ? "red" : "black"; 
-  		
-  		var names = ['Johnson', 
-  		             'Jackson',
-  		             'Kerry',
-  		             'Michaelson',
-  		             'McCotton',
-  		             'Bradbury',
-  		             'Howard',
-  		             'Walbright',
-  		             'Chestner',
-  		            ];
-  		
-  		var name = names[pc-2]; */
-  		
+			
+			
+			
   		var name = 'Ciao';
   		var pc = "02";
   		var color = "blue";
+			
   		
 			// Create the Client		
 			var conf = {
@@ -104,7 +113,7 @@
 		  	     reconnect: false,
 				},
 				window: {
-				//	promptOnleave: false,
+					promptOnleave: false,
 				},
 				player: {
 					pc: pc,
@@ -114,7 +123,181 @@
 			};
 	
 	    node.play(conf, new PeerReviewGame()); 
+			
+			
+			/// DISTANCE
+			
+			// CF FEATURES
+
+var cf_features = {
+    // Head
+
+    head_scale_x: {
+      min: 0.001,
+      max: 2,
+      step: 0.001,
+      value: 0.5,
+      label: 'Scale head horizontally'
+    },
+    head_scale_y: {
+      min: 0.01,
+      max: 2,
+      step: 0.001,
+      value: 1,
+      label: 'Scale head vertically'
+    },
     
+    // Eye
+    
+    eye_height: {
+      min: 0,
+      max: 2,
+      step: 0.01,
+      value: 0.4,
+      label: 'Eye and Eyebrow height'
+    },  
+    
+    eye_spacing: {
+      min: 0,
+      max: 40,
+      step: 0.01,
+      value: 10,
+      label: 'Eye spacing'
+    },
+    eye_scale_x: {
+      min: 0.01,
+      max: 4,
+      step: 0.01,
+      value: 1,
+      label: 'Scale eyes horizontally'
+    },
+    eye_scale_y: {
+      min: 0.01,
+      max: 4,
+      step: 0.01,
+      value: 1,
+      label: 'Scale eyes vertically'
+    },
+    
+    // Eyebrow
+    eyebrow_length: {
+      min: 0,
+      max: 50,
+      step: 0.01,
+      value: 10,
+      label: 'Eyebrow length'
+    },
+    
+    eyebrow_angle: {
+      min: -4,
+      max: 4,
+      step: 0.01,
+      value: -0.5,
+      label: 'Eyebrow angle'
+    },
+    
+    eyebrow_eyedistance: {
+      min: 0,
+      max: 50,
+      step: 0.01,
+      value: 3, // From the top of the eye
+      label: 'Eyebrow from eye'
+    },
+    
+    eyebrow_spacing: {
+      min: 0,
+      max: 50,
+      step: 0.01,
+      value: 5,
+      label: 'Eyebrow spacing'
+    },
+
+    // Mouth 
+
+    mouth_top_y: {
+      min: -60,
+      max: 60,
+      step: 0.01,
+      value: -2,
+      label: 'Upper lip'
+    },
+    mouth_bottom_y: {
+      min: -60,
+      max: 60,
+      step: 0.01,
+      value: 20,
+      label: 'Lower lip'
+    },
+    
+    // Head
+
+    head_radius: {
+      min: 10,
+      max: 100,
+      step: 0.01,
+      value: 30,
+      label: 'Zooom in'
+    },
+    
+
+};
+
+			
+			function weightedFaceDistance(f1, f2) {
+  var features = [
+      'head_radius',
+      'head_scale_x',
+      'head_scale_y',
+      'eye_height',
+      'eye_spacing',
+      'eye_scale_x',
+      'eye_scale_y',
+      'eyebrow_length',
+      'eyebrow_eyedistance',
+      'eyebrow_angle',
+      'eyebrow_spacing',
+      'mouth_top_y',
+      'mouth_bottom_y',
+  ];
+    
+  return weightedDistance(features, f1, f2);
+}
+
+// between 0 and 1
+function weightedDistance(features, f1, f2) {
+  if (!features || !f1 || !f2) return false;
+  
+  
+  var distance = 0;
+  var range, tmp;
+  for (var i = 0; i < features.length; i++) {
+//    console.log(features[i]);
+
+    range = cf_features[features[i]].max - cf_features[features[i]].min;
+//    console.log(range);
+
+    tmp = Math.abs(f1[features[i]] - f2[features[i]]) / range;
+
+    distance += tmp;
+  }
+  return distance / features.length;
+}
+
+function displayDiff() {
+	var f1 = cfc_left.getAllValues();
+	var f2 = cfc_right.getAllValues();
+
+	diff = weightedFaceDistance(f1,f2);
+	console.log(diff);
+}
+
+node.on('CF_CHANGE_LEFT', function(){
+	displayDiff();
+});
+node.on('CF_CHANGE_RIGHT', function(){
+  displayDiff();
+});
+
 	}
 </script>
 </body>
