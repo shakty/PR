@@ -212,9 +212,10 @@ dev.off()
 
 copies <- read.csv(file="copy/copy_diffs.csv", head=TRUE, sep=",")
 
-jpeg('copy/img/diffs_distr.jpg', quality=100, width=600)  
+jpeg('copy/img/diffs_distr.jpg', quality=100, width=600)
 hist(x=copies$DIFFS, breaks=10, xlab="Normalized difference between copied faces", main="Distribution of normalized differences between copied faces" )
-d <- density(copies$DIFFS, from=0) # returns the density data
-lines(d) # plots the results
+d <- density(copies$DIFFS, from=0, kernel="epanechnikov") # returns the density data
+lines(d, col="red", lwd=4) # plots the results
+grid(nx=NA, ny=NULL, lty=1,lwd=1, col="gray")
 dev.off()      
       
