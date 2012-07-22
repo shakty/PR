@@ -58,7 +58,16 @@ dev.off()
 subPlayers <- read.table(file="sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
 subPlayers
 
-plot.ts(subPlayers,type='o',xy.lines=FALSE, plot.type="single")
+plot.ts(subPlayers,type='o',lines=FALSE, plot.type="multiple")
+
+
+plot.ts(subPlayers,type='S')
+
+subPlayers.jitter = apply(subPlayers, 2, jitter, amount=0.05)
+
+plot.ts(subPlayers.jitter, type='p', plot.type="single")
+
+
 
 roundSubs <- apply(subPlayers, 1, table, dnn= c('A1','B2','C3'), row.names = c('A1','B1','C1'))
 roundSubs
@@ -68,6 +77,15 @@ rr
 
 playerSubs <- apply(subPlayers, 2, table)
 playerSubs
+
+
+
+
+playerSubs1 <- apply(subPlayers, 1, table)
+playerSubs1
+
+
+plot(playerSubs1[1])
 
 
 for (r in roundSubs) {
@@ -110,10 +128,25 @@ plot(summary(subPlayers))
 # x round
 subRounds <- read.csv(file="sub/sub_x_round.csv", head=TRUE, sep=",")
 
+subRounds.tableF <- apply(subRounds, 2, factor, lev=exhs.names); subRounds.tableF
+subRounds.tableF <- apply(subRounds.tableF, 2, table); subRounds.table
+      
+barplot(do.call(cbind,subRounds.table),
+        col = brewer.pal(3,"Set1"),
+        border="white",
+        legend.text = exhs.names,
+        args.legend = list(bty="n", horiz=TRUE, x="top"))
+      
+subRounds.table <- apply(subRounds, 2, table, dnn=c('A','B','C'), row.names=c('A','B','C'))
+subRounds.table
+
+plot.ts(subRounds.table, type='p', plot.type="single")
+      
 subRounds
 
 summary(subRounds)
-
+levels(subRounds)
+      
       
 
 # Stacked Bar Plot with Colors and Legend
@@ -139,14 +172,15 @@ tsubRounds
 summary(tsubRounds)
 
 # x ex
-subExRound <- read.csv(file="sub_x_ex_round.csv", head=TRUE, sep=",")
+subExRound <- read.csv(file="sub/sub_x_ex_round.csv", head=TRUE, sep=","); subExRound
 summary(subExRound)
       
 subExRound
       
-plot.ts(subExRound)
+plot.ts(subExRound, type='o', plot.type="single", col=exhs.colors)
+legend("top", legend=exhs.names, col = exhs.colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
 
-
+      
 # face distance
 ################
 

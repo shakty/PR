@@ -7,6 +7,8 @@ library("RColorBrewer")
 
 # Player colors
 colors = c("lightgreen", "green", "darkgreen", "indianred", "red", "darkred", "lightblue", "blue", "darkblue")
+exhs.names = c("A", "B", "C")
+exhs.colors = c("green", "red", "darkblue")
 
 
 # Read from file and:
