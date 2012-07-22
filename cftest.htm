@@ -289,16 +289,18 @@ function displayDiff() {
 
 	var zratio = f2.head_radius / 100;
 	
-	console.log('RATIO')
-	console.log(zratio);
+	//console.log('RATIO')
+	//console.log(zratio);
 	
-	console.log(cf_right.fp.canvas.width)
+	//console.log(cf_right.fp.canvas.width)
 	
 	var TEST = (1 / zratio) * (f2.eye_radius * (2 - f2.eye_scale_x) + f2.eye_spacing + f2.lineWidth);
 	
+	//TEST += f2.eye_spacing * f2.eye_radius;
+		
 	console.log(TEST);
-	
-	if (TEST >= 250) {
+	// + (f2.eye_scale_x * f2.eye_radius)
+	if (TEST >= 250 ) {
 		console.log('NO EYE')
 	}
 	else {

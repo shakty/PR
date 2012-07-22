@@ -200,6 +200,19 @@
 		
 	};		
 		
+//	FacePainter.prototype.isVisible = function (feature) {
+//		var face = this.face;
+//		switch(feature) {
+//			case 'eye_radius': 
+//				if (face.eye_radius > 1) {
+//					return true;
+//				} 
+//				break;
+//		}
+//		
+//		return true;
+//	};
+	
 	FacePainter.prototype.redraw = function (face, x, y) {
 		this.canvas.clear();
 		this.draw(face,x,y);
@@ -249,13 +262,16 @@
 			
 		var radius = face.eye_radius;
 		
-		console.log("X")
-		console.log(x)
-		console.log(x - spacing)
+//		console.log("X")
+//		console.log(x)
+//		console.log(x - spacing)
+//		console.log('SPACING')
+//		console.log(spacing)
+		
 //		console.log(spacing)
 //		console.log(face.head_radius)
 //		console.log(face.eye_scale_x)
-		console.log('---')
+		//console.log('---')
 		
 		//console.log(face);
 		this.canvas.drawOval({
