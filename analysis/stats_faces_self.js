@@ -189,7 +189,7 @@ function writeRoundStats() {
 		// Divided by player
 		round_stuff = db.select('state.round', '=', round).sort('player');
 
-		for (var R = 1; R < round; R++) {
+		for (var R = round-1; R > 0; R--) {
 			faces = round_stuff.map(function(p) {
 				var face = db.select('state.round','=',(round - R))
 								.select('player.id', '=', p.player.id).first('value');

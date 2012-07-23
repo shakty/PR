@@ -20,7 +20,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./nddbs/all_cf_sub_eva_copy.nddb');
+db.load('./nddbs/all_reviews.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);

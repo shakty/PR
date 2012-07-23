@@ -9,7 +9,16 @@ plot.ts(subPlayers)
 
 subPlayers.count <- apply(subPlayers, 2, sum)
 subPlayers.count
-barplot(subPlayers.count)
+barplot()
+
+jpeg('pubs/img/pubs_count_by_player.jpg',quality=100,width=600)
+x <- barplot(subPlayers.count,
+        col = colors,
+        ylim=c(0,10),
+        main='Number of publications by player')
+y <- as.matrix(subPlayers.count)
+text(x,y+0.5, labels=as.character(y))
+dev.off()
 
 ## Evaluations
 ##############
@@ -18,10 +27,18 @@ barplot(subPlayers.count)
 
 players <- read.csv(file="test.csv", head=TRUE, sep=",")
 summary(players)
+
+players.ohne3 <- players[, !names(players) %in% c('P_03')]
+summary(players.ohne3)
+
+# Mean review all players
+colMeans(cbind(colMeans(players.ohne3)))
+# Mean review all players but P_03
+colMeans(cbind(colMeans(players)))
+
 boxplot(players)
 
-ohne10 = players
-rm(ohne10$P_10)
+
 
 jpeg('eva/img/players_boxplot.jpg',quality=100,width=600)
 boxplot(players,main="Distribution of evaluation scores per player")
@@ -186,19 +203,16 @@ plotDiffFeaturesDir("./diff/parts/")
        
 # All single feature
 plotDiffFeaturesDir("./diff/single/")
-      
-      
+            
 # All players vs self
 plotDiffFeaturesDir("./diff/self/")      
 
-
-# All players vs self
+# All players vs published
 plotDiffFeaturesDir("./diff/pubs/")        
 
-# All players vs self
+# All players vs published in previous round
 plotDiffFeaturesDir("./diff/previouspub/")        
 
-      
 # COPIES
 
 
@@ -233,3 +247,39 @@ lines(d, col="red", lwd=4) # plots the results
 grid(nx=NA, ny=NULL, lty=1,lwd=1, col="gray")
 dev.off()      
       
+
+# DIFF and SCORE
+
+df <- read.csv(file="diff/diffandscore/diffandscore.csv", head=TRUE, sep=",")
+
+jpeg('diff/diffandscore/img/diffandscore.jpg', quality=100, width=600)
+plot(df$D ~ df$S, main='Face distance from pub. faces in the previous round vs score', ylab='Distance from published faces in the previous round', xlab='Review score')
+abline(v=7, col='red',lwd=2)
+dev.off()
+
+
+df.copy <- read.csv(file="diff/diffandscore/diffandscore_copy.csv", head=TRUE, sep=",")
+
+jpeg('diff/diffandscore/img/diffandscore_copy.jpg', quality=100, width=600)
+plot(df.copy$D ~ df.copy$S, main='Face distance from pub. faces in the previous round vs score', ylab='Distance from published faces in the previous round', xlab='Review score')
+abline(v=7, col='red',lwd=2)
+dev.off()
+
+df.copyoriginal <- read.csv(file="diff/diffandscore/copy_from_original_andscore.csv", head=TRUE, sep=",")
+
+jpeg('diff/diffandscore/img/copy_from_original_andscore.jpg', quality=100, width=600)
+plot(df.copyoriginal$D ~ df.copyoriginal$S, main='Face distance from pub. faces in the previous round vs score', ylab='Distance from published faces in the previous round', xlab='Review score')
+abline(v=7, col='red',lwd=2)
+dev.off()
+
+
+# InGroup
+
+ingroup <- read.csv(file="ingroup/all_reviews.csv", head=TRUE, sep=",")
+head(ingroup)
+
+library(ggplot2)
+qplot(score, data=ingroup,col = as.factor(ingroup$same))
+
+
+qplot(score, data=ingroup)

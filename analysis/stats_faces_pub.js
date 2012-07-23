@@ -20,7 +20,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./all_cf_sub_eva.nddb');
+db.load('./nddbs/all_cf_sub_eva_copy.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -167,22 +167,38 @@ var cf_features = {
 /// BEGIN
 
 // Every round with all the previous ones
-//writeRoundStats();
+// writeRoundStats();
 
 // Every round with the immediately previous one
-writePreviousRoundStats();
+//writePreviousRoundStats();
+
+// All the entries, distance from published faces at R-1 and their score
+//correlateDistanceAndScore();
+//correlateDistanceAndScoreCopy();
+
+//Every round with all the previous one
+writeCumulativeRoundStats();
+
+
 
 /// END
 
-function getPublishedFaces(round) {
+function getPublishedFaces(round, cumulative) {
 	if (!round) return false;
+	cumulative = cumulative || false;
 	
-	return db.select('state.round', '=', round).select('published', '=', true);
+	var s = (cumulative) ? db.select('state.round', '<=', round)
+						 : db.select('state.round', '=', round);
+	
+	console.log('CUMULATIVE ' + cumulative);
+	console.log(s.length)
+	
+	return s.select('published', '=', true);
 }
 
-function getAvgDistanceFromPubFaces(face, round) {
+function getAvgDistanceFromPubFaces(face, round, cumulative) {
 	if (!face || !round) return false;
-	var pubs = getPublishedFaces(round);
+	var pubs = getPublishedFaces(round, cumulative);
 	
 	// TODO: check this
 	// If there are no pubs in the previous round diff = 1
@@ -217,7 +233,7 @@ function writeRoundStats() {
 		// Divided by player
 		round_stuff = db.select('state.round', '=', round).sort('player');
 
-		for (var R = 1; R < round; R++) {
+		for (var R = round-1; R > 0; R--) {
 			faces = round_stuff.map(function(p) {
 				return getAvgDistanceFromPubFaces(p.value, (round-R));		
 			});
@@ -271,6 +287,117 @@ function writePreviousRoundStats() {
 
 }
 
+function writeCumulativeRoundStats() {
+	
+	var round = 2; // IMPORTANT 2
+	var old_faces, faces, round_stuff;
+	
+	var file = './csv/diff/previouspub/diff_pubs_players_cumulative.csv';
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
+	writer.writeRecord(pnames);	
+	
+	while (round < 31) {
+
+		// Divided by player
+		round_stuff = db.select('state.round', '=', round).sort('player');
+
+		faces = round_stuff.map(function(p) {
+			return getAvgDistanceFromPubFaces(p.value, (round-1), true);		
+		});
+		
+		
+		writer.writeRecord(faces);
+		//console.log(faces);
+		
+
+		round++;
+	}
+	console.log("wrote " + file);
+
+}
+
+function correlateDistanceFromOriginalAndScore() {
+	
+	var round = 2; // IMPORTANT 2
+	var old_faces, faces, round_stuff;
+	
+	var file = './csv/diff/diffandscore/diffandscore.csv';
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
+	writer.writeRecord(['D','S']);	
+	
+	while (round < 31) {
+
+		// Divided by player
+		round_stuff = db.select('state.round', '=', round).sort('player');
+
+		var score, distance;
+		faces = round_stuff.each(function(p) {
+			distance = getAvgDistanceFromPubFaces(p.value, (round-1));
+			score = p.avg;
+			writer.writeRecord([distance, score]);
+		});
+		round++;
+	}
+	console.log("wrote " + file);
+
+}
+
+function correlateDistanceAndScore() {
+	
+	var round = 2; // IMPORTANT 2
+	var old_faces, faces, round_stuff;
+	
+	var file = './csv/diff/diffandscore/diffandscore.csv';
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
+	writer.writeRecord(['D','S']);	
+	
+	while (round < 31) {
+
+		// Divided by player
+		round_stuff = db.select('state.round', '=', round).sort('player');
+
+		var score, distance;
+		faces = round_stuff.each(function(p) {
+			distance = getAvgDistanceFromPubFaces(p.value, (round-1));
+			score = p.avg;
+			writer.writeRecord([distance, score]);
+		});
+		round++;
+	}
+	console.log("wrote " + file);
+
+}
+
+function correlateDistanceAndScoreCopy() {
+	
+	var round = 2; // IMPORTANT 2
+	var old_faces, faces, round_stuff;
+	
+	var file = './csv/diff/diffandscore/diffandscore_copy.csv';
+	
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
+	writer.writeRecord(['D','S']);	
+	
+	while (round < 31) {
+
+		// Divided by player
+		round_stuff = db.select('state.round', '=', round).sort('player');
+
+		var score, distance;
+		faces = round_stuff.each(function(p) {
+			if (!p.copy) return;
+			distance = getAvgDistanceFromPubFaces(p.value, (round-1));
+			score = p.avg;
+			writer.writeRecord([distance, score]);
+		});
+		round++;
+	}
+	console.log("wrote " + file);
+
+}
 
 //
 //function computeAllSingleFeaturesDistance() {
@@ -439,38 +566,3 @@ function eyeDistance(f1, f2) {
 	
 	return weightedDistance(features, f1, f2);
 }
-
-
-/**
- * Takes an obj and write it down to a csv file;
- */
-writeCsv = function (path, obj, options) {
-	options = options || {};
-	
-	var writer = csv.createCsvStreamWriter(fs.createWriteStream( path, {'flags': 'a'}));
-	
-	// Add headers, if requested, and if found
-	options.writeHeaders = options.writeHeaders || true;
-	if (options.writeHeaders) {
-		var headers = [];
-		if (J.isArray(options.headers)) {
-			headers = options.headers;
-		}
-		else if (J.isArray(obj)) {
-			headers = J.keys(obj[0]);
-		}
-		
-		if (headers.length) {
-			writer.writeRecord(headers);
-		}
-		else {
-			console.log('Could not find headers', 'WARN');
-		}
-	}
-	
-	var i;
-    for (i = 0; i < obj.length; i++) {
-    	console.log(obj[i]);
-		writer.writeRecord(obj[i]);
-	}
-};
