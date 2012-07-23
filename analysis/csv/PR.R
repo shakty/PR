@@ -1,6 +1,16 @@
 # Init
 source('PR_init.R')
 
+## Publications
+###############
+
+subPlayers <- read.csv(file="pubs/pubs_x_round_x_player.csv", head=TRUE, sep=",")
+plot.ts(subPlayers)
+
+subPlayers.count <- apply(subPlayers, 2, sum)
+subPlayers.count
+barplot(subPlayers.count)
+
 ## Evaluations
 ##############
 

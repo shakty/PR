@@ -50,17 +50,21 @@ var rnames = J.seq(1,30,1,function(e){
 	return 'R_' + e;
 });
 
+// If true: integer are written instead of A,B,C
+var transform = false;
 
 
 writeRoundStats();
 
 function writeRoundStats(path) {
+
+	var pfile = (transform) ? 'sub/sub_x_round_x_player_int.csv'
+							: 'sub/sub_x_round_x_player.csv'; 
 	
-	var pfile = 'sub_x_round_x_player.csv'; 
-	var rfile = 'sub_x_round.csv';
-	var efile = 'sub_x_ex_round.csv';
+	var rfile = 'sub/sub_x_round.csv';
+	var efile = 'sub/sub_x_ex_round.csv';
 	
-	var prfile = 'sub_x_player_x_round.csv';
+	var prfile = 'sub/sub_x_player_x_round.csv';
 	
 	// PLAYER STATS
 	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + pfile));
@@ -71,6 +75,13 @@ function writeRoundStats(path) {
 		// Divided by player
 		var round_stuff = db.select('state.round','=',round).sort('player');
 		var subs = round_stuff.map(function(p){
+			if (transform) {
+				var o = {};
+				o.A = 1;
+				o.B = 2;
+				o.C = 3;
+				return o[p.ex];
+			}
 			return p.ex;
 		});
 		pWriter.writeRecord(subs);
