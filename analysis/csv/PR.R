@@ -20,7 +20,7 @@ dev.off()
 
 
 # Time Series
-jpeg('img/players_boxplot.jpg',quality=100,width=600)
+jpeg('eva/img/players_eva_ts.jpg',quality=100,width=600)
 plot.ts(players, type='o',ylim=c(0,10))
 dev.off()
 #Mean = mean(mean(players))
@@ -28,7 +28,7 @@ dev.off()
 #abline(h=Mean)
 
 # ROUNDS
-rounds <- read.csv(file="eva_x_round.csv", head=TRUE, sep=",")
+rounds <- read.csv(file="eva/img/eva_x_round.csv", head=TRUE, sep=",")
 summary(rounds)
 jpeg('eva/img/round_evas_boxplot.jpg',quality=100,width=600)
 boxplot(rounds, main="Distribution of evaluation scores per round",ylab="Evaluation score")
@@ -58,78 +58,35 @@ dev.off()
 subPlayers <- read.table(file="sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
 subPlayers
 
-plot.ts(subPlayers,type='o',lines=FALSE, plot.type="multiple")
+jpeg('sub/img/players_sub_ts.jpg',quality=100,width=600)
+plot.ts(subPlayers,type='o', plot.type="multiple", main='Exhibition choice over 30 rounds')
+dev.off()
 
-
-plot.ts(subPlayers,type='S')
-
-subPlayers.jitter = apply(subPlayers, 2, jitter, amount=0.05)
-
-plot.ts(subPlayers.jitter, type='p', plot.type="single")
-
-
-
-roundSubs <- apply(subPlayers, 1, table, dnn= c('A1','B2','C3'), row.names = c('A1','B1','C1'))
-roundSubs
-
-rr <- data.frame(roundSubs, useNA="yes")
-rr
+# If we load the _int version we can produce this graph
+#subPlayers.jitter = apply(subPlayers, 2, jitter, amount=0.05)
+#plot.ts(subPlayers.jitter, type='p', plot.type="single")
 
 playerSubs <- apply(subPlayers, 2, table)
 playerSubs
 
-
-
-
-playerSubs1 <- apply(subPlayers, 1, table)
-playerSubs1
-
-
-plot(playerSubs1[1])
-
-
-for (r in roundSubs) {
-  barplot(roundSubs[r])
-}
-
-barplot(playerSubs)
-
-barplot(as.matrix(roundSubs))
-
-
 #oldpar = par(mar=c(5,4,4,8), xpd=T)
 #par(oldpar)
+
+jpeg('sub/img/player_subs_all.jpg',quality=100,width=600)
 barplot(playerSubs,
         col = brewer.pal(3,"Set1"),
         border="white",
         ylim=c(0,35),
+        main='Players submissions by exhibition',
         legend.text = c('A','B','C'),
         args.legend = list(bty="n", horiz=TRUE, x="top"))
+dev.off()
 
-
-
-c = tapply(subPlayers, c('A','B','C'), table)
-
-hist(x)
-
-spineplot(x)
-
-lines(c(, y = NULL, type = "h", lwd = 2, ...)
-
-mean(subPlayers)
-
-      
-#tsubPlayers = table(subPlayers)
-#tsubPlayers
-
-
-plot(summary(subPlayers))
-
-# x round
+# x round (not working well)
 subRounds <- read.csv(file="sub/sub_x_round.csv", head=TRUE, sep=",")
 
 subRounds.tableF <- apply(subRounds, 2, factor, lev=exhs.names); subRounds.tableF
-subRounds.tableF <- apply(subRounds.tableF, 2, table); subRounds.table
+subRounds.table <- apply(subRounds.tableF, 2, table); subRounds.table
       
 barplot(do.call(cbind,subRounds.table),
         col = brewer.pal(3,"Set1"),
@@ -142,41 +99,28 @@ subRounds.table
 
 plot.ts(subRounds.table, type='p', plot.type="single")
       
-subRounds
+# x ex round_count
+subExRounds.count <- read.csv(file="sub/sub_x_ex_round_count.csv", head=TRUE, sep=",")
 
-summary(subRounds)
-levels(subRounds)
-      
-      
+#old = par(mai=c(1,1,1,1))
 
-# Stacked Bar Plot with Colors and Legend
-counts <- table(summary(subRounds), seq(1,90))
-counts
-#counts <- table(subRounds,rm.NA=TRUE)
+jpeg('sub/img/exhibs_count_ts.jpg',quality=100,width=600)
+barplot(as.matrix(subExRounds.count),
+        col = brewer.pal(3,"Set1"),
+        border="white",
+        ylim=c(0,10),
+        main='Submission by exhibition per round',
+        legend.text = exhs.names,
+        args.legend = list(bty="n", horiz=TRUE, x="top"))
+dev.off()
 
-
-      
-barplot(c(subRounds$R_02,subRounds$R_03), main="Frequencies of submissions",
-  xlab="Rounds", legend = colnames(counts)) 
-
-# col=c("darkblue","red", "lightblue")
-
-plot(subRounds)
-
-boxplot(subRounds)
-
-
-tsubRounds = table(subRounds)
-tsubRounds
-
-summary(tsubRounds)
+#par(old)
 
 # x ex
 subExRound <- read.csv(file="sub/sub_x_ex_round.csv", head=TRUE, sep=","); subExRound
 summary(subExRound)
-      
-subExRound
-      
+
+
 plot.ts(subExRound, type='o', plot.type="single", col=exhs.colors)
 legend("top", legend=exhs.names, col = exhs.colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
 
