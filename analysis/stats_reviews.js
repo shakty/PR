@@ -42,6 +42,7 @@ pl.rebuildIndexes();
 var pnames = []; 
 pl.each(function(p){
 	var p = "P_" + p.pc + '_';
+	pnames.push(p + 'rev');
 	pnames.push(p + 'score');
 	pnames.push(p + 'in');
 	pnames.push(p + 'out');
@@ -57,6 +58,7 @@ var rnames_tmp = J.seq(1,30,1,function(e){
 
 var rnames = [];
 J.each(rnames_tmp, function(p){
+	rnames.push(p + '_rev');
 	rnames.push(p + '_score');
 	rnames.push(p + '_in');
 	rnames.push(p + '_out');
@@ -206,7 +208,8 @@ function writeRoundStats(pl) {
 			
 			var reviews = [];
 			round_stuff.each(function(p){
-				console.log(pl.id[p.player].first().pc);
+				//console.log(pl.id[p.player].first().pc);
+				reviews.push(p.rev);
 				reviews.push(p.score);
 				reviews.push(p.incolor);
 				reviews.push(p.outcolor);
@@ -231,7 +234,7 @@ function writeRoundStats(pl) {
 			
 			db.player[pl].sort('round');
 			var reviews = db.player[pl].map(function(p) {
-				return [p.score, p.incolor, p.outcolor, p.samecolor];
+				return [p.rev, p.score, p.incolor, p.outcolor, p.samecolor];
 			});
 			rWriter.writeRecord(reviews);
 			
