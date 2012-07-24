@@ -313,5 +313,7 @@ qplot(score, data=ingroup,col = as.factor(ingroup$same), beside=TRUE)
 
 
 ingroup.players <- read.csv(file="ingroup/player_reviews.csv", head=TRUE, sep=",")
+head(ingroup.players)
+
 plot.ts(ingroup$score)
 
