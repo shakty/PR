@@ -40,7 +40,7 @@ reader.setColumnNames(colnames);
 //PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./pl.nddb');
+pl.load('./nddbs/pl.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
@@ -57,7 +57,7 @@ var pnames = pl.map(function(p){
 var db = new NDDB();
 
 db.h('player', function(gb) {
-	return gb.player.id;
+	return gb.id;
 });
 
 
@@ -73,9 +73,22 @@ db.h('key', function(gb) {
 db.rebuildIndexes();
 
 //console.log(db.player['9132212711841317531'].first());
+var countRevs = {};
 
 reader.on('data', function(data) {
-	  
+	
+	// Assumption: data is ordered by round already
+	if (!countRevs[data.player] || countRevs[data.player] === 3) {
+		countRevs[data.player] = 1;
+	}
+	else {
+		countRevs[data.player]++;
+	}
+    
+	data.pc = pl.id[data.player].first().pc;
+    data.score = Number(data.score);
+    data.round = Number(data.round);
+	data.rev = countRevs[data.player];  
 	data.incolor = pl.id[data.player].first().color;
 	data.outcolor = pl.id[data.who].first().color;
 	data.samecolor = (data.outcolor === data.incolor) ? 1 : 0; 
@@ -88,10 +101,12 @@ reader.on('data', function(data) {
 
 
 reader.on('end', function(){
-	db.save('./nddbs/all_reviewss.nddb');
+	db.save('./nddbs/all_reviews.nddb');
 	
 	var pfile = 'ingroup/all_reviews.csv'; 
 
+	colnames.push('pc');
+	colnames.push('rev');
 	colnames.push('incolor');
 	colnames.push('outcolor');
 	colnames.push('same');
@@ -111,13 +126,3 @@ reader.on('end', function(){
 	
 	console.log('wrote files.');
 });
-
-
-
-
-
-
-
-
-
-

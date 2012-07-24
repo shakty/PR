@@ -4,6 +4,9 @@ setwd('/home/stefano/PR/analysis/csv')
 #setwd('/home/balistef/PR/analysis/csv')
 
 library("RColorBrewer")
+library('zoo')
+
+par(font=4)
 
 # Player colors
 colors = c("lightgreen", "green", "darkgreen", "indianred", "red", "darkred", "lightblue", "blue", "darkblue")

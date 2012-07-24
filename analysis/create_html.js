@@ -17,7 +17,7 @@ db.h('key', function(gb) {
 	return gb.key;
 });
 
-db.load('./all_cf_sub_eva.nddb');
+db.load('./nddbs/all_cf_sub_eva.nddb');
 
 db.each(function(e){
 	e.state.round = Number(e.state.round);

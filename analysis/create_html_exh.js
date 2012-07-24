@@ -23,7 +23,7 @@ db.h('ex', function(gb) {
 
 
 
-db.load('./all_cf_sub_eva.nddb');
+db.load('./nddbs/all_cf_sub_eva.nddb');
 
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -37,10 +37,10 @@ db.rebuildIndexes();
 var exhs = JSUS.implodeObj(db.ex),
 	exnames = ['A','B','C'];
 
-var ONLY_PUBLISHED = false;
+var ONLY_PUBLISHED = true;
 
-var index_file = (ONLY_PUBLISHED) ? './index_exh_pub.htm'
-								: './index_exh.htm';
+var index_file = (ONLY_PUBLISHED) ? './html/index_exh_pub.htm'
+								: './html/index_exh.htm';
 
 var states = db.groupBy('state');
 
@@ -127,7 +127,7 @@ var cells = rows.selectAll("td")
 		        		avg = item.avg;
 		        		style =  "width: 150px; margin: 3px; border: 3px solid ";
 		        		style+= item.published ? "yellow;" : "#CCC";
-		        		content += '<img src="' + filename + '" style="' + style + '"/>';
+		        		content += '<img src="../' + filename + '" style="' + style + '"/>';
 		        		content += '<br/>';
 		        		content += '<span style="text-align: center;">' + avg + '</span>';
 //		        		content += '&nbsp;<span style="text-align: center;">' + item.ex + '</span>';

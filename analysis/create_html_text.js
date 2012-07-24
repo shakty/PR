@@ -84,7 +84,7 @@ var cells = rows.selectAll("td")
         		avg = item.avg;
         		style =  "width: 150px; margin: 3px; border: 3px solid ";
         		style+= item.published ? "yellow;" : "#CCC";
-        		content = '<img src="' + filename + '" style="' + style + '"/>';
+        		content = '<img src="../' + filename + '" style="' + style + '"/>';
         		content += '<br/>';
         		content += '<span style="text-align: center;">' + avg + '</span>';
         		content += '<span style="text-align: center;">' + item.ex + '</span>';
@@ -103,7 +103,7 @@ var cells = rows.selectAll("td")
 
 
 
-fs.writeFile('./index_text.htm', window.document.innerHTML, function(err) {
+fs.writeFile('./html/index_text.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {

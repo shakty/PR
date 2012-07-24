@@ -10,17 +10,17 @@ var fs = require('fs'),
 var db = new NDDB();
 
 db.h('player', function(gb) {
-	return gb.player.id;
+	return gb.player;
 });
 db.h('state', function(gb) {
-	return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
+	return gb.state + '.' + gb.step +  '.' + gb.round;
 });
 db.h('key', function(gb) {
 	return gb.key;
 });
 
 
-db.load('./nddbs/all_cf_sub_eva_copy.nddb');
+db.load('./nddbs/all_reviews.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -34,20 +34,33 @@ db.rebuildIndexes();
 // PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./pl.nddb');
+pl.load('./nddbs/pl.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
 // HEADERS
-var pnames = pl.map(function(p){
-	return "P_" + p.pc;
+var pnames = []; 
+pl.each(function(p){
+	var p = "P_" + p.pc + '_';
+	pnames.push(p + 'score');
+	pnames.push(p + 'in');
+	pnames.push(p + 'out');
+	pnames.push(p + 'same');
 });
 
-var rnames = J.seq(1,30,1,function(e){
+var rnames_tmp = J.seq(1,30,1,function(e){
 	if (e < 10) {
 		e = '0' + e;
 	}
 	return 'R_' + e;
+});
+
+var rnames = [];
+J.each(rnames_tmp, function(p){
+	rnames.push(p + '_score');
+	rnames.push(p + '_in');
+	rnames.push(p + '_out');
+	rnames.push(p + '_same');
 });
 
 
@@ -167,44 +180,43 @@ var cf_features = {
 
 };
 
-
 var normalize = true;
 
-writeRoundStats();
+writeRoundStats(pl);
 
 // correlateDistanceFromOriginalAndScore();
 
 
-function writeRoundStats(path) {
+
+function writeRoundStats(pl) {
 	
-	var pfile = (normalize) ? 'copy/copy_x_round_x_player_norm.csv'
-							: 'copy/copy_x_round_x_player.csv'; 
-					
-	var rfile = 'copy/copy_x_round.csv';
-	
-//	var efile = 'copy/sub_x_ex_round.csv';
-//	
-//	var prfile = 'sub_x_player_x_round.csv';
+	var pfile = 'ingroup/player_reviews.csv'; 					
+	var rfile = 'ingroup/round_reviews.csv';
 	
 	// PLAYER STATS
 	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + pfile));
 	pWriter.writeRecord(pnames);	
 	var round = 1;
 	while (round < 31) {
+		var rev = 1;
+		while (rev < 4) {
+			// Divided by player
+			var round_stuff = db.select('round','=',round)
+									.select('rev', '=', rev).sort('pc');
+			
+			var reviews = [];
+			round_stuff.each(function(p){
+				console.log(pl.id[p.player].first().pc);
+				reviews.push(p.score);
+				reviews.push(p.incolor);
+				reviews.push(p.outcolor);
+				reviews.push(p.samecolor);
+			});
+			pWriter.writeRecord(reviews);
+			//console.log(subs);
+			rev++;
+		}
 		
-		// Divided by player
-		var round_stuff = db.select('state.round','=',round).sort('player');
-		var copies = round_stuff.map(function(p){
-			if (p.copy) {
-				return (normalize) ? p.copy.copied_round / (p.state.round -1)
-						   		   : p.state.round - p.copy.copied_round;
-			}
-			else {
-				return 0;
-			}
-		});
-		pWriter.writeRecord(copies);
-		//console.log(subs);
 		round++;
 	}
 	console.log("wrote " + pfile);
@@ -214,25 +226,20 @@ function writeRoundStats(path) {
 	rWriter.writeRecord(rnames);
 
 	for (var pl in db.player) {
+		
 		if (db.player.hasOwnProperty(pl)) {
 			
 			db.player[pl].sort('round');
-			var copies_pl = db.player[pl].map(function(p) {
-				if (p.copy) {
-					return p.state.round - p.copy.copied_round;
-				}
-				else {
-					return 0;
-				}
+			var reviews = db.player[pl].map(function(p) {
+				return [p.score, p.incolor, p.outcolor, p.samecolor];
 			});
-			rWriter.writeRecord(copies_pl);
+			rWriter.writeRecord(reviews);
 			
 		}
 	}
-	console.log("wrote " + rfile);
-
-	
+	console.log("wrote " + rfile);	
 }
+
 
 
 function correlateDistanceFromOriginalAndScore() {

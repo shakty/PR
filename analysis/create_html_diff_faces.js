@@ -23,7 +23,7 @@ var html = d3.select('html')
 
 function createListofImages(imgDir, out) {
 
-
+	out = './html/' + out;
 	var filenames = fs.readdirSync(imgDir);
 	filenames.sort();
 	
@@ -36,7 +36,7 @@ function createListofImages(imgDir, out) {
 		.append('dt')
 			.append('img')
 			.attr('src', function(f){
-				return imgDir + f;
+				return '../' + imgDir + f;
 			});
 
 
@@ -44,29 +44,38 @@ function createListofImages(imgDir, out) {
 	    if(err) {
 	        console.log(err);
 	    } else {
-	        console.log("The file was saved!");
+	        console.log(out + " was saved!");
 	    }
 	}); 
 
 }
 
+
 // SINGLE FEATURES
-//createListofImages('./csv/diff/single/img/', './index_diff_faces_single.htm');
+// createListofImages('./csv/diff/single/img/', './index_diff_faces_single.htm');
 
 // GROUPED
-//createListofImages('./csv/diff/parts/img/', './index_diff_faces_grouped.htm');
+// createListofImages('./csv/diff/parts/img/', './index_diff_faces_grouped.htm');
 
 // GLOBAL
-//createListofImages('./csv/diff/global/img/', './index_diff_faces_global.htm');
+// createListofImages('./csv/diff/global/img/', './index_diff_faces_global.htm');
 
 // COPY
-//createListofImages('./csv/copy/img/', './index_copy_in_time.htm');
+// createListofImages('./csv/copy/img/', './index_copy_in_time.htm');
 
 // SELF
-//createListofImages('./csv/diff/self/img/', './index_diff_faces_self.htm');
+// createListofImages('./csv/diff/self/img/', './index_diff_faces_self.htm');
 
 // PUBS
-//createListofImages('./csv/diff/pubs/img/', './index_diff_faces_pubs.htm');
+// createListofImages('./csv/diff/pubs/img/', './index_diff_faces_pubs.htm');
 
-createListofImages('./csv/diff/previouspub/img/', './index_diff_faces_previouspub.htm');
+// DIFF PUBS
+// createListofImages('./csv/diff/previouspub/img/', './index_diff_faces_previouspub.htm');
+
+// DIFFs and SCORE
+// createListofImages('./csv/diff/diffandscore/img/', './index_diffandscore.htm');
+
+// SUBMISSION DECISION
+createListofImages('./csv/sub/img/', './index_subs.htm');
+
 

@@ -51,7 +51,7 @@ var states = db.groupBy('state');
 function displayFace(item, player) {
 	var item, border, filename, pub, avg, style, content;
 	
-	filename = './faces/' + item.player.pc + '_' + item.state.round + '.png';
+	filename = '../faces/' + item.player.pc + '_' + item.state.round + '.png';
 	//console.log(filename)
 	pub = item.published ? 'P' : 'NP';
 	avg = item.avg;
@@ -142,7 +142,7 @@ var cells = rows.selectAll("td")
 //			.style('margin', '3px')
 
 
-fs.writeFile('./index_copy.htm', window.document.innerHTML, function(err) {
+fs.writeFile('./html/index_copy.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {
@@ -196,7 +196,7 @@ var cells = rows.selectAll("td")
     		return content;
     	});
 
-fs.writeFile('./index_copies.htm', window.document.innerHTML, function(err) {
+fs.writeFile('./html/index_copies.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {
