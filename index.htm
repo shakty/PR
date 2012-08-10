@@ -10,13 +10,14 @@
 <!-- JQUERY UI ENDS -->
 
 <!-- Shelf.JS STARTS -->
-<script src="/PR/lib/cycle.js" charset="utf-8"></script>
-<script src="/PR/lib/shelf.js" charset="utf-8"></script>
+<!--  <script src="/PR/lib/cycle.js" charset="utf-8"></script>  -->
+<!--  <script src="/PR/lib/shelf.js" charset="utf-8"></script> -->
+<!-- <script src="/javascripts/shelf-browser.js " charset="utf-8"></script> --> 
 <!-- Shelf.JS ENDS -->
 
 <!-- nodeGame starts -->
-<script src="/socket.io/socket.io.js"></script> 
-<script src="/javascripts/nodegame.js" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/nodegame-full.js" charset="utf-8"></script>
 <!-- nodeGame ends -->
 
 
@@ -68,7 +69,7 @@
 				}
 			};
 	
-	    node.play(conf, new PeerReviewGame());
+	    node.play(conf, new PeerReviewGame()); 
     
 	}
 </script>

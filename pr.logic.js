@@ -2,7 +2,7 @@ function PeerReview () {
 	
 	this.name = 'Game Example';
 	this.description = 'General Description';
-	this.version = '0.2';
+	this.version = '0.3';
 	
 	this.minPlayers = 1;
 	this.maxPlayers = 10;
@@ -19,7 +19,7 @@ function PeerReview () {
 	};
 	
 	var instructions = function () {	
-		node.game.pl.dump('./out/PL.csv');
+		node.game.pl.save('./out/PL.nddb');
 		console.log('Instructions');
 	};
 		
@@ -142,10 +142,10 @@ function PeerReview () {
 		}
 
 		
-		console.log(node.game.memory.key.CF.first());
+		//console.log(node.game.memory.key.CF.first());
 		
-		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.csv';
-		node.memory.dump(filename);
+		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
+		node.game.memory.save(filename);
 //		console.log('SELECTED');
 //		console.log(selected);
 		//console.log(this.memory.db);
