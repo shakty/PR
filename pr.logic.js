@@ -10,7 +10,7 @@ function PeerReview () {
 	this.automatic_step = true;
 	
 	this.init = function() {
-		this.threshold = 7;
+		this.threshold = 1;
 		this.reviewers = 3;
 	};
 	
@@ -64,10 +64,18 @@ function PeerReview () {
 		// get all the evaluations for each submission
 		var exhibs = this.memory.select('state', '>=', this.previous(2))
 								.join('player', 'value.for', 'EVA2', ['value'])
-								.select('EVA2') // TODO: should this be automatic ?
+								.select('EVA2') 
 								.select('key','=','SUB')
 								.sort('value')
 								.groupBy('value');
+
+		
+//		console.log(exhibs.fetch())
+////		console.log(this.memory.fetch());
+//		console.log(node.game.state);
+//		console.log(this.previous(2));
+////		console.log(exhibs.length);
+//		console.log(this.memory.length);
 		
 		var selected = [];
 		// Exhibitions Loop
@@ -79,10 +87,10 @@ function PeerReview () {
 			// Get the list of works per exhibition
 			var works = exhibs[i].groupBy('EVA2.value.for');
 			
-			// console.log('-------------------------------------------');
-			// console.log('works: ' + works.length);	
-			// console.log(works);
-			// console.log('-------------------------------------------');
+			 console.log('-------------------------------------------');
+			 console.log('works: ' + works.length);	
+			 console.log(works);
+			 console.log('-------------------------------------------');
 			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
@@ -115,12 +123,7 @@ function PeerReview () {
 					
 					var author = this.pl.select('id', '=', player).first();
 					
-					
-//					console.log('STATE')
-//					console.log(node.game.state);
-//					console.log(node.game.gameState);
-//					console.log(node.state);
-					
+										
 					// This should always exist
 					if (author) {
 						selected.push({ex: works[j].first().value,
@@ -128,7 +131,7 @@ function PeerReview () {
 								   author: author.name,
 								   cf: cf.first().value,
 								   id: author.name,
-								   round: node.game.gameState.toHash('S.r'),
+								   round: node.game.state.toHash('S.r'),
 								   pc: author.pc,
 						});
 					}
@@ -146,8 +149,8 @@ function PeerReview () {
 		
 		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
 		node.game.memory.save(filename);
-//		console.log('SELECTED');
-//		console.log(selected);
+		console.log('SELECTED');
+		console.log(selected);
 		//console.log(this.memory.db);
 		node.say(selected, 'WIN_CF', 'ALL');
 
