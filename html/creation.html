@@ -244,7 +244,7 @@ $(document).ready(function() {
       
       $( '#all_ex canvas').hover(
               function (e) {
-                var enlarge = $("<span id='enlarge'>Click to enlarge and copy</span>");
+                var enlarge = $("<span id='enlarge'>Click to enlarge, and decide if copying it</span>");
                 var pos = $(this).position();
                 enlarge.addClass('tooltip');
                 enlarge.css({"left": (5 + e.pageX) + "px","top":e.pageY + "px" });
@@ -275,7 +275,7 @@ $(document).ready(function() {
 	      else {
 	        node.window.getElementById('ex_C').click();
 	      }
-	    }, 2000);
+	    }, 4000);
       
 			
     });

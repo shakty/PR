@@ -228,19 +228,24 @@ function PeerReviewGame () {
 			
 			node.onDATA('PLAYER_RESULT', function(msg){
 				if (!msg.data) return;
-				var resultDiv = W.getDiv('resultDiv');
+				//var resultDiv = W.getDiv('resultDiv');
 				var table = new W.Table();
 				
 				if (msg.data.published) {
-					table.add('Congratulations! Your drawing was accepted in exhibition ' + msg.data.ex, 0, 0);
+					table.addRow(['Congratulations!','']);
+					table.addRow(['You published in exhibition:', msg.data.ex]);
 					node.emit('MONEYTALKS', node.game.money);
 				}
 				else {
-					table.add('Unfortunately, your drawing was rejected by exhibition ' + msg.data.ex + '</b>', 0, 0);
+					table.addRow(['Sorry.','']);
+					table.addRow(['You were rejected by exhibition:', msg.data.ex]);
 				}
-				table.add('Your average review score was ' + msg.data.mean);
-				resultDiv.appendChild(table.parse());
-				W.getElementById('results').appendChild(resultDiv);
+				table.addRow(['Your average review score was:', msg.data.mean]);
+				
+				table.select('y', '=', 1).addClass('strong');
+				
+				//resultDiv.appendChild(table.parse());
+				W.getElementById('results').appendChild(table.parse());
 			});
 			
 			

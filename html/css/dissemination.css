@@ -27,3 +27,11 @@ div#results {
   margin-bottom: 300px;
   text-align: left;
 }
+
+div#results table {
+  float: left;
+  border: 0;
+  padding:0;
+  background: white;
+  text-align: left;
+}
