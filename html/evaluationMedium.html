@@ -1,0 +1,135 @@
+<!doctype html>
+<title>Evaluation</title>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!-- To avoid: "attempt to run compile-and-go script on a cleared scope" -->
+<script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/evaluation.css">
+
+<body>
+  <h2>Evaluation</h2>
+   Express a quality judgement on the paintings just made by other players. Move the slider on a scale from 0 to 10,  where 
+   <ul>
+     <li> 0 (zero) means <em>complete dislike</em> </li>
+     <li> 5 (five) means that you are <em>indifferent</em> </li>
+     <li> 10 (nine) means <em>complete like</em> </li>
+   </ul>
+   <p>
+   The same paintings will be reviewed also by other players, and each painting that 
+   will receive an average evaluation greater or equal than <strong>5 (five)</strong> 
+   will be put on display.
+   </p>
+   <div id="container_evaluation"></div>
+   <div id="container_done" onclick='javascript:parent.node.DONE();'>
+     <div id="done_box">
+     <button>Click here when you are done</button>
+   </div>
+   </div>
+   
+</body>
+
+<script type="text/javascript">
+<!--
+
+window.onload = function(){
+
+
+	var node = parent.node,
+      JSUS = parent.JSUS,
+      W = parent.W,
+      Table = W.Table;
+	
+  // Avoid ESC to break the connection  
+  W.noEscape(window);
+  
+  var table = new Table({
+      auto_update: true,
+      id: 'tbl_evaluation',
+  });   
+  
+  var headers = [];
+  
+  node.onDATA('CF', function(msg) {
+    
+	  console.log(msg.data)
+	  
+	  for (var ex in msg.data) {
+		  if (!msg.data.hasOwnProperty(ex)) {
+			  continue;
+		  }  
+		  
+		  for (var i=0; i < msg.data[ex].length; i++) {
+			  
+			  headers.push('Exhibition: ' + ex);
+		  	  
+		    var cf_options = { id: 'cf',
+		               width: 300,
+		               height: 300,
+		               scaleX: 1,
+		               scaleY: 1,
+		               features: msg.data[ex][i].face,
+		               change: false,
+		               controls: false
+		    };
+		
+		    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+		  
+		    var evaId = 'eva_' + msg.data[ex][i].from;
+		    var diplayEvaId = 'display_' + msg.data[ex][i].from;
+		    var displayContId = 'display_cont_' + msg.data[ex][i].from;
+		    
+		    // Add the slider to the container
+		    
+		    var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
+		    var display_container = node.window.getDiv(displayContId);
+		    var display = node.window.addTextInput(display_container, diplayEvaId, {
+		       disabled: "disabled",
+		       style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
+		    });
+		    
+		    var labelText = 'Your current evaluation: ';
+		    node.window.addLabel(display_container, display, null, labelText);  
+		    
+		    this.evas[msg.data[ex][i].from] = display; 
+		    
+		    table.setHeader(headers);
+		    table.addColumn([sl, display_container, cf.getCanvas()]);
+		    // How to add jquery slider   
+		    
+		    $( "#" + evaId).slider({
+		      value: 5,
+		      min: 0,
+		      max: 10,
+		      step: 0.1,
+		      slide: function( event, ui ) {
+		        $( "#" + diplayEvaId ).val( ui.value );
+		      }
+		    });
+		    $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
+		    
+		    
+		    //AUTOPLAY
+		     node.random.exec(function() {
+		      $( "#" + evaId ).slider( "value",  Math.random()*10);
+		      $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+		    }, 4000); 
+		    
+		  }
+	    
+		  
+	  }
+  });
+  //$('#done_box').before(table.table);
+  document.getElementById('container_evaluation').appendChild(table.table);
+  node.random.emit('DONE', 100000);
+  
+}
+
+//-->
+</script>

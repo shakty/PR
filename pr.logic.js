@@ -37,7 +37,7 @@ function PeerReview () {
 							   .select('key', '=', 'SUB')
 							   .fetch();
 		
-		console.log(faces);
+//		console.log(faces);
 		
 		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
 //		console.log('STEEEE');
@@ -57,7 +57,15 @@ function PeerReview () {
 				});
 				//console.log(matches[i][0].player + ' ' + matches[i][1].player);
 			}
-			node.say(data, 'CF', faces[i].player);
+//			console.log('for ' + faces[i].player);
+//			console.log(node.JSUS.size(data.length));
+			// Sort by exhibition and send them
+			JSUS.each(['A','B','C'], function(ex){
+				if (!data[ex]) return;
+				for (var z = 0; z < data[ex].length; z++) {
+					node.say(data[ex][z], 'CF', faces[i].player);
+				} 
+			});
 		}
 		
 		console.log('evaluation');

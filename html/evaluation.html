@@ -57,76 +57,66 @@ window.onload = function(){
   
   node.onDATA('CF', function(msg) {
     
-	  console.log(msg.data)
+	  /* console.log(msg.data) */
 	  
-	  for (var ex in msg.data) {
-		  if (!msg.data.hasOwnProperty(ex)) {
-			  continue;
-		  }  
-		  
-		  for (var i=0; i < msg.data[ex].length; i++) {
-			  
-			  headers.push('Exhibition: ' + ex);
+	 
+		headers.push('Exhibition: ' + msg.data.ex);
 		  	  
-		    var cf_options = { id: 'cf',
-		               width: 300,
-		               height: 300,
-		               scaleX: 1,
-		               scaleY: 1,
-		               features: msg.data[ex][i].face,
-		               change: false,
-		               controls: false
-		    };
-		
-		    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
-		  
-		    var evaId = 'eva_' + msg.data[ex][i].from;
-		    var diplayEvaId = 'display_' + msg.data[ex][i].from;
-		    var displayContId = 'display_cont_' + msg.data[ex][i].from;
-		    
-		    // Add the slider to the container
-		    
-		    var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
-		    var display_container = node.window.getDiv(displayContId);
-		    var display = node.window.addTextInput(display_container, diplayEvaId, {
-		       disabled: "disabled",
-		       style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
-		    });
-		    
-		    var labelText = 'Your current evaluation: ';
-		    node.window.addLabel(display_container, display, null, labelText);  
-		    
-		    this.evas[msg.data[ex][i].from] = display; 
-		    
-		    table.setHeader(headers);
-		    table.addColumn([sl, display_container, cf.getCanvas()]);
-		    // How to add jquery slider   
-		    
-		    $( "#" + evaId).slider({
-		      value: 5,
-		      min: 0,
-		      max: 10,
-		      step: 0.1,
-		      slide: function( event, ui ) {
-		        $( "#" + diplayEvaId ).val( ui.value );
-		      }
-		    });
-		    $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
-		    
-		    
-		    //AUTOPLAY
-		     node.random.exec(function() {
-		      $( "#" + evaId ).slider( "value",  Math.random()*10);
-		      $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
-		    }, 4000); 
-		    
-		  }
-	    
-		  
-	  }
+    var cf_options = { id: 'cf',
+               width: 300,
+               height: 300,
+               scaleX: 1,
+               scaleY: 1,
+               features: msg.data.face,
+               change: false,
+               controls: false
+    };
+
+    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+  
+    var evaId = 'eva_' + msg.data.from;
+    var diplayEvaId = 'display_' + msg.data.from;
+    var displayContId = 'display_cont_' + msg.data.from;
+    
+    // Add the slider to the container
+    
+    var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
+    var display_container = node.window.getDiv(displayContId);
+    var display = node.window.addTextInput(display_container, diplayEvaId, {
+       disabled: "disabled",
+       style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
+    });
+    
+    var labelText = 'Your current evaluation: ';
+    node.window.addLabel(display_container, display, null, labelText);  
+    
+    this.evas[msg.data.from] = display; 
+    
+    table.setHeader(headers);
+    table.addColumn([sl, display_container, cf.getCanvas()]);
+    // How to add jquery slider   
+    
+    $( "#" + evaId).slider({
+      value: 5,
+      min: 0,
+      max: 10,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#" + diplayEvaId ).val( ui.value );
+      }
+    });
+    $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
+    
+    
+    //AUTOPLAY
+     node.random.exec(function() {
+      $( "#" + evaId ).slider( "value",  Math.random()*10);
+      $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+    }, 4000); 
+	  
   });
   //$('#done_box').before(table.table);
-  document.getElementById('container_evaluation').appendChild(table.parse());
+  document.getElementById('container_evaluation').appendChild(table.table);
   node.random.emit('DONE', 100000);
   
 }
