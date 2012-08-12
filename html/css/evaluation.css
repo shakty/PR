@@ -16,3 +16,7 @@ div#container_done {
   padding-top: 300px;
   background: white;
 }
+
+table.reviewBox {
+	float: left;
+}

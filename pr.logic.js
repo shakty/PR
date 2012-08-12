@@ -32,28 +32,33 @@ function PeerReview () {
 		var R =  (this.pl.length > 3) ? this.reviewers
 									  : (this.pl.length > 2) ? 2 : 1;
 		
-		// TODO: expose these methods from the node obj
 		var faces = this.memory.select('state', '=', this.previous())
-							   .select('key', '=', 'CF')
+							   .join('player', 'player', 'CF', 'value')		
 							   .fetch();
 		
-		//console.log(faces);
+//		console.log(faces);
+		
 		
 		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
 //		console.log('STEEEE');
 //		console.log(matches);
 
 		for (var i=0; i < faces.length; i++) {
+			var data = {};
 			for (var j=0; j < matches.length; j++) {
 				//console.log(matches[j][i]);
 				var face = faces[matches[j][i]];
 				//console.log(face);
-				var data = {face: face.value,
-							from: face.player
-				};
-//				console.log(matches[i][0].player + ' ' + matches[i][1].player);
-				node.say(data, 'CF', faces[i].player);
+				if (!data[face.value]) data[face.value] = [];
+				data[face.value].push({
+					face: face.CF.value,
+					from: face.player,
+					ex: face.value,
+				});
+				//console.log(matches[i][0].player + ' ' + matches[i][1].player);
 			}
+			node.say(data, 'CF', faces[i].player);
+			
 		}
 		
 		console.log('evaluation');
@@ -87,10 +92,10 @@ function PeerReview () {
 			// Get the list of works per exhibition
 			var works = exhibs[i].groupBy('EVA2.value.for');
 			
-			 console.log('-------------------------------------------');
-			 console.log('works: ' + works.length);	
-			 console.log(works);
-			 console.log('-------------------------------------------');
+//			 console.log('-------------------------------------------');
+//			 console.log('works: ' + works.length);	
+//			 console.log(works);
+//			 console.log('-------------------------------------------');
 			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
@@ -149,8 +154,8 @@ function PeerReview () {
 		
 		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
 		node.game.memory.save(filename);
-		console.log('SELECTED');
-		console.log(selected);
+//		console.log('SELECTED');
+//		console.log(selected);
 		//console.log(this.memory.db);
 		node.say(selected, 'WIN_CF', 'ALL');
 

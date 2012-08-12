@@ -6,10 +6,6 @@
 <script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
 <!-- JQUERY UI ENDS -->
 
-<!-- no Escape -->
-<!--  <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
-<!-- no Escape ends -->
-
 <!-- To avoid: "attempt to run compile-and-go script on a cleared scope" -->
 <script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
 
@@ -18,24 +14,24 @@
 
 <body>
   <h2>Evaluation</h2>
-	 Express a quality judgement on the paintings just made by other players. Move the slider on a scale from 1 to 9,  where 
+   Express a quality judgement on the paintings just made by other players. Move the slider on a scale from 1 to 9,  where 
    <ul>
-     <li> 0 (one) means <em>complete dislike</em> </li>
+     <li> 1 (one) means <em>complete dislike</em> </li>
      <li> 5 (five) means that you are <em>indifferent</em> </li>
-     <li> 10 (nine) means <em>complete like</em> </li>
+     <li> 9 (nine) means <em>complete like</em> </li>
    </ul>
    <p>
    The same paintings will be reviewed also by other players, and each painting that 
    will receive an average evaluation greater or equal than <strong>7 (seven)</strong> 
    will be put on display.
    </p>
-	 <div id="container_evaluation"></div>
-	 <div id="container_done" onclick='javascript:parent.node.DONE();'>
-	   <div id="done_box">
+   <div id="container_evaluation"></div>
+   <div id="container_done" onclick='javascript:parent.node.DONE();'>
+     <div id="done_box">
      <button>Click here when you are done</button>
    </div>
-	 </div>
-	 
+   </div>
+   
 </body>
 
 <script type="text/javascript">
@@ -43,76 +39,96 @@
 
 window.onload = function(){
 
-	var node = parent.node	
-	node.window.noEscape(window);
-	
-	var table = new node.window.Table({
-		  auto_update: true,
-		  id: 'tbl_evaluation',
-	});   
-	
-	//$('#done_box').before(table.table);
-	document.getElementById('container_evaluation').appendChild(table.table);
-	
-	node.onDATA('CF', function(msg) {
-	  
-	  var cf_options = { id: 'cf',
-	             width: 300,
-	             height: 300,
-	             scaleX: 1,
-	             scaleY: 1,
-	             features: msg.data.face,
-	             change: false,
-	             controls: false
-	  };
+  // Avoid ESC to break the connection  
+  $(this).keypress(function(e){
+    if(e.keyCode == 27){
+        return false;
+    }
+  });
 
-    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
-	
-	  var evaId = 'eva_' + msg.data.from;
-	  var diplayEvaId = 'display_' + msg.data.from;
-	  var displayContId = 'display_cont_' + msg.data.from;
-	  
-	  // Add the slider to the container
-	  
-	  var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
-	  var display_container = node.window.getDiv(displayContId);
-	  var display = node.window.addTextInput(display_container, diplayEvaId, {
-	     disabled: "disabled",
-	     style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
-	  });
-	  
-	  var labelText = 'Your current evaluation: ';
-	  node.window.addLabel(display_container, display, null, labelText);  
-	  
-	  this.evas[msg.data.from] = display; 
-	  table.addColumn([sl, display_container, cf.getCanvas()]);
-	  // How to add jquery slider   
-	  
-	  $( "#" + evaId).slider({
-		  value: 5,
-	    min: 0,
-	    max: 10,
-	    step: 0.1,
-	    slide: function( event, ui ) {
-	      $( "#" + diplayEvaId ).val( ui.value );
-	    }
-	  });
-	  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
-	  
 
-	  //AUTOPLAY
-	  node.random.exec(function() {
-		  $( "#" + evaId ).slider( "value",  Math.random()*10);
-		  $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
-	  }, 1000); 
-	  
-	});
+  var node = parent.node;
+  
+  var table = new node.window.Table({
+      auto_update: true,
+      id: 'tbl_evaluation',
+  });   
+  
+  var headers = [];
+  
+  //$('#done_box').before(table.table);
+  document.getElementById('container_evaluation').appendChild(table.table);
+  
+  node.onDATA('CF', function(msg) {
+    
+	  for (var ex in msg.data) {
+		  if (!msg.data.hasOwnProperty(ex)) {
+			  continue;
+		  }  
+		  
+		  for (var i=0; i < msg.data[ex].length; i++) {
+			  
+			  headers.push('Exhibition: ' + ex);
+		  	  
+		    var cf_options = { id: 'cf',
+		               width: 300,
+		               height: 300,
+		               scaleX: 1,
+		               scaleY: 1,
+		               features: msg.data.face,
+		               change: false,
+		               controls: false
+		    };
+		
+		    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+		  
+		    var evaId = 'eva_' + msg.data[ex][i].from;
+		    var diplayEvaId = 'display_' + msg.data[ex][i].from;
+		    var displayContId = 'display_cont_' + msg.data[ex][i].from;
+		    
+		    // Add the slider to the container
+		    
+		    var sl = node.window.getDiv(evaId, {'style': 'border: 0; background: white; width:300px'});
+		    var display_container = node.window.getDiv(displayContId);
+		    var display = node.window.addTextInput(display_container, diplayEvaId, {
+		       disabled: "disabled",
+		       style: "border:0; color:#f6931f; font-weight:bold; background: white; width: 50px",
+		    });
+		    
+		    var labelText = 'Your current evaluation: ';
+		    node.window.addLabel(display_container, display, null, labelText);  
+		    
+		    this.evas[msg.data[ex][i].from] = display; 
+		    
+		    table.setHeader(headers);
+		    table.addColumn([sl, display_container, cf.getCanvas()]);
+		    // How to add jquery slider   
+		    
+		    $( "#" + evaId).slider({
+		      value: 5,
+		      min: 0,
+		      max: 10,
+		      step: 0.1,
+		      slide: function( event, ui ) {
+		        $( "#" + diplayEvaId ).val( ui.value );
+		      }
+		    });
+		    $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 
+		    
+		    
+		    //AUTOPLAY
+		     node.random.exec(function() {
+		      $( "#" + evaId ).slider( "value",  Math.random()*10);
+		      $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
+		    }, 4000); 
+		  }
+	    
+	  }
+  });
 
-	// AUTOPLAY
-	node.random.emit('DONE', 10000);
-	
+  node.random.emit('DONE', 10000);
+  
 }
 
 //-->
 </script>
-

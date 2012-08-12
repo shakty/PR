@@ -40,89 +40,94 @@ function PeerReviewGame () {
 		this.last_cf = null;
 		
 		this.renderCF = function (cell) {
-
+//			console.log('renderCF');
+			
 			// Check if it is really CF obj
-			if (cell.content.cf) {
-				
-				var w = 200;
-				var h = 200;
-				
-				if (node.game.gameLoop.getName() == 'Creation') {	
-					w = 100;
-					h = 100;
-				}
-				
-				var cf_options = { id: 'cf_' + cell.x,
-						   width: w,
-						   height: h,
-						   features: cell.content.cf,
-						   controls: false,
-						   change: false,
-						   onclick: function() {
-								var that = this;
-								var f = that.getAllValues();
-		
-								var cf_options = { id: 'cf',
-						                 width: 400,
-						                 height: 400,
-						                 features: f,
-					                 	 controls: false,
-								};
-						      
-								var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
-								
+			if (!cell.content || !cell.content.cf) {
+				return;
+			}
 
-				    	          var div = $('<div class="copyorclose">');
-				    	          $(cf.canvas).css('background', 'white');
-				    	          $(cf.canvas).css('border', '3px solid #CCC'); 
-				    	          $(cf.canvas).css('padding', '5px');
+			var w = 200;
+			var h = 200;
+			
+			if (node.game.gameLoop.getName() == 'Creation') {	
+				w = 100;
+				h = 100;
+			}
+			
+			var cf_options = { id: 'cf_' + cell.x,
+					   width: w,
+					   height: h,
+					   features: cell.content.cf,
+					   controls: false,
+					   change: false,
+					   onclick: function() {
+							var that = this;
+							var f = that.getAllValues();
 	
-				    	          div.append(cf.canvas);
-				    	          
-				    	          var buttons = [];
-				    	          if (node.game.gameLoop.getName() !== 'Exhibition') {
-				    	        	  buttons.push({
-				    	        		  text: 'copy',
-				    	        		  click: function() {	
-						    	            	node.emit('COPIED', f);
-						    	            	node.set('COPIED', {
-						    	            		author: cell.content.author,
-						    	            		ex: cell.content.ex,
-						    	            		mean: cell.content.mean,
-						    	            		round: cell.content.round,
-						    	            	});
-						    	                $( this ).dialog( "close" );
-						    	              },
-				    	        	  });
-				    	          }
-				    	          
-				    	          buttons.push({
-				    	        	  text: 'Cancel',
-				    	        	  click: function() {
-				    	                $( this ).dialog( "close" );
-				    	              },
-				    	          });
-				    	          
-				    	          div.dialog({
-				    	            width: 460,
-				    	            height: 560,
-				    	            show: "blind",
-				    	            hide: "explode",
-				    	            buttons: buttons,
-				    	          });
-						   }
-				};
-				
-				var container = document.createElement('div');
-				var cf = node.window.addWidget('ChernoffFacesSimple', container, cf_options);
-				
+							var cf_options = { id: 'cf',
+					                 width: 400,
+					                 height: 400,
+					                 features: f,
+				                 	 controls: false,
+							};
+					      
+							var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+							
+
+			    	          var div = $('<div class="copyorclose">');
+			    	          $(cf.canvas).css('background', 'white');
+			    	          $(cf.canvas).css('border', '3px solid #CCC'); 
+			    	          $(cf.canvas).css('padding', '5px');
+
+			    	          div.append(cf.canvas);
+			    	          
+			    	          var buttons = [];
+			    	          if (node.game.gameLoop.getName() !== 'Exhibition') {
+			    	        	  buttons.push({
+			    	        		  text: 'copy',
+			    	        		  click: function() {	
+					    	            	node.emit('COPIED', f);
+					    	            	node.set('COPIED', {
+					    	            		author: cell.content.author,
+					    	            		ex: cell.content.ex,
+					    	            		mean: cell.content.mean,
+					    	            		round: cell.content.round,
+					    	            	});
+					    	                $( this ).dialog( "close" );
+					    	              },
+			    	        	  });
+			    	          }
+			    	          
+			    	          buttons.push({
+			    	        	  text: 'Cancel',
+			    	        	  click: function() {
+			    	                $( this ).dialog( "close" );
+			    	              },
+			    	          });
+			    	          
+			    	          div.dialog({
+			    	            width: 460,
+			    	            height: 560,
+			    	            show: "blind",
+			    	            hide: "explode",
+			    	            buttons: buttons,
+			    	          });
+					   }
+			};
+			
+			var container = document.createElement('div');
+			
+			var cf = node.window.addWidget('ChernoffFacesSimple', container, cf_options);
+			
 				var details_tbl = new node.window.Table();
 				details_tbl.addColumn(['Author: ' + cell.content.author,
 				                       'Score: ' + cell.content.mean
 				]);
 				container.appendChild(details_tbl.parse());
-				return container;
-			}
+			
+			return container;
+			
 		};
 		
 	};
@@ -168,8 +173,13 @@ function PeerReviewGame () {
 			
 			this.all_ex.addDT(dt_header);
 			
-			var table = new node.window.Table({className: 'exhibition',
-										 	   render: this.renderCF,
+			var table = new node.window.Table({ className: 'exhibition',
+												render: {
+													pipeline: this.renderCF,
+												 	returnAt: 'first',
+												},
+										
+										 	   
 			});
 			
 			table.setHeader(['A','B','C']);
@@ -180,7 +190,7 @@ function PeerReviewGame () {
 					var db = new node.NDDB(null,msg.data);
 					
 					for (var j=0; j < this.exs.length; j++) {
-						var winners = db.select('ex','=',this.exs[j])
+						var winners = db.select('ex', '=', this.exs[j])
 										.sort('mean')
 										.reverse()
 										.fetch();
@@ -196,9 +206,10 @@ function PeerReviewGame () {
 						}
 					}
 
-					//debugger;
 					//$('#mainframe').contents().find('#done_box').before(table.parse());
+					
 					node.window.getElementById('container_exhibition').appendChild(table.parse());
+
 					this.all_ex.addDD(table);
 
 				}
