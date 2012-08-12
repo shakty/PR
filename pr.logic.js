@@ -10,7 +10,7 @@ function PeerReview () {
 	this.automatic_step = true;
 	
 	this.init = function() {
-		this.threshold = 1;
+		this.threshold = 5;
 		this.reviewers = 3;
 	};
 	
@@ -89,7 +89,14 @@ function PeerReview () {
 ////		console.log(exhibs.length);
 //		console.log(this.memory.length);
 		
+		
+		// array of all the selected works (by exhibition);
 		var selected = [];
+		
+		// results of the round (by author) 
+		var player_results = [];
+		
+		
 		// Exhibitions Loop
 		for (var i=0; i < exhibs.length; i++) {
 			
@@ -115,15 +122,24 @@ function PeerReview () {
 //				console.log(works[j].first());
 //				console.log(works[j].last());
 				
+				var player = works[j].first().player;
 				
 				var mean = works[j].mean('EVA2.value.eva'); 
 //				console.log('Mean: ' + mean);
 //				console.log('T: ' + this.threshold);
 				
+				var player_result = {
+						player: player,
+						mean: mean.toFixed(2),
+						scores: works[j].fetch('EVA2.value.eva'),
+						ex: works[j].first().value
+				};
+				
+				
 				// Threshold
 				if (mean > this.threshold) {	
 					
-					var player = works[j].first().player;
+					player_result.published = true;
 					
 					var cf = this.memory.select('state', '=', this.previous(2))
 										.select('player', '=', player)
@@ -150,7 +166,8 @@ function PeerReview () {
 					
 				}
 				
-				
+				// Add results for single player
+				player_results.push(player_result);
 				
 				
 			}
@@ -164,7 +181,13 @@ function PeerReview () {
 //		console.log('SELECTED');
 //		console.log(selected);
 		//console.log(this.memory.db);
+		
+		// Dispatch exhibition results to ALL
 		node.say(selected, 'WIN_CF', 'ALL');
+		// Dispatch detailed individual results to each single player
+		JSUS.each(player_results, function(r){
+			node.say(r, 'PLAYER_RESULT', r.player);
+		});
 
 		console.log('dissemination');
 	};
@@ -184,15 +207,15 @@ function PeerReview () {
 	var gameloop = { // The different, subsequent phases in each round
 			
 			1: {state: creation,
-				name: 'Creation'
+				name: 'Creation',
 			},
 			
 			2: {state: evaluation,
-				name: 'Evaluation'
+				name: 'Evaluation',
 			},
 			
 			3: {state: dissemination,
-				name: 'Exhibition'
+				name: 'Exhibition',
 			}
 		};
 

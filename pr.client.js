@@ -12,7 +12,11 @@ function PeerReviewGame () {
 	
 	this.init = function() {			
 		node.window.setup('PLAYER');
+		node.window.addWidget('MoneyTalks', node.window.header, {currency: 'CHF', money: 20});
+		
 		//node.window.addWidget('WaitScreen');
+		
+		this.money = 0.75;
 		
 		this.cf = null;
 		this.outlet = null;
@@ -221,8 +225,27 @@ function PeerReviewGame () {
 				}
 				
 			});
+			
+			node.onDATA('PLAYER_RESULT', function(msg){
+				if (!msg.data) return;
+				var resultDiv = W.getDiv('resultDiv');
+				var table = new W.Table();
+				
+				if (msg.data.published) {
+					table.add('Congratulations! Your drawing was accepted in exhibition ' + msg.data.ex, 0, 0);
+					node.emit('MONEYTALKS', node.game.money);
+				}
+				else {
+					table.add('Unfortunately, your drawing was rejected by exhibition ' + msg.data.ex + '</b>', 0, 0);
+				}
+				table.add('Your average review score was ' + msg.data.mean);
+				resultDiv.appendChild(table.parse());
+				W.getElementById('results').appendChild(resultDiv);
+			});
+			
+			
 			// Auto play
-			node.random.emit('DONE');
+			node.random.emit('DONE', 12000);
 		});
 		
 
