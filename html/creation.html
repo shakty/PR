@@ -55,6 +55,8 @@
 $(document).ready(function() {
 			
 		var node = parent.node;
+		var GameState = node.GameState;
+		
     node.window.noEscape(window);
       
   
@@ -164,6 +166,10 @@ $(document).ready(function() {
      var creationDiv = document.getElementById('creation');
      node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
      
+     // Copy face_0
+     if (GameState.compare(node.game.state, '3.1.1') === 0) {
+    	 node.set('CF_0', node.game.cf.getAllValues());
+     }
      
      // Adding the jQuery sliders
      ////////////////////////////
@@ -269,7 +275,7 @@ $(document).ready(function() {
 	      else {
 	        node.window.getElementById('ex_C').click();
 	      }
-	    }, 2000);
+	    }, 20000);
       
 			
     });

@@ -33,11 +33,11 @@ function PeerReview () {
 									  : (this.pl.length > 2) ? 2 : 1;
 		
 		var faces = this.memory.select('state', '=', this.previous())
-							   .join('player', 'player', 'CF', 'value')		
+							   .join('player', 'player', 'CF', 'value')
+							   .select('key', '=', 'SUB')
 							   .fetch();
 		
-//		console.log(faces);
-		
+		console.log(faces);
 		
 		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
 //		console.log('STEEEE');
@@ -58,7 +58,6 @@ function PeerReview () {
 				//console.log(matches[i][0].player + ' ' + matches[i][1].player);
 			}
 			node.say(data, 'CF', faces[i].player);
-			
 		}
 		
 		console.log('evaluation');

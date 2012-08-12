@@ -186,7 +186,7 @@ function PeerReviewGame () {
 			
 			node.onDATA('WIN_CF', function(msg) {
 				
-				if (msg.data.length > 0) {
+				if (msg.data.length) {
 					var db = new node.NDDB(null,msg.data);
 					
 					for (var j=0; j < this.exs.length; j++) {

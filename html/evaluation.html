@@ -39,28 +39,26 @@
 
 window.onload = function(){
 
+
+	var node = parent.node,
+      JSUS = parent.JSUS,
+      W = parent.W,
+      Table = W.Table;
+	
   // Avoid ESC to break the connection  
-  $(this).keypress(function(e){
-    if(e.keyCode == 27){
-        return false;
-    }
-  });
-
-
-  var node = parent.node;
+  W.noEscape(window);
   
-  var table = new node.window.Table({
+  var table = new Table({
       auto_update: true,
       id: 'tbl_evaluation',
   });   
   
   var headers = [];
   
-  //$('#done_box').before(table.table);
-  document.getElementById('container_evaluation').appendChild(table.table);
-  
   node.onDATA('CF', function(msg) {
     
+	  console.log(msg.data)
+	  
 	  for (var ex in msg.data) {
 		  if (!msg.data.hasOwnProperty(ex)) {
 			  continue;
@@ -75,7 +73,7 @@ window.onload = function(){
 		               height: 300,
 		               scaleX: 1,
 		               scaleY: 1,
-		               features: msg.data.face,
+		               features: msg.data[ex][i].face,
 		               change: false,
 		               controls: false
 		    };
@@ -121,12 +119,15 @@ window.onload = function(){
 		      $( "#" + evaId ).slider( "value",  Math.random()*10);
 		      $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
 		    }, 4000); 
+		    
 		  }
 	    
+		  
 	  }
   });
-
-  node.random.emit('DONE', 10000);
+  //$('#done_box').before(table.table);
+  document.getElementById('container_evaluation').appendChild(table.parse());
+  node.random.emit('DONE', 100000);
   
 }
 
