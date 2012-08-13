@@ -237,12 +237,12 @@ function PeerReviewGame () {
 					node.emit('MONEYTALKS', node.game.money);
 				}
 				else {
-					table.addRow(['Sorry.','']);
-					table.addRow(['You were rejected by exhibition:', msg.data.ex]);
+					table.addColumn(['Sorry.','']);
+					table.addColumn(['You were rejected by exhibition:', msg.data.ex]);
 				}
-				table.addRow(['Your average review score was:', msg.data.mean]);
+				table.addColumn(['Your average review score was:', msg.data.mean]);
 				
-				table.select('y', '=', 1).addClass('strong');
+				table.select('y', '>=', 1).addClass('strong');
 				
 				//resultDiv.appendChild(table.parse());
 				W.getElementById('results').appendChild(table.parse());
