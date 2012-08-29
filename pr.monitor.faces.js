@@ -10,6 +10,7 @@ function Monitor_Example () {
 	this.automatic_step = false;
 	
 	
+	
 	this.init = function() {
 		
 		var that = this;
@@ -33,33 +34,78 @@ function Monitor_Example () {
 		 	returnAt: 'first',
 		}});
 		
+//		var html = d3.select('html');
+//		
+//		this.table = html.append('table').style('width','98%');
+//		 	
+//		this.thead = this.table.append("thead");
+//		this.tbody = this.table.append("tbody");
+//		
+//		
+//		
+//		var players_objects = {};
+//
+//		var that = this;
+//		
+//		node.onPLIST(function(msg) {
+//			var o = new node.PlayerList();
+//			o.importDB(msg.data);
+//			var players = o.fetch();
+//			console.log(o.length);
+//			that.thead.append("tr")
+//			    .selectAll("th")
+//			    .data(players)
+//			    .enter()
+//			    .append("th")
+//			    	.text(function(e){
+//			    		console.log('AAA ' + e.name);
+//			    		return e.name;
+//			    	});
+//		});
+//		
+//		node.on('in.set.DATA', function(msg) {
+//		
+//			
+//			
+//			// TODO: bug of onDATA
+//			if (msg.text !== 'CF') return;
+//			
+//			console.log('received CF');
+//			
+//			
+//			// create a row for each object in the data
+//						
+//			// create a row for each object in the data
+//			var rows = that.tbody.append("tr")
+//			    .style('border','1px solid #CCC');
+//			
+//			console.log('Appended TR');
+//			
+//			var cells = rows.selectAll("td")
+//		    .data(msg.data)
+//		    .enter()
+//		    .append("td")
+//		    .style('border','1px solid #CCC')
+//		    	.html(function(ex) {
+//		    		console.log(ex);
+//		    		var cf_options = { id: 'cf_' + Math.random(),
+//							   width: 200,
+//							   height: 200,
+//							   features: ex.value,
+//							   controls: false
+//					};
+//					var cf = W.getWidget('ChernoffFacesSimple', cf_options);
+//					return cf.getCanvas();
+//		    	});
+//		
+//			console.log('Appended TDs');
+//	});
+		
+		
 	};
 	
-	var players_objects = {};
+	
 
-	node.onDATA('WIN_CF', function(msg) {
-		
-		// TODO: bug of onDATA
-		if (msg.text !== 'WIN_CF') return;
-		
-		if (msg.data.length) {
-			var playerlist = node.game.pl.db;
-			var db = new node.NDDB(null, msg.data);
-			
-			db.each(function(winner){
-				if ('undefined' !== typeof players_objects[winner.pc]){
-					// Add the initial amount to the players balance.
-					players_objects[winner.pc].balance += 0.75;
-				}
-			});
-			
-			var playerlist_for_view = _.map(_.keys(players_objects), function(key){
-				return {id: key, balance: players_objects[key].balance};
-			});
-
-			App.players.set('content', playerlist_for_view);			
-		}
-	});
 	
 	
 	function printGameState () {
