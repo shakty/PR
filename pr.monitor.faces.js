@@ -38,32 +38,6 @@ function Monitor_Example () {
 		
 	};
 	
-	var players_objects = {};
-
-	node.onDATA('WIN_CF', function(msg) {
-		
-		// TODO: bug of onDATA
-		if (msg.text !== 'WIN_CF') return;
-		
-		if (msg.data.length) {
-			var playerlist = node.game.pl.db;
-			var db = new node.NDDB(null, msg.data);
-			
-			db.each(function(winner){
-				if ('undefined' !== typeof players_objects[winner.pc]){
-					// Add the initial amount to the players balance.
-					players_objects[winner.pc].balance += 0.75;
-				}
-			});
-			
-			var playerlist_for_view = _.map(_.keys(players_objects), function(key){
-				return {id: key, balance: players_objects[key].balance};
-			});
-
-			App.players.set('content', playerlist_for_view);			
-		}
-	});
-	
 	
 	function printGameState () {
 		var name = node.game.gameLoop.getName(node.state);
