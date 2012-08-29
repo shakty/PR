@@ -259,7 +259,7 @@ function PeerReview () {
 }
 
 if ('object' === typeof module && 'function' === typeof require) {
-	var node = require('../../node_modules/nodegame-server/node_modules/nodegame-client');
+	var node = require('../../../node_modules/nodegame-server/node_modules/nodegame-client');
 	module.exports.node = node;
 	module.exports.PeerReview = PeerReview;
 }

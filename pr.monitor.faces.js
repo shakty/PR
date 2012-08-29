@@ -10,11 +10,8 @@ function Monitor_Example () {
 	this.automatic_step = false;
 	
 	
-//	this.minPlayers = 2;
-//	this.maxPlayers = 10;
-	
 	this.init = function() {
-		//node.window.setup('MONITOR');
+		
 		var that = this;
 		
 		var renderCF = function (cell) {
@@ -26,12 +23,15 @@ function Monitor_Example () {
 						   features: cell.content,
 						   controls: false
 				};
-				var cf = node.window.getWidget('ChernoffFaces', cf_options);
+				var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
 				return cf.getCanvas();
 			}
 		};
 		
-		this.summary = node.window.addWidget('GameTable', document.body, {render: renderCF});
+		this.summary = node.window.addWidget('GameTable', document.body, {render: {
+			pipeline: renderCF,
+		 	returnAt: 'first',
+		}});
 		
 	};
 	
