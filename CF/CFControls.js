@@ -401,8 +401,8 @@
 			},
 			
 			eyebrow_angle: {
-				min: -4,
-				max: 4,
+				min: -3.14,
+				max: 3.14,
 				step: 0.01,
 				value: -0.5,
 				label: 'Eyebrow angle'
