@@ -140,7 +140,7 @@ function PeerReviewGame () {
 	
 	var pregame = function() {
 		var frame = node.window.loadFrame('html/pregame.html');
-		node.emit('DONE');
+		//node.emit('DONE');
 		console.log('Pregame');
 	};
 	
@@ -250,7 +250,7 @@ function PeerReviewGame () {
 			
 			
 			// Auto play
-			node.random.emit('DONE', 12000);
+			//node.random.emit('DONE', 12000);
 		});
 		
 
@@ -264,7 +264,7 @@ function PeerReviewGame () {
 		console.log('Postgame');
 
 		// AutoPlay
-		node.random.emit('DONE');
+		//node.random.emit('DONE');
 	};
 	
 	var endgame = function() {
