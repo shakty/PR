@@ -448,7 +448,7 @@
 				max: 100,
 				step: 0.01,
 				value: 30,
-				label: 'Zooom in'
+				label: 'Zoom in'
 			},
 			
 
