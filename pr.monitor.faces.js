@@ -2,7 +2,7 @@ function Monitor_Example () {
 	
 	this.name = 'Peer Review Game Observer';
 	this.description = 'General Description';
-	this.version = '0.3.1';
+	this.version = '0.3';
 	
 	this.observer = true;	
 	
@@ -13,54 +13,30 @@ function Monitor_Example () {
 //	this.minPlayers = 2;
 //	this.maxPlayers = 10;
 	
-	window.App = Ember.Application.create();
-	
 	this.init = function() {
-		node.window.setup('MONITOR');
+		//node.window.setup('MONITOR');
+		var that = this;
 		
-		// Create the Ember objects and bindings.
-		App.Player = DS.Model.extend({
-			id: DS.attr('string'),
-			balance: DS.attr('string')
-		});
-
-		App.players = Ember.ArrayController.create();
-
-		var paymentView = Ember.View.create({
-			templateName: 'PaymentWidget'
-		});
-		paymentView.appendTo('#root');
+		var renderCF = function (cell) {
+			// Check if it is really CF obj
+			if (cell.content.head_radius) {
+				var cf_options = { id: 'cf_' + cell.x,
+						   width: 200,
+						   height: 200,
+						   features: cell.content,
+						   controls: false
+				};
+				var cf = node.window.getWidget('ChernoffFaces', cf_options);
+				return cf.getCanvas();
+			}
+		};
 		
-				
+		this.summary = node.window.addWidget('GameTable', document.body, {render: renderCF});
+		
 	};
 	
 	var players_objects = {};
 
-	node.on('UPDATED_PLIST', function(){
-		var playerlist = node.game.pl.db;
-
-		// For each of those objects, is the user already in the system? - getting an initial credit
-		if(playerlist.length >= 0){
-			_.each(playerlist, function(player){
-
-				if(typeof players_objects[player.pc] === 'undefined'){
-
-					// Add the initial amount to the players balance.
-					players_objects[player.pc] = {balance: 20};
-
-				} 
-				
-			});
-
-			var playerlist_for_view = _.map(_.keys(players_objects), function(key){
-				return {id: key, balance: players_objects[key].balance};
-			});
-
-			App.players.set('content', playerlist_for_view);
-		}
-	});
-	
-	
 	node.onDATA('WIN_CF', function(msg) {
 		
 		// TODO: bug of onDATA
