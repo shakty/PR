@@ -109,15 +109,15 @@ window.onload = function(){
     
     
     //AUTOPLAY
- /*     node.random.exec(function() {
+      node.random.exec(function() {
       $( "#" + evaId ).slider( "value",  Math.random()*10);
       $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) );
-    }, 4000);  */
+    }, 4000);  
 	  
   });
   //$('#done_box').before(table.table);
   document.getElementById('container_evaluation').appendChild(table.table);
-  //node.random.emit('DONE', 10000);
+  node.random.emit('DONE', 10000);
   
 }
 

@@ -140,14 +140,14 @@ function PeerReviewGame () {
 	
 	var pregame = function() {
 		var frame = node.window.loadFrame('html/pregame.html');
-		//node.emit('DONE');
+		node.emit('DONE');
 		console.log('Pregame');
 	};
 	
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
 		// Auto Play
-		//node.emit('DONE');
+		node.emit('DONE');
 		console.log('Instructions');
 	};
 	
@@ -229,28 +229,32 @@ function PeerReviewGame () {
 			node.onDATA('PLAYER_RESULT', function(msg){
 				if (!msg.data) return;
 				//var resultDiv = W.getDiv('resultDiv');
-				var table = new W.Table();
-				
+//				var table = new W.Table();
+				var str = '';
 				if (msg.data.published) {
-					table.addRow(['Congratulations!','']);
-					table.addRow(['You published in exhibition:', msg.data.ex]);
+//					table.addRow(['Congratulations!','']);
+//					table.addRow(['You published in exhibition:', msg.data.ex]);
+					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
 					node.emit('MONEYTALKS', node.game.money);
 				}
 				else {
-					table.addColumn(['Sorry.','']);
-					table.addColumn(['You were rejected by exhibition:', msg.data.ex]);
+//					table.addColumn(['Sorry.','']);
+//					table.addColumn(['You were rejected by exhibition:', msg.data.ex]);
+					str += 'Sorry, you got rejected by exhibition: <strong>' + msg.data.ex + '</strong>. ';
 				}
-				table.addColumn(['Your average review score was:', msg.data.mean]);
+				str += 'Your average review score was: <strong>' + msg.data.mean + '</strong>.</br></br>';
+				W.getElementById('results').innerHTML = str;
 				
-				table.select('y', '>=', 1).addClass('strong');
+//				table.addColumn(['Your average review score was:', msg.data.mean]);
+//				table.select('y', '>=', 1).addClass('strong');
 				
 				//resultDiv.appendChild(table.parse());
-				W.getElementById('results').appendChild(table.parse());
+//				W.getElementById('results').appendChild(table.parse());
 			});
 			
 			
 			// Auto play
-			//node.random.emit('DONE', 12000);
+			node.random.emit('DONE', 12000);
 		});
 		
 
@@ -264,7 +268,7 @@ function PeerReviewGame () {
 		console.log('Postgame');
 
 		// AutoPlay
-		//node.random.emit('DONE');
+		node.random.emit('DONE');
 	};
 	
 	var endgame = function() {
