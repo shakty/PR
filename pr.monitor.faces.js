@@ -31,7 +31,10 @@ function Monitor_Example () {
 			}
 		};
 		
-		this.summary = node.window.addWidget('GameTable', document.body, {render: renderCF});
+		this.summary = node.window.addWidget('GameTable', document.body, {render: {
+			pipeline: renderCF,
+		 	returnAt: 'first',
+		}});
 		
 	};
 	
