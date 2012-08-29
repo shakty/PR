@@ -147,7 +147,7 @@ function PeerReviewGame () {
 	var instructions = function() {
 		node.window.loadFrame('html/instructions.html');
 		// Auto Play
-		node.emit('DONE');
+		//node.emit('DONE');
 		console.log('Instructions');
 	};
 	
