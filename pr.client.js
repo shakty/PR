@@ -264,7 +264,7 @@ function PeerReviewGame () {
 		console.log('Postgame');
 
 		// AutoPlay
-		//node.random.emit('DONE');
+		node.random.emit('DONE');
 	};
 	
 	var endgame = function() {

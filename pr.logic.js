@@ -198,7 +198,6 @@ function PeerReview () {
 	
 	var endgame = function() {
 		console.log('Game ended');
-		
 //		node.random.exec(function(){
 //			node.replay(true);
 //		},1000);
