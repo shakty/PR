@@ -177,7 +177,14 @@ function PeerReview () {
 		//console.log(node.game.memory.key.CF.first());
 		
 		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
-		node.game.memory.save(filename);
+		
+		try {
+			node.game.memory.save(filename);
+		}
+		catch(e){
+			console.log(e.msg);
+		}
+		
 //		console.log('SELECTED');
 //		console.log(selected);
 		//console.log(this.memory.db);
@@ -189,7 +196,7 @@ function PeerReview () {
 			node.say(r, 'PLAYER_RESULT', r.player);
 		});
 		
-		node.memory.dumpAllIndexes('./out/');
+		
 
 		console.log('dissemination');
 	};
@@ -200,6 +207,8 @@ function PeerReview () {
 	
 	var endgame = function() {
 		console.log('Game ended');
+		node.memory.dumpAllIndexes('./out/');
+		
 //		node.random.exec(function(){
 //			node.replay(true);
 //		},1000);
