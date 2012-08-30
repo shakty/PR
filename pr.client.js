@@ -12,11 +12,11 @@ function PeerReviewGame () {
 	
 	this.init = function() {			
 		node.window.setup('PLAYER');
-		node.window.addWidget('MoneyTalks', node.window.header, {currency: 'CHF', money: 20});
+		node.window.addWidget('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
 		
 		//node.window.addWidget('WaitScreen');
 		
-		this.money = 0.75;
+		this.money = 2;
 		
 		this.cf = null;
 		this.outlet = null;
