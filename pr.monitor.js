@@ -46,7 +46,7 @@ function Monitor_Example () {
 				if(typeof players_objects[player.pc] === 'undefined'){
 
 					// Add the initial amount to the players balance.
-					players_objects[player.pc] = {balance: 20};
+					players_objects[player.pc] = {balance: 10};
 
 				} 
 				
@@ -73,7 +73,7 @@ function Monitor_Example () {
 			db.each(function(winner){
 				if ('undefined' !== typeof players_objects[winner.pc]){
 					// Add the initial amount to the players balance.
-					players_objects[winner.pc].balance += 0.75;
+					players_objects[winner.pc].balance += 2;
 				}
 			});
 			
