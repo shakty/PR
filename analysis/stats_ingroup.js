@@ -20,7 +20,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./nddbs/all_reviews.nddb');
+db.load('./nddb/all_reviews.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -34,7 +34,7 @@ db.rebuildIndexes();
 // PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./pl.nddb');
+pl.load('./out/PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 

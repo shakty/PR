@@ -52,7 +52,7 @@ pl.h('id', function(gb) {
 	return gb.id;
 });
 
-pl.load('./pl.nddb');
+pl.load('./out/PL.nddb');
 pl.sort('pc');
 var pnames = pl.map(function(p){
 	return "P_" + p.pc;
@@ -66,24 +66,25 @@ var countRevs = {};
 
 
 reader.on('data', function(data) {
-	
-	// Assumption: data is ordered by round already
-	if (!countRevs[data.player] || countRevs[data.player] === 3) {
-		countRevs[data.player] = 1;
+	if (data.EVA === 'EVA') {
+		// Assumption: data is ordered by round already
+		if (!countRevs[data.player] || countRevs[data.player] === 3) {
+			countRevs[data.player] = 1;
+		}
+		else {
+			countRevs[data.player]++;
+		}
+		
+	    var pleva = {
+	    		player: data.player,
+	    		to: data.who,
+	    		eva: Number(data.score),
+	    		round: Number(data.round),
+	    		rev: countRevs[data.player],
+	    };
+	    db.insert(pleva);
+	    //console.log(face);
 	}
-	else {
-		countRevs[data.player]++;
-	}
-	
-    var pleva = {
-    		player: data.player,
-    		to: data.who,
-    		eva: Number(data.score),
-    		round: Number(data.round),
-    		rev: countRevs[data.player],
-    };
-    db.insert(pleva);
-    //console.log(face);
 });
 
 
@@ -97,6 +98,7 @@ reader.on('end', function(){
 		var rounds = p.groupBy('round');
 		
 		J.each(rounds, function(r){
+			console.log(r.first());
 			var player = r.first().player;
 			var round = r.first().round;
 			var mean_eva = r.mean('eva');
@@ -111,7 +113,7 @@ reader.on('end', function(){
 		});
 	});
 	
-	db.save('./nddbs/mean_eva_per_round.nddb');
+	db.save('./nddb/mean_eva_per_round.nddb');
 	console.log('wrote nddb file.');
 	
 	

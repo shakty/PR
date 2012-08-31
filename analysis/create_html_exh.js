@@ -37,7 +37,7 @@ db.rebuildIndexes();
 var exhs = JSUS.implodeObj(db.ex),
 	exnames = ['A','B','C'];
 
-var ONLY_PUBLISHED = false;
+var ONLY_PUBLISHED = true;
 
 var index_file = (ONLY_PUBLISHED) ? './html/index_exh_pub.htm'
 								: './html/index_exh.htm';

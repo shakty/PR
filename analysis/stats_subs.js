@@ -20,7 +20,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./all_cf_sub_eva.nddb');
+db.load('./nddb/all_cf_sub_eva.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -34,7 +34,7 @@ db.rebuildIndexes();
 // PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./pl.nddb');
+pl.load('./out/PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 

@@ -77,7 +77,7 @@ var countRevs = {};
 
 reader.on('data', function(data) {
 	
-	if (data[6] === 'EVA') {
+	if (data.EVA === 'EVA') {
 		// Assumption: data is ordered by round already
 		if (!countRevs[data.player] || countRevs[data.player] === 3) {
 			countRevs[data.player] = 1;

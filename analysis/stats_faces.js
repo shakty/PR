@@ -20,7 +20,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./all_cf_sub_eva.nddb');
+db.load('./nddb/all_cf_sub_eva.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -33,7 +33,7 @@ db.rebuildIndexes();
 // PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./pl.nddb');
+pl.load('./out/PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
@@ -111,8 +111,8 @@ var cf_features = {
 		},
 		
 		eyebrow_angle: {
-			min: -4,
-			max: 4,
+			min: -3.14,
+			max: 3.14,
 			step: 0.01,
 			value: -0.5,
 			label: 'Eyebrow angle'
