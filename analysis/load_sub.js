@@ -38,7 +38,7 @@ reader.setColumnNames([
 
 
 var db = new NDDB();
-db.load('./all_cf.nddb');
+db.load('./nddb/all_cf.nddb');
 
 db.h('player', function(gb) {
 	return gb.player.id;
@@ -58,26 +58,33 @@ db.rebuildIndexes();
 
 //console.log(db.player['9132212711841317531'].first());
 
+//console.log(db.player);
+
+
 reader.on('data', function(data) {
 	
-    var face = db.player[data.player]
-			    	.select('state.round', '=', data.round)
-			    	.fetch();
-    
-    if (face.length !== 1) {
-    	console.log('Error!');
-    }
-    else {
-    	face[0].ex = data.ex;
-    }
+	if (data.SUB === 'SUB') {
+	
+	    var face = db.player[data.player]
+				    	.select('state.round', '=', data.round)
+				    	.fetch();
+	    
+	    if (face.length !== 1) {
+	    	console.log('Error!');
+	    }
+	    else {
+	    	face[0].ex = data.ex;
+	    	console.log(face[0])
+	    }
+	}
     
     //console.log(face);
 });
 
 
 reader.on('end', function(){
-	console.log(db.player['9132212711841317531'].first());
-	db.save('./all_cf_sub.nddb');
+	//console.log(db.player['9132212711841317531'].first());
+	db.save('./nddb/all_cf_sub.nddb');
 	console.log('wrote file.');
 });
 

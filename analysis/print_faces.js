@@ -439,8 +439,8 @@ FaceVector.defaults = {
 			label: 'Eyebrow from eye'
 		},
 		eyebrow_angle: {
-			min: -2,
-			max: 2,
+			min: -3.14,
+			max: 3.14,
 			step: 0.01,
 			value: -0.5,
 			label: 'Eyebrow angle'
@@ -612,7 +612,7 @@ db.h('key', function(gb) {
 	return gb.key;
 });
 
-db.load('./all_cf.nddb');
+db.load('./nddb/all_cf.nddb');
 
 db.rebuildIndexes();
 

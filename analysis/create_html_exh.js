@@ -23,7 +23,7 @@ db.h('ex', function(gb) {
 
 
 
-db.load('./nddbs/all_cf_sub_eva.nddb');
+db.load('./nddb/all_cf_sub_eva.nddb');
 
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -37,7 +37,7 @@ db.rebuildIndexes();
 var exhs = JSUS.implodeObj(db.ex),
 	exnames = ['A','B','C'];
 
-var ONLY_PUBLISHED = true;
+var ONLY_PUBLISHED = false;
 
 var index_file = (ONLY_PUBLISHED) ? './html/index_exh_pub.htm'
 								: './html/index_exh.htm';

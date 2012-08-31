@@ -39,7 +39,7 @@ reader.setColumnNames([
 
 
 var db = new NDDB();
-db.load('./all_cf_sub.nddb');
+db.load('./nddb/all_cf_sub.nddb');
 
 db.h('player', function(gb) {
 	return gb.player.id;
@@ -59,25 +59,31 @@ db.rebuildIndexes();
 
 //console.log(db.player['9132212711841317531'].first());
 
+var threshold = 5;
+
 reader.on('data', function(data) {
 	
-    var face = db.player[data.who]
-			    	.select('state.round', '=', data.round)
-			    	.fetch();
+	if (data.EVA === 'EVA') {
+		
+	    var face = db.player[data.who]
+				    	.select('state.round', '=', data.round)
+				    	.fetch();
+	    
+	    if (face.length !== 1) {
+	    	console.log('Error!');
+	    }
+	    else {
+	    	face = face[0];
+	    	if (!face.reviewers) face.reviewers = [];
+	    	face.reviewers.push(data.player);
+	    	
+	    	if (!face.scores) face.scores = [];
+	    	face.scores.push(data.score);
+	    }
+	    
+	}
     
-    if (face.length !== 1) {
-    	console.log('Error!');
-    }
-    else {
-    	face = face[0];
-    	if (!face.reviewers) face.reviewers = [];
-    	face.reviewers.push(data.player);
-    	
-    	if (!face.scores) face.scores = [];
-    	face.scores.push(data.score);
-    }
-    
-    //console.log(face);
+//    console.log(face);
 });
 
 
@@ -97,11 +103,11 @@ reader.on('end', function(){
 		
 		var avg = (Number(e.scores[0]) + Number(e.scores[1]) + Number(e.scores[2])) / 3;
 		e.avg = avg.toFixed(2);
-		e.published =  (e.avg > 7) ? true : false; 
+		e.published =  (e.avg > threshold) ? true : false; 
 		//console.log(e);
 	})
 	
-	db.save('./all_cf_sub_eva.nddb');
+	db.save('./nddb/all_cf_sub_eva.nddb');
 	console.log('wrote file.');
 });
 

@@ -40,7 +40,7 @@ reader.setColumnNames(colnames);
 //PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./nddbs/pl.nddb');
+pl.load('./out/PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
@@ -77,23 +77,25 @@ var countRevs = {};
 
 reader.on('data', function(data) {
 	
-	// Assumption: data is ordered by round already
-	if (!countRevs[data.player] || countRevs[data.player] === 3) {
-		countRevs[data.player] = 1;
+	if (data[6] === 'EVA') {
+		// Assumption: data is ordered by round already
+		if (!countRevs[data.player] || countRevs[data.player] === 3) {
+			countRevs[data.player] = 1;
+		}
+		else {
+			countRevs[data.player]++;
+		}
+	    
+		data.pc = pl.id[data.player].first().pc;
+	    data.score = Number(data.score);
+	    data.round = Number(data.round);
+		data.rev = countRevs[data.player];  
+		data.incolor = pl.id[data.player].first().color;
+		data.outcolor = pl.id[data.who].first().color;
+		data.samecolor = (data.outcolor === data.incolor) ? 1 : 0; 
+		
+	    db.insert(data);
 	}
-	else {
-		countRevs[data.player]++;
-	}
-    
-	data.pc = pl.id[data.player].first().pc;
-    data.score = Number(data.score);
-    data.round = Number(data.round);
-	data.rev = countRevs[data.player];  
-	data.incolor = pl.id[data.player].first().color;
-	data.outcolor = pl.id[data.who].first().color;
-	data.samecolor = (data.outcolor === data.incolor) ? 1 : 0; 
-	
-    db.insert(data);
   
 });
 
@@ -101,7 +103,7 @@ reader.on('data', function(data) {
 
 
 reader.on('end', function(){
-	db.save('./nddbs/all_reviews.nddb');
+	db.save('./nddb/all_reviews.nddb');
 	
 	var pfile = 'ingroup/all_reviews.csv'; 
 

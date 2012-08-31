@@ -54,7 +54,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./all_cf_sub_eva.nddb');
+db.load('./nddb/all_cf_sub_eva.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -67,7 +67,7 @@ db.rebuildIndexes();
 // PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./pl.nddb');
+pl.load('./out/PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
@@ -95,28 +95,31 @@ var rnames = J.seq(1,30,1,function(e){
 reader.on('data', function(data) {
 
 	//player: pl.select('id', '=', data.player).first(),
-
-	var copy = {
-			copied_from: pl.select('name', '=', data.from).first(),
-			copied_score: data.score,
-			copied_round: data.copy_round.split('.')[1],
-			copied_ex: data.ex,
-	};
-
-	//console.log(copy);
 	
-    var face = db.player[data.player]
-     			    	.select('state.round', '=', data.round)
-     			    	.first();
-         
-     if (!face) {
-     	console.log('Error!');
-     }
-     else {
-     	face.copy = copy;
-     }
-			
-    dbcopy.insert(copy);
+	if (data.COPIED === 'COPIED') {
+	
+		var copy = {
+				copied_from: pl.select('name', '=', data.from).first(),
+				copied_score: data.score,
+				copied_round: data.copy_round.split('.')[1],
+				copied_ex: data.ex,
+		};
+	
+		//console.log(copy);
+		
+	    var face = db.player[data.player]
+	     			    	.select('state.round', '=', data.round)
+	     			    	.first();
+	         
+	     if (!face) {
+	     	console.log('Error!');
+	     }
+	     else {
+	     	face.copy = copy;
+	     }
+				
+	    dbcopy.insert(copy);
+	}
 });
 
 
@@ -124,8 +127,8 @@ reader.on('data', function(data) {
 
 reader.on('end', function(){
 	//console.log(db.fetch('copy'));
-	db.save('./nddbs/all_cf_sub_eva_copy.nddb');
-	dbcopy.save('./nddbs/all_copy.nddb');
+	db.save('./nddb/all_cf_sub_eva_copy.nddb');
+	dbcopy.save('./nddb/all_copy.nddb');
 	console.log('wrote files.');
 });
 
