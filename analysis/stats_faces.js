@@ -168,7 +168,7 @@ var cf_features = {
 
 
 writeRoundStats();
-//computeAllSingleFeaturesDistance();
+computeAllSingleFeaturesDistance();
 
 function writeRoundStats() {
 	
@@ -196,9 +196,10 @@ function writeRoundStats() {
 				return weightedFaceDistance(face, p.value);		
 			}
 		});
-		
-		pWriter.writeRecord(faces);
-		console.log(faces);
+		if (faces.length) {
+			pWriter.writeRecord(faces);
+			console.log(faces);
+		}
 		round++;
 	}
 	console.log("wrote " + p_self_file);
@@ -417,7 +418,7 @@ function computeAllSingleFeaturesDistance() {
 	for (var f in cf_features) {
 		if (cf_features.hasOwnProperty(f)) {
 			round = 1;
-			file = './csv/single/diff_' + f + '_x_round_x_player_mean.csv';
+			file = './csv/diff/single/diff_' + f + '_x_round_x_player_mean.csv';
 			writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
 			writer.writeRecord(pnames);	
 			while (round < 31) {
@@ -471,7 +472,10 @@ function weightedFaceDistance(f1, f2) {
 
 // between 0 and 1
 function weightedDistance(features, f1, f2) {
-	if (!features || !f1 || !f2) return false;
+	if (!features || !f1 || !f2) {
+		console.log("Empty data!");
+		return false;
+	}
 	
 	
 	var distance = 0;

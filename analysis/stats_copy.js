@@ -172,7 +172,7 @@ var normalize = true;
 
 writeRoundStats();
 
-// correlateDistanceFromOriginalAndScore();
+//correlateDistanceFromOriginalAndScore();
 
 
 function writeRoundStats(path) {
@@ -196,7 +196,7 @@ function writeRoundStats(path) {
 		var round_stuff = db.select('state.round','=',round).sort('player');
 		var copies = round_stuff.map(function(p){
 			if (p.copy) {
-				return (normalize) ? p.copy.copied_round / (p.state.round -1)
+				return (normalize) ? (p.state.round - p.copy.copied_round) / (p.state.round - 1)
 						   		   : p.state.round - p.copy.copied_round;
 			}
 			else {

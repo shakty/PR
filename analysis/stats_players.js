@@ -127,10 +127,10 @@ reader.on('end', function(){
 function writeRoundStats(path) {
 	var round = 1;
 	
-	var writer = csv.createCsvStreamWriter(fs.createWriteStream('./csv/test.csv'));
+	var writer = csv.createCsvStreamWriter(fs.createWriteStream('./csv/eva/eva_x_player.csv'));
 	writer.writeRecord(pnames);
 
-	var rWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/eva_x_round.csv'));
+	var rWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/eva/eva_x_round.csv'));
 	
 	while (round < 31) {
 		

@@ -51,7 +51,7 @@ var rnames = J.seq(1,30,1,function(e){
 });
 
 // If true: integer are written instead of A,B,C
-var transform = true;
+var transform = false;
 
 
 

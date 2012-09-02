@@ -23,7 +23,6 @@ plotDiffFeatures <- function(dir, file) {
   fileName = sprintf("./%s/%s", dir, file)
   diffs <- read.csv(file=fileName, head=TRUE, sep=",")
   summary(diffs)
-
   # Boxplot
   imgName = sprintf("%s/img/%s%s", dir, file, "_boxplot.jpg")
   jpeg(imgName, quality=100, width=600)
@@ -58,7 +57,9 @@ plotDiffFeatures <- function(dir, file) {
 plotDiffFeaturesDir <- function(dir) {
   files = list.files(dir)
   for (f in files) {
-    plotDiffFeatures(dir, f)
+    if (f != "img") {
+      plotDiffFeatures(dir, f)
+    }
   }
 }
 

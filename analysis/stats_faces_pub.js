@@ -167,14 +167,14 @@ var cf_features = {
 /// BEGIN
 
 // Every round with all the previous ones
-// writeRoundStats();
+ writeRoundStats();
 
 // Every round with the immediately previous one
-//writePreviousRoundStats();
+writePreviousRoundStats();
 
 // All the entries, distance from published faces at R-1 and their score
-//correlateDistanceAndScore();
-//correlateDistanceAndScoreCopy();
+correlateDistanceAndScore();
+correlateDistanceAndScoreCopy();
 
 //Every round with all the previous one
 writeCumulativeRoundStats();
