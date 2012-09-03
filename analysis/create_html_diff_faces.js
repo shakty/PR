@@ -76,6 +76,8 @@ function createListofImages(imgDir, out) {
 // createListofImages('./csv/diff/diffandscore/img/', './index_diffandscore.htm');
 
 // SUBMISSION DECISION
-createListofImages('./csv/sub/img/', './index_subs.htm');
+//createListofImages('./csv/sub/img/', './index_subs.htm');
 
+
+createListofImages('./csv/ingroup/img/', './index_ingroup.htm');
 

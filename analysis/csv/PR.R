@@ -5,11 +5,9 @@ source('PR_init.R')
 ###############
 
 subPlayers <- read.csv(file="pubs/pubs_x_round_x_player.csv", head=TRUE, sep=",")
-plot.ts(subPlayers)
-
 subPlayers.count <- apply(subPlayers, 2, sum)
 subPlayers.count
-barplot()
+
 
 jpeg('pubs/img/pubs_count_by_player.jpg',quality=100,width=600)
 x <- barplot(subPlayers.count,
@@ -87,8 +85,10 @@ plot.ts(subPlayers,type='o', plot.type="multiple", main='Exhibition choice over 
 dev.off()
 
 # If we load the _int version we can produce this graph
-#subPlayers.jitter = apply(subPlayers, 2, jitter, amount=0.05)
-#plot.ts(subPlayers.jitter, type='p', plot.type="single")
+#subPlayers.int <- read.table(file="sub/sub_x_round_x_player_int.csv", head=TRUE, sep=",")
+#subPlayers.int
+#subPlayers.int.jitter = apply(subPlayers.int, 2, jitter, amount=0.05)
+#plot.ts(subPlayers.int.jitter, type='p', plot.type="single")
 
 playerSubs <- apply(subPlayers, 2, table)
 playerSubs
@@ -123,13 +123,31 @@ dev.off()
 
 #plot.ts(subRounds.table, type='p', plot.type="single")
       
-# x ex round_count
-subExRounds.count <- read.csv(file="sub/sub_x_ex_round_count.csv", head=TRUE, sep=",")
+# x ex round_count (not found!)
+#subExRounds.count <- read.csv(file="sub/sub_x_ex_round_count.csv", head=TRUE, sep=",")
 
-old = par(mai=c(1,1,1,1))
+#old = par(mai=c(1,1,1,1))
+
+#jpeg('sub/img/exhibs_count_ts.jpg',quality=100,width=600)
+#barplot(as.matrix(subExRounds.count),
+#        col = brewer.pal(3,"Set1"),
+#        border="white",
+#        ylim=c(0,10),
+#        main='Submission by exhibition per round',
+#        legend.text = exhs.names,
+#        args.legend = list(bty="n", horiz=TRUE, x="top"))
+#dev.off()
+
+#par(old)
+
+# x ex
+subExRound <- read.csv(file="sub/sub_x_ex_round.csv", head=TRUE, sep=","); subExRound
+summary(subExRound)
+
+subExRound.t <- t(subExRound); subExRound.t
 
 jpeg('sub/img/exhibs_count_ts.jpg',quality=100,width=600)
-barplot(as.matrix(subExRounds.count),
+barplot(as.matrix(subExRound.t),
         col = brewer.pal(3,"Set1"),
         border="white",
         ylim=c(0,10),
@@ -138,23 +156,8 @@ barplot(as.matrix(subExRounds.count),
         args.legend = list(bty="n", horiz=TRUE, x="top"))
 dev.off()
 
-#par(old)
-
-# x ex
-subExRound <- read.csv(file="sub/sub_x_ex_round.csv", head=TRUE, sep=","); subExRound
-summary(subExRound)
-
-barplot(as.matrix(subExRound),
-        col = brewer.pal(3,"Set1"),
-        border="white",
-        ylim=c(0,10),
-        main='Submission by exhibition per round',
-        legend.text = exhs.names,
-        args.legend = list(bty="n", horiz=TRUE, x="top"))
-
-
-plot.ts(subExRound, type='o', plot.type="single", col=exhs.colors)
-legend("top", legend=exhs.names, col = exhs.colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
+#plot.ts(subExRound, type='o', plot.type="single", col=exhs.colors)
+#legend("top", legend=exhs.names, col = exhs.colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
 
       
 # face distance
@@ -308,11 +311,80 @@ abline(v=5, col='red',lwd=2)
 abline(v=7, col='orange', lwd=1)
 dev.off()
 
-
 # InGroup
+#########
 
 ingroup <- read.csv(file="ingroup/all_reviews.csv", head=TRUE, sep=",")
 head(ingroup)
+
+
+# boxplot(ingroup$score ~ ingroup$same)
+
+plotSingleInOutTS <- function(name){
+  fileName = sprintf("./ingroup/img/%s.jpg", name)
+}
+
+#for (i in names(
+
+ingroup.same <- ingroup[ingroup$same == 1,]
+ingroup.same
+
+
+ingroup.other <- ingroup[ingroup$same != 1,]
+ingroup.other
+
+
+stats.in = summary(ingroup.same$score)
+stats.out = summary(ingroup.other$score)
+
+# are mean different?
+t = t.test(ingroup.same$score, ingroup.other$score)
+
+n = length(ingroup.same$score)
+sigma = sd(ingroup.same$score) / sqrt(n)
+meanIn = as.numeric(stats.in["Mean"])
+meanOut = as.numeric(stats.out["Mean"])
+diffMeans = meanIn - meanOut
+test = diffMeans / sigma
+test
+
+
+alpha = .05
+t.half.alpha = qt(1-alpha/2, df=n-1)
+c(-t.half.alpha, t.half.alpha)
+
+R2 = test^2 / (test^2 + n - 1)
+R2
+
+
+# plot.ts(cbind(ingroup=ingroup.same$score, outgroup=ingroup.other$score),
+# main='Review scores for in-group and out-group (color)',
+# xlab='time')
+
+jpeg('ingroup/img/reviews_in_out_ts.jpg', quality=100, width=600)
+old = par(mfrow=c(2,1), oma = c(0,0,3,0))
+plot.ts(ingroup.same$score,
+        main='In-group',
+        xlab='time',
+        ylab="score")
+plot.ts(ingroup.other$score,
+        main='Out-group',
+        ylab="score",
+        xlab='time')
+mtext("Review scores for in-group and out-group (color)", outer = TRUE )
+par(old)
+dev.off()
+
+jpeg('ingroup/img/reviews_in_out_boxplot.jpg', quality=100, width=600)
+old = par(oma = c(3,0,0,0))
+boxplot(cbind(ingroup=ingroup.same$score, outgroup=ingroup.other$score),
+        main="Distribution of review scores for ingroup and outgroup (color)",
+        ylab="Score")
+txt = sprintf('In-mean = %f, Out-mean = %f, t(%i) = %f, p < .05', meanIn, meanOut, (n-1), test)
+txt = 'Difference is statistically not significant p < .1'
+mtext(txt, side = 1, outer=FALSE, padj=5)
+par(old)
+dev.off()
 
 library(ggplot2)
 qplot(score, data=ingroup,col = as.factor(ingroup$same), beside=TRUE)
@@ -321,5 +393,21 @@ qplot(score, data=ingroup,col = as.factor(ingroup$same), beside=TRUE)
 ingroup.players <- read.csv(file="ingroup/player_reviews.csv", head=TRUE, sep=",")
 head(ingroup.players)
 
-plot.ts(ingroup$score)
+
+
+names(ingroup.players)
+
+
+scorecolumns <- regexpr("score", names(ingroup.players)) > 0
+
+ingroup.scores <- ingroup.players[scorecolumns]
+ingroup.scores
+
+jpeg('ingroup/img/reviews_players_ts.jpg', quality=100, width=600)
+plot(zoo(ingroup.scores),
+     ylim=c(0,10),
+     main="Evolution of individual review scores in time",
+     xlab='Rounds')     
+dev.off()
+
 
