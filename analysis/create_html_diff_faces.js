@@ -78,6 +78,9 @@ function createListofImages(imgDir, out) {
 // SUBMISSION DECISION
 //createListofImages('./csv/sub/img/', './index_subs.htm');
 
+// INGROUP-OUTGROUP
+//createListofImages('./csv/ingroup/img/', './index_ingroup.htm');
 
-createListofImages('./csv/ingroup/img/', './index_ingroup.htm');
+// EVALUATIONS
+createListofImages('./csv/eva/img/', './index_evas.htm');
 

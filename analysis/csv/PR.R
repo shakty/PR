@@ -42,7 +42,11 @@ dev.off()
 
 # Time Series
 jpeg('eva/img/players_eva_ts.jpg',quality=100,width=600)
-plot.ts(players, type='o',ylim=c(0,10))
+plot(zoo(players),
+       type='o',
+       ylim=c(0,10),
+       main="Review scores by player by round",
+     xlab="Rounds")
 dev.off()
 #Mean = mean(mean(players))
 #Mean

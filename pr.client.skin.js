@@ -11,9 +11,9 @@ function PeerReviewGame () {
 	this.maxPlayers = 10;
 	
 	this.init = function() {			
-		node.window.setup('PLAYER');
-		node.window.addWidget('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
-		
+//		node.window.setup('PLAYER');
+//		node.window.addWidget('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
+//		
 		//node.window.addWidget('WaitScreen');
 		
 		this.money = 2;
