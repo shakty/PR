@@ -1,7 +1,7 @@
 function PeerReview () {
 	
-	this.name = 'Game Example';
-	this.description = 'General Description';
+	this.name = 'Peer Review Logic';
+	this.description = 'Peer review logic';
 	this.version = '0.3';
 	
 	this.minPlayers = 1;
@@ -12,6 +12,21 @@ function PeerReview () {
 	this.init = function() {
 		this.threshold = 5;
 		this.reviewers = 3;
+		
+		this.results = new node.NDDB();
+		
+//		this.results.h('A', function(e) {
+//			if (e.ex === 'A') return e;
+//		});
+//		
+//		this.results.h('B', function(e) {
+//			if (e.ex === 'B') return e;
+//		});
+//		
+//		this.results.h('C', function(e) {
+//			if (e.ex === 'B') return e;
+//		});
+		
 	};
 	
 	var pregame = function () {
@@ -37,9 +52,63 @@ function PeerReview () {
 							   .select('key', '=', 'SUB')
 							   .fetch();
 		
-//		console.log(faces);
 		
-		matches = node.JSUS.latinSquareNoSelf(faces.length, R);
+		
+		
+		
+//		console.log(faces.first());
+		
+		var matches;
+		node.env('review_random', function(){
+			matches = node.JSUS.latinSquareNoSelf(faces.length, R);
+		});
+		
+		node.env('review_select', function() {
+			// For each exhibition X we need to create three groups: 
+			// 1. published in exhibition X
+			// 2. submitted, but not published in X
+			// 3. all the others
+			
+			var submissionRound = this.previous(4);
+			var lastRound = this.results.select('state', '=', submissionRound);
+			
+			// First Round
+			if (!lastRound.length) {
+				matches = node.JSUS.latinSquareNoSelf(faces.length, R);
+				return;
+			}
+			
+			var rGroups = {
+				'A': {
+					published: [],
+					submitted: [],
+					other: [],
+				},
+				'B': {
+					published: [],
+					submitted: [],
+					other: [],
+				},
+				'C': {
+					published: [],
+					submitted: [],
+					other: [],
+				},
+			}
+				
+			var exData, exGroups;
+			JSUS.each(['A','B','C'], function (ex) {q
+				exData = lastRound.select('ex', '=', ex);
+				ex
+				var groups = lastRound.groupBy('published');
+				
+				
+				rGroups[ex].published = lastRound.select('published');
+				rGroups[ex].submitted = lastRound.select('published', '=')
+			
+		});
+		
+		
 //		console.log('STEEEE');
 //		console.log(matches);
 
@@ -71,23 +140,18 @@ function PeerReview () {
 		console.log('evaluation');
 	};
 	
-	var dissemination = function(){
+	var dissemination = function() {
+		
+		var submissionRound = this.previous(2);
+		
 		// For each exhibition
 		// get all the evaluations for each submission
-		var exhibs = this.memory.select('state', '>=', this.previous(2))
+		var exhibs = this.memory.select('state', '>=', submissionRound)
 								.join('player', 'value.for', 'EVA2', ['value'])
 								.select('EVA2') 
 								.select('key','=','SUB')
 								.sort('value')
 								.groupBy('value');
-
-		
-//		console.log(exhibs.fetch())
-////		console.log(this.memory.fetch());
-//		console.log(node.game.state);
-//		console.log(this.previous(2));
-////		console.log(exhibs.length);
-//		console.log(this.memory.length);
 		
 		
 		// array of all the selected works (by exhibition);
@@ -100,39 +164,32 @@ function PeerReview () {
 		// Exhibitions Loop
 		for (var i=0; i < exhibs.length; i++) {
 			
-			//console.log('EX ' + i);
-			//console.log(exhibs[i].first().EVA2);
-			
 			// Get the list of works per exhibition
 			var works = exhibs[i].groupBy('EVA2.value.for');
-			
-//			 console.log('-------------------------------------------');
-//			 console.log('works: ' + works.length);	
-//			 console.log(works);
-//			 console.log('-------------------------------------------');
-			
+						
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
 	
-//				console.log('work: ' + works[j].length);
-//				for (var k=0; k < works[j].length; k++) {
-//					console.log(works[j].get(k));
-//				}
-//				console.log(works[j].fetchValues());
-//				console.log(works[j].first());
-//				console.log(works[j].last());
 				
 				var player = works[j].first().player;
 				
 				var mean = works[j].mean('EVA2.value.eva'); 
-//				console.log('Mean: ' + mean);
-//				console.log('T: ' + this.threshold);
+				
+				var cf = this.memory.select('state', '=', submissionRound)
+									.select('player', '=', player)
+									.select('key', '=', 'CF');
+
+
+				
+				var author = this.pl.select('id', '=', player).first();
 				
 				var player_result = {
 						player: player,
+						author: author.name,
 						mean: mean.toFixed(2),
 						scores: works[j].fetch('EVA2.value.eva'),
-						ex: works[j].first().value
+						ex: works[j].first().value,
+						round: submissionRound,
 				};
 				
 				
@@ -141,40 +198,22 @@ function PeerReview () {
 					
 					player_result.published = true;
 					
-					var cf = this.memory.select('state', '=', this.previous(2))
-										.select('player', '=', player)
-										.select('key', '=', 'CF');
-				
-					
-//					console.log('cf');
-//					console.log(cf);
-					
-					var author = this.pl.select('id', '=', player).first();
-					
-										
-					// This should always exist
-					if (author) {
-						selected.push({ex: works[j].first().value,
-								   mean: mean.toFixed(2),
-								   author: author.name,
-								   cf: cf.first().value,
-								   id: author.name,
-								   round: node.game.state.toHash('S.r'),
-								   pc: author.pc,
-						});
-					}
-					
+					selected.push(JSUS.merge(player_result, {
+						cf: cf.first().value,
+						id: author.name,
+						round: node.game.state.toHash('S.r'),
+						pc: author.pc,
+					});
 				}
 				
 				// Add results for single player
 				player_results.push(player_result);
 				
-				
+				// Add it to the local DB of results
+				this.results.add(player_result);
 			}
 		}
 
-		
-		//console.log(node.game.memory.key.CF.first());
 		
 		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
 		
@@ -184,10 +223,7 @@ function PeerReview () {
 		catch(e){
 			console.log(e.msg);
 		}
-		
-//		console.log('SELECTED');
-//		console.log(selected);
-		//console.log(this.memory.db);
+
 		
 		// Dispatch exhibition results to ALL
 		node.say(selected, 'WIN_CF', 'ALL');
