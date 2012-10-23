@@ -11,9 +11,19 @@ function RMatcher (options) {
 
 RMatcher.prototype.match = function() {
 	
-	for (var i = this.groups.length; i < this.groups.length ; i++) {
+	// Do first match
+	for (var i = 0; i < this.groups.length ; i++) {
 		this.groups[i].match();
 	}
+	
+	//
+	for (i = 0; i < this.groups.length ; i++) {
+		if (this.groups[i].matches.total !== this.groups[i].matches.total) {
+			
+		}
+	} 
+	
+	
 }
 
 function Group() {
@@ -27,6 +37,7 @@ function Group() {
 	this.matches = {};
 	this.matches.total = 0;
 	this.matches.requested = 0;
+	this.matches.done = false;
 	
 	this.rowLimit = 3;
 	
@@ -37,14 +48,24 @@ function Group() {
 	this.pool = [];
 	
 	this.shuffle = true;
+	this.stretch = true;
 }
 
 Group.prototype.init = function (elements, pool) {
-	this.elements = (this.shuffle) ? J.shuffle(elements)
-								   : elements;
-	this.pool = pool;
+	this.elements = elements;
+	this.pool = J.clone(pool);
+
+	for (var i = 0; i < this.pool.length; i++) {
+		if (this.stretch) {
+			this.pool[i] = J.stretch(this.pool[i], this.rowLimit);
+		}
+		if (this.shuffle) {
+			this.pool[i] = J.shuffle(this.pool[i]);
+		}
+	}
+
 	
-	for (var i = 0 ; i < elements.length ; i++) {
+	for (i = 0 ; i < elements.length ; i++) {
 		this.matched[i] = [];
 	}
 	
@@ -127,7 +148,10 @@ Group.prototype.switchItInRow = function (x, toRow, fromRow) {
 
 Group.prototype.addToRow = function(x, row) {
 	this.matched[row].push(x);
-	this.matches.total++; 
+	this.matches.total++;
+	if (this.matches.total === this.matches.requested) {
+		this.matches.done = true;
+	}
 }
 
 Group.prototype.addIt = function(x) {
@@ -149,9 +173,8 @@ Group.prototype.match = function() {
 	// indexes-pools have more chances to be used
 	for (var i = 0 ; i < this.pool.length ; i++) {
 		for (var j = 0 ; j < this.pool[i].length ; j++) {
-						
 			// Try all positions
-			if (!this.addIt(this.pool[i][j])) {
+			if (this.matches.done || !this.addIt(this.pool[i][j])) {
 				// if we could not add it as a match, it becomes leftover
 				this.leftOver.push(this.pool[i][j]);
 			}
@@ -166,6 +189,7 @@ Group.prototype.match = function() {
 		console.log('Something did not work well..');
 	}
 	
+	console.log('pool: ', this.pool);
 	console.log('left over: ', this.leftOver);
 	console.log('hits: ' + this.matches.total + '/' + this.matches.requested);
 	
@@ -176,7 +200,7 @@ Group.prototype.updatePointer = function () {
 }
 
 
-var pool = [ [1, 1, 1, 2, 2, 2], [3, 3, 3, 4, 4, 4], ];
+var pool = [ [1, 2], [3, 4], ];
 var elements = [7, 1, 2, 4];
 
 var g = new Group();
