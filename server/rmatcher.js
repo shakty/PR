@@ -5,20 +5,32 @@ var J = require('nodegame-client').JSUS;
 function RMatcher (options) {
 	
 	this.groups = [];
-	
-	
+
 }
 
+
+RMatcher.prototype.match = function() {
+	
+	for (var i = this.groups.length; i < this.groups.length ; i++) {
+		this.groups[i].match();
+	}
+}
 
 function Group() {
 	
 	this.elements = [];
-	this.match = [];
+	this.matched = [];
 
 	this.leftOver = [];
 	this.pointer = 0;
 	
+	this.matches = {};
+	this.matches.total = 0;
+	this.matches.requested = 0;
+	
 	this.rowLimit = 3;
+	
+	
 	
 	this.noSelf = true;
 	
@@ -33,8 +45,10 @@ Group.prototype.init = function (elements, pool) {
 	this.pool = pool;
 	
 	for (var i = 0 ; i < elements.length ; i++) {
-		this.match[i] = [];
+		this.matched[i] = [];
 	}
+	
+	this.matches.requested = this.elements.length * this.rowLimit;
 };
 
 /**
@@ -42,7 +56,7 @@ Group.prototype.init = function (elements, pool) {
  */
 Group.prototype.canSwitchIn = function (x, row) {
 	// Element already matched 
-	if (J.in_array(x, this.match[row])) return false;
+	if (J.in_array(x, this.matched[row])) return false;
 	// No self
 	if (this.noSelf && this.elements[row] === x) return false;
 	
@@ -52,14 +66,14 @@ Group.prototype.canSwitchIn = function (x, row) {
 
 Group.prototype.canAdd = function (x, row) {
 	// Row limit reached
-	if (this.match[row].length >= this.rowLimit) return false;
+	if (this.matched[row].length >= this.rowLimit) return false;
 	
 	return this.canSwitchIn(x, row);
 };
 
 Group.prototype.shouldSwitch = function (x, fromRow) {
 	if (!this.leftOver.length) return false;
-	if (this.match.length < 2) return false;
+	if (this.matched.length < 2) return false;
 //	var actualLeftOver = this.leftOver.length;
 	return true;
 	
@@ -69,7 +83,7 @@ Group.prototype.shouldSwitch = function (x, fromRow) {
 Group.prototype.switchIt = function () {
 	
 	for (var i = 0; i < this.elements.length ; i++) {
-		if (this.match[i].length < this.rowLimit) {
+		if (this.matched[i].length < this.rowLimit) {
 			this.completeRow(i);
 		}
 	}
@@ -99,11 +113,11 @@ Group.prototype.switchItInRow = function (x, toRow, fromRow) {
 	//console.log('can switch: ' + x + ' ' + toRow + ' from ' + fromRow)
 	// Check if we can insert any of the element of the 'toRow'
 	// inside the 'toRow'
-	for (var i = 0 ; i < this.match[toRow].length; i++) {
-		var switched = this.match[toRow][i];
+	for (var i = 0 ; i < this.matched[toRow].length; i++) {
+		var switched = this.matched[toRow][i];
 		if (this.canAdd(switched, fromRow)) {
-			this.match[toRow][i] = x;
-			this.match[fromRow].push(switched);
+			this.matched[toRow][i] = x;
+			this.addToRow(switched, fromRow);
 			return true;
 		}
 	}
@@ -111,12 +125,16 @@ Group.prototype.switchItInRow = function (x, toRow, fromRow) {
 	return false;
 };
 
+Group.prototype.addToRow = function(x, row) {
+	this.matched[row].push(x);
+	this.matches.total++; 
+}
 
 Group.prototype.addIt = function(x) {
 	var counter = 0, added = false;
 	while (counter < this.elements.length && !added) {
 		if (this.canAdd(x, this.pointer)) {
-			this.match[this.pointer].push(x);
+			this.addToRow(x, this.pointer);
 			added = true;
 		}
 		this.updatePointer();
@@ -126,7 +144,7 @@ Group.prototype.addIt = function(x) {
 }
 
 
-Group.prototype.matchIt = function() {
+Group.prototype.match = function() {
 	// Loop through the pools: elements in lower  
 	// indexes-pools have more chances to be used
 	for (var i = 0 ; i < this.pool.length ; i++) {
@@ -141,13 +159,16 @@ Group.prototype.matchIt = function() {
 	}
 	
 	if (this.shouldSwitch()) {
-		console.log('should switch')
 		this.switchIt();
 	}
 	
 	if (this.leftOver.length) {
 		console.log('Something did not work well..');
 	}
+	
+	console.log('left over: ', this.leftOver);
+	console.log('hits: ' + this.matches.total + '/' + this.matches.requested);
+	
 };
 
 Group.prototype.updatePointer = function () {
@@ -156,13 +177,13 @@ Group.prototype.updatePointer = function () {
 
 
 var pool = [ [1, 1, 1, 2, 2, 2], [3, 3, 3, 4, 4, 4], ];
-var elements = [ 2, 7, 4, 1 ]; // [7, 1, 2, 4];
+var elements = [7, 1, 2, 4];
 
 var g = new Group();
 g.init(elements, pool);
-g.matchIt();
+g.match();
 
 console.log(g.elements);
-console.log(g.match);
+console.log(g.matched);
 
 
