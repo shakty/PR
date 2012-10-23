@@ -67,22 +67,36 @@ Group.prototype.shouldSwitch = function (x, fromRow) {
 
 // If there is a hole, not in the last position, the algorithm fails
 Group.prototype.switchIt = function () {
+	
+	for (var i = 0; i < this.elements.length ; i++) {
+		if (this.match[i].length < this.rowLimit) {
+			this.completeRow(i);
+		}
+	}
+	
+};
+
+Group.prototype.completeRow = function (row) {
 	var clone = this.leftOver.slice(0);
 	for (var i = 0 ; i < clone.length; i++) {
 		for (var j = 0 ; j < this.elements.length; j++) {
-			if (this.switchItInRow(clone[i], j, this.pointer)){
+			if (this.switchItInRow(clone[i], j, row)){
 				this.leftOver.splice(i,1);
-				continue;
+				return true;
 			}
+			this.updatePointer();
 		}
 	}
 	return false;
-};
+}
 
 
 Group.prototype.switchItInRow = function (x, toRow, fromRow) {
-	if (!this.canSwitchIn(x, toRow)) return false;
-	
+	if (!this.canSwitchIn(x, toRow)) {
+		//console.log('cannot switch ' + x + ' ' + toRow)
+		return false;
+	}
+	//console.log('can switch: ' + x + ' ' + toRow + ' from ' + fromRow)
 	// Check if we can insert any of the element of the 'toRow'
 	// inside the 'toRow'
 	for (var i = 0 ; i < this.match[toRow].length; i++) {
@@ -142,7 +156,7 @@ Group.prototype.updatePointer = function () {
 
 
 var pool = [ [1, 1, 1, 2, 2, 2], [3, 3, 3, 4, 4, 4], ];
-var elements = [7, 1, 2, 4];
+var elements = [ 2, 7, 4, 1 ]; // [7, 1, 2, 4];
 
 var g = new Group();
 g.init(elements, pool);
