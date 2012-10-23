@@ -5,7 +5,10 @@ var J = require('nodegame-client').JSUS;
 function RMatcher (options) {
 	
 	this.groups = [];
+	
+	this.maxIteration = 10;
 
+	this.perfectMatch = false;
 }
 
 
@@ -14,14 +17,35 @@ RMatcher.prototype.match = function() {
 	// Do first match
 	for (var i = 0; i < this.groups.length ; i++) {
 		this.groups[i].match();
+	}	
+	
+	this.assignLeftOvers();
+}
+
+
+RMatcher.prototype.assignLeftOvers = function() {
+	var data = [];
+	
+	for (i = 0; i < this.groups.length ; i++) {
+		var g = this.groups[i]; 
+		// Group is full
+		if (g.matches.done && !g.matches.leftOver.length) continue;
+		
+		data.push({
+			group: i,
+			leftOver: g.leftOver,
+			needed: g.matches.requested - g.matches.total;
+		});
+		
+	} 
+	
+	if (data.length === 1) return false;
+	
+	if (data.length === 0) {
+		this.perfectMatch = true;
+		return true;
 	}
 	
-	//
-	for (i = 0; i < this.groups.length ; i++) {
-		if (this.groups[i].matches.total !== this.groups[i].matches.total) {
-			
-		}
-	} 
 	
 	
 }
@@ -40,8 +64,6 @@ function Group() {
 	this.matches.done = false;
 	
 	this.rowLimit = 3;
-	
-	
 	
 	this.noSelf = true;
 	
@@ -71,6 +93,7 @@ Group.prototype.init = function (elements, pool) {
 	
 	this.matches.requested = this.elements.length * this.rowLimit;
 };
+
 
 /**
  * The same as canAdd, but does not consider row limit
@@ -200,7 +223,7 @@ Group.prototype.updatePointer = function () {
 }
 
 
-var pool = [ [1, 2], [3, 4], ];
+var pool = [ [1, 2, 5, 6, 7], [3, 4], ];
 var elements = [7, 1, 2, 4];
 
 var g = new Group();
