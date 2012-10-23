@@ -24,11 +24,12 @@ function Group() {
 	
 	this.pool = [];
 	
-//	this.holes = [];
+	this.shuffle = true;
 }
 
 Group.prototype.init = function (elements, pool) {
-	this.elements = elements;
+	this.elements = (this.shuffle) ? J.shuffle(elements)
+								   : elements;
 	this.pool = pool;
 	
 	for (var i = 0 ; i < elements.length ; i++) {
@@ -64,6 +65,7 @@ Group.prototype.shouldSwitch = function (x, fromRow) {
 	
 };
 
+// If there is a hole, not in the last position, the algorithm fails
 Group.prototype.switchIt = function () {
 	var clone = this.leftOver.slice(0);
 	for (var i = 0 ; i < clone.length; i++) {
@@ -115,41 +117,17 @@ Group.prototype.matchIt = function() {
 	// indexes-pools have more chances to be used
 	for (var i = 0 ; i < this.pool.length ; i++) {
 		for (var j = 0 ; j < this.pool[i].length ; j++) {
-			
-			// found: There was an hole and it was filled;
-//			var found = false;
-//			// Check if have left some holes on the way
-//			// If so, can we insert the current element there?
-//			if (this.holes.length) {
-//				for (var h = 0; h < this.holes.length; h++) {
-//					if (this.canAdd(this.pool[i][j], this.holes[h])) {
-//						this.match[this.holes[h]].push(this.pool[i][j]);
-//						this.updatePointer();
-//						// remove the index from array of holes
-//						this.holes.splice(h, 1);
-//						break;
-//					}
-//				}
-//				
-//				if (found) {
-//					// if we filled the hole, we go to next loop iteration
-//					continue;
-//				}
-//			}
-			
-			// No holes, we continue normally
-			
+						
 			// Try all positions
 			if (!this.addIt(this.pool[i][j])) {
 				// if we could not add it as a match, it becomes leftover
 				this.leftOver.push(this.pool[i][j]);
 			}
-			
 		}
 	}
 	
 	if (this.shouldSwitch()) {
-		//console.log('should switch')
+		console.log('should switch')
 		this.switchIt();
 	}
 	
@@ -170,6 +148,7 @@ var g = new Group();
 g.init(elements, pool);
 g.matchIt();
 
+console.log(g.elements);
 console.log(g.match);
 
 
