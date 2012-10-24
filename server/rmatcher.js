@@ -77,7 +77,7 @@ RMatcher.prototype.switchBetweenGroups = function() {
 	for ( var i = 0; i < this.groups.length ; i++) {
 		g = this.groups[i]; 
 		// Group is full
-		if (!g.matches.done) {
+		if (!g.leftOver) {
 			this.tryOtherLeftOvers(i);
 		}
 		
