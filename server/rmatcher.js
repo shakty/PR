@@ -9,46 +9,80 @@ function RMatcher (options) {
 	this.maxIteration = 10;
 
 	this.perfectMatch = false;
+	
+	this.doneCounter = 0;
 }
 
+RMatcher.prototype.addGroup = function (group) {
+	if (!group) return;
+	this.groups.push(group);
+};
 
 RMatcher.prototype.match = function() {
-	
 	// Do first match
 	for (var i = 0; i < this.groups.length ; i++) {
 		this.groups[i].match();
+		if (this.groups[i].matches.done) {
+			this.doneCounter++;
+		}
 	}	
 	
-	this.assignLeftOvers();
-}
-
-
-RMatcher.prototype.assignLeftOvers = function() {
-	var data = [];
-	
-	for (i = 0; i < this.groups.length ; i++) {
-		var g = this.groups[i]; 
-		// Group is full
-		if (g.matches.done && !g.matches.leftOver.length) continue;
-		
-		data.push({
-			group: i,
-			leftOver: g.leftOver,
-			needed: g.matches.requested - g.matches.total;
-		});
-		
-	} 
-	
-	if (data.length === 1) return false;
-	
-	if (data.length === 0) {
-		this.perfectMatch = true;
-		return true;
+	if (!this.allGroupsDone()) {
+		this.assignLeftOvers();
 	}
 	
+	if (!this.allGroupsDone()) {
+		this.switchBetweenGroups();
+	}
 	
-	
-}
+	for (var i = 0; i < this.groups.length ; i++) {
+		this.groups[i].summary();
+	}
+};
+
+RMatcher.prototype.allGroupsDone = function() {
+	return this.doneCounter === this.groups.length;
+};
+
+RMatcher.prototype.tryOtherLeftOvers = function (g) {
+	var group;
+	for (var i = (g + 1) ; i < (this.groups.length + g) ; i++) {
+		group = this.groups[i % this.groups.length];
+		leftOver = [];
+		if (group.leftOver.length) {
+			group.leftOver = this.groups[g].matchBatch(group.leftOver);
+			
+			if (this.groups[g].matches.done) {
+				this.doneCounter++;
+			}
+		}
+		
+	}
+};
+
+RMatcher.prototype.assignLeftOvers = function() {
+	var g;
+	for ( var i = 0; i < this.groups.length ; i++) {
+		g = this.groups[i]; 
+		// Group is full
+		if (!g.matches.done) {
+			this.tryOtherLeftOvers(i);
+		}
+		
+	} 
+};
+
+RMatcher.prototype.switchBetweenGroups = function() {
+	var g;
+	for ( var i = 0; i < this.groups.length ; i++) {
+		g = this.groups[i]; 
+		// Group is full
+		if (!g.matches.done) {
+			this.tryOtherLeftOvers(i);
+		}
+		
+	} 
+};
 
 function Group() {
 	
@@ -146,7 +180,7 @@ Group.prototype.completeRow = function (row) {
 		}
 	}
 	return false;
-}
+};
 
 
 Group.prototype.switchItInRow = function (x, toRow, fromRow) {
@@ -175,7 +209,7 @@ Group.prototype.addToRow = function(x, row) {
 	if (this.matches.total === this.matches.requested) {
 		this.matches.done = true;
 	}
-}
+};
 
 Group.prototype.addIt = function(x) {
 	var counter = 0, added = false;
@@ -188,19 +222,29 @@ Group.prototype.addIt = function(x) {
 		counter++;
 	}
 	return added;
-}
+};
 
 
-Group.prototype.match = function() {
+Group.prototype.matchBatch = function (pool) {
+	var leftOver = [];
+	for (var i = 0 ; i < pool.length ; i++) {
+		if (this.matches.done || !this.addIt(pool[i])) {
+			// if we could not add it as a match, it becomes leftover
+			leftOver.push(pool[i]);
+		}
+	}
+	return leftOver;
+};
+
+Group.prototype.match = function (pool) {
+	pool = pool || this.pool;
 	// Loop through the pools: elements in lower  
 	// indexes-pools have more chances to be used
-	for (var i = 0 ; i < this.pool.length ; i++) {
-		for (var j = 0 ; j < this.pool[i].length ; j++) {
-			// Try all positions
-			if (this.matches.done || !this.addIt(this.pool[i][j])) {
-				// if we could not add it as a match, it becomes leftover
-				this.leftOver.push(this.pool[i][j]);
-			}
+	var leftOver;
+	for (var i = 0 ; i < pool.length ; i++) {
+		leftOver = this.matchBatch(pool[i]);
+		if (leftOver.length) {
+			this.leftOver = this.leftOver.concat(leftOver);
 		}
 	}
 	
@@ -211,26 +255,50 @@ Group.prototype.match = function() {
 	if (this.leftOver.length) {
 		console.log('Something did not work well..');
 	}
-	
-	console.log('pool: ', this.pool);
-	console.log('left over: ', this.leftOver);
-	console.log('hits: ' + this.matches.total + '/' + this.matches.requested);
-	
 };
 
 Group.prototype.updatePointer = function () {
 	this.pointer = (this.pointer + 1) % this.elements.length;
-}
+};
+
+Group.prototype.summary = function() {
+	console.log('elements: ', this.elements);
+	console.log('pool: ', this.pool);
+	console.log('left over: ', this.leftOver);
+	console.log('hits: ' + this.matches.total + '/' + this.matches.requested);
+	console.log('matched: ', this.matched);
+};
+
+var poolA = [ [1, 2], [3, 4], ];
+var elementsA = [7, 1, 2, 4];
+
+var poolB = [ [5], [6], ];
+var elementsB = [3 , 8];
+
+var poolC = [ [7, 8, 9] ];
+var elementsC = [9, 5, 6, ];
+
+var A, B, C;
+
+A = new Group();
+A.init(elementsA, poolA);
+
+B = new Group();
+B.init(elementsB, poolB);
+
+C = new Group();
+C.init(elementsC, poolC);
+
+var rm = new RMatcher();
+
+rm.addGroup(A);
+rm.addGroup(B);
+rm.addGroup(C);
 
 
-var pool = [ [1, 2, 5, 6, 7], [3, 4], ];
-var elements = [7, 1, 2, 4];
+rm.match();
 
-var g = new Group();
-g.init(elements, pool);
-g.match();
-
-console.log(g.elements);
-console.log(g.matched);
+//console.log(g.elements);
+//console.log(g.matched);
 
 
