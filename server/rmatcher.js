@@ -60,63 +60,29 @@ RMatcher.prototype.tryOtherLeftOvers = function (g) {
 	}
 };
 
-
-
-RMatcher.prototype.switchItInRowFromGroup = function (x, toGroup, fromGroup, toRow, fromRow) {
-	if (!toGroup.canSwitchIn(x, toRow)) {
-		//console.log('cannot switch ' + x + ' ' + toRow)
-		return false;
-	}
-	//console.log('can switch: ' + x + ' ' + toRow + ' from ' + fromRow)
-	// Check if we can insert any of the element of the 'toRow'
-	// inside the 'fromRow'
-	for (var i = 0 ; i < toGroup.matched[toRow].length; i++) {
-		var switched = toGroup.matched[toRow][i];
-		if (this.canAdd(switched, fromRow)) {
-			this.matched[toRow][i] = x;
-			this.addToRow(switched, fromRow);
-			return true;
-		}
-	}
-	
-	return false;
-};
-
 RMatcher.prototype.collectLeftOver = function() {
-	var lo = [];
-	J.each(this.groups, function(g) {
-		lo = lo.concat(g.leftOver);
-	});
-	return lo;
+	return J.map(this.groups, function(g) { return g.leftOver; });
 };
 
-RMatcher.prototype.switchBetween = function(group, other) {
-	var clone = group.leftOver.slice(0);
-	for (var i = 0 ; i < clone.length; i++) {
-		for (var j = 0 ; j < other.elements.length; j++) {
-			if (this.switchItInRowFromGroup(group, other, clone[i], j, row)){
-				leftOver.splice(i,1);
-				return true;
-			}
-//			this.updatePointer();
-		}
-	}
-	return false;
-}
 
-RMatcher.prototype.switchFromGroup = function (fromGroup, toGroup, fromRow, lo) {
+RMatcher.prototype.switchFromGroup = function (fromGroup, toGroup, fromRow, leftOvers) {
 	for (var toRow = 0; toRow < fromGroup.elements.length; toRow++) {
-		for (var j = 0; j < lo.length; j++) {
-			var x = lo[j];
-	
-			if (fromGroup.canSwitchIn(x, toRow)) {
-				for (var h = 0 ; h < fromGroup.matched[toRow].length; h++) {
-					var switched = fromGroup.matched[toRow][h];
 				
-					if (toGroup.canAdd(switched, fromRow)) {
-						fromGroup.matched[toRow][h] = x;
-						toGroup.addToRow(switched, fromRow);
-						return true;
+		for (var j = 0; j < leftOvers.length; j++) {
+			for (var n = 0; n < leftOvers[j].length; n++) {
+				
+				var x = leftOvers[j][n];
+		
+				if (fromGroup.canSwitchIn(x, toRow)) {
+					for (var h = 0 ; h < fromGroup.matched[toRow].length; h++) {
+						var switched = fromGroup.matched[toRow][h];
+					
+						if (toGroup.canAdd(switched, fromRow)) {
+							fromGroup.matched[toRow][h] = x;
+							toGroup.addToRow(switched, fromRow);
+							leftOvers[j].splice(n,1);
+							return true;
+						}
 					}
 				}
 			}
@@ -180,6 +146,9 @@ RMatcher.prototype.switchBetweenGroups = function() {
 		
 	} 
 };
+
+
+////////////////// GROUP
 
 function Group() {
 	
@@ -348,10 +317,6 @@ Group.prototype.match = function (pool) {
 	
 	if (this.shouldSwitch()) {
 		this.switchIt();
-	}
-	
-	if (this.leftOver.length) {
-		console.log('Something did not work well..');
 	}
 };
 
