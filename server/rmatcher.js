@@ -35,6 +35,9 @@ RMatcher.prototype.match = function() {
 		this.groups[i].match();
 		if (this.groups[i].matches.done) {
 			this.doneCounter++;
+//			console.log('is done immediately')
+//			console.log(i);
+//			console.log('is done immediately')
 		}
 	}	
 	
@@ -64,6 +67,10 @@ RMatcher.prototype.tryOtherLeftOvers = function (g) {
 			
 			if (this.groups[g].matches.done) {
 				this.doneCounter++;
+//				console.log('is done with leftOver')
+//				console.log(g);
+//				console.log('is done with leftOver')
+				return true;
 			}
 		}
 		
@@ -105,6 +112,12 @@ RMatcher.prototype.switchFromGroup = function (fromGroup, toGroup, fromRow, left
 							leftOvers[j].splice(n,1);
 							
 							if (toGroup.matches.done) {
+							
+
+//								console.log('is done')
+//								console.log(toGroup);
+//								console.log('is done')
+								
 								this.doneCounter++;
 							}
 							return true;
@@ -412,18 +425,17 @@ function simulateMatch(N) {
 		
 }
 	
-simulateMatch(100);
+simulateMatch(1000000);
 
 
-//var myElements = [ [ 1, 3, 7, 8, 2, 4, 5 ], [ 6 ], [ 9 ] ];
-//var myPools =  [ [ [ 4, 6, 5, 7, 1 ], [] ], [ [ 2 ], [ 8 ] ], [ [ 3 ], [ 9 ] ] ]
-//
+//var myElements = [ [ 3, 5 ], [ 8, 9, 1, 7, 6 ], [ 2, 4 ] ];
+//var myPools = [ [ [ 6 ], [ 9, 7 ] ], [ [], [ 8, 1, 5, 4 ] ], [ [], [ 2, 3 ] ] ];
 //
 //var myRM = new RMatcher();
 //myRM.init(myElements, myPools);
 //
 //var myMatch = myRM.match();
-//
+
 //if (!myRM.allGroupsDone()) {
 //	console.log('ERROR')
 //	console.log(myElements);
@@ -436,6 +448,7 @@ simulateMatch(100);
 //	});
 //}
 
+//console.log(myRM.doneCounter);
 
 //var poolA = [ [1, 2], [3, 4], ];
 //var elementsA = [7, 1, 2, 4];
