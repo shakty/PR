@@ -60,6 +60,97 @@ RMatcher.prototype.tryOtherLeftOvers = function (g) {
 	}
 };
 
+
+
+RMatcher.prototype.switchItInRowFromGroup = function (x, toGroup, fromGroup, toRow, fromRow) {
+	if (!toGroup.canSwitchIn(x, toRow)) {
+		//console.log('cannot switch ' + x + ' ' + toRow)
+		return false;
+	}
+	//console.log('can switch: ' + x + ' ' + toRow + ' from ' + fromRow)
+	// Check if we can insert any of the element of the 'toRow'
+	// inside the 'fromRow'
+	for (var i = 0 ; i < toGroup.matched[toRow].length; i++) {
+		var switched = toGroup.matched[toRow][i];
+		if (this.canAdd(switched, fromRow)) {
+			this.matched[toRow][i] = x;
+			this.addToRow(switched, fromRow);
+			return true;
+		}
+	}
+	
+	return false;
+};
+
+RMatcher.prototype.collectLeftOver = function() {
+	var lo = [];
+	J.each(this.groups, function(g) {
+		lo = lo.concat(g.leftOver);
+	});
+	return lo;
+};
+
+RMatcher.prototype.switchBetween = function(group, other) {
+	var clone = group.leftOver.slice(0);
+	for (var i = 0 ; i < clone.length; i++) {
+		for (var j = 0 ; j < other.elements.length; j++) {
+			if (this.switchItInRowFromGroup(group, other, clone[i], j, row)){
+				leftOver.splice(i,1);
+				return true;
+			}
+//			this.updatePointer();
+		}
+	}
+	return false;
+}
+
+RMatcher.prototype.switchFromGroup = function (fromGroup, toGroup, fromRow, lo) {
+	for (var toRow = 0; toRow < fromGroup.elements.length; toRow++) {
+		for (var j = 0; j < lo.length; j++) {
+			var x = lo[j];
+	
+			if (fromGroup.canSwitchIn(x, toRow)) {
+				for (var h = 0 ; h < fromGroup.matched[toRow].length; h++) {
+					var switched = fromGroup.matched[toRow][h];
+				
+					if (toGroup.canAdd(switched, fromRow)) {
+						fromGroup.matched[toRow][h] = x;
+						toGroup.addToRow(switched, fromRow);
+						return true;
+					}
+				}
+			}
+		}
+	}
+};
+
+/**
+ * 
+ * @param {integer} g Group index
+ * @param {integer} row Row index
+ */
+RMatcher.prototype.trySwitchingBetweenGroups = function (g, row) {
+	var lo = this.collectLeftOver();
+	var toGroup = this.groups[g];
+	var fromGroup;
+	for (var i = (g + 1) ; i < (this.groups.length + g) ; i++) {
+		fromGroup = this.groups[i % this.groups.length];
+		
+		if (this.switchFromGroup(fromGroup, toGroup, row, lo)) {
+			console.log('aha')
+		}
+		
+		
+		
+		
+//		this.switchBetween(this.groups[g], group)
+//		if (toGroup.matches.done) {
+//			this.doneCounter++;
+//		}
+		
+	}
+};
+
 RMatcher.prototype.assignLeftOvers = function() {
 	var g;
 	for ( var i = 0; i < this.groups.length ; i++) {
@@ -76,9 +167,15 @@ RMatcher.prototype.switchBetweenGroups = function() {
 	var g;
 	for ( var i = 0; i < this.groups.length ; i++) {
 		g = this.groups[i]; 
-		// Group is full
-		if (!g.leftOver) {
-			this.tryOtherLeftOvers(i);
+		// Group has free elements
+		if (!g.matches.done) {
+			for ( var j = 0; j < g.elements.length; j++) {
+				if (g.matched[j].length < g.rowLimit) {
+					this.trySwitchingBetweenGroups(i, j);
+				}
+			}
+			
+//			this.trySwitchingBetweenGroups(i);
 		}
 		
 	} 
@@ -168,12 +265,13 @@ Group.prototype.switchIt = function () {
 	
 };
 
-Group.prototype.completeRow = function (row) {
-	var clone = this.leftOver.slice(0);
+Group.prototype.completeRow = function (row, leftOver) {
+	leftOver = leftOver || this.leftOver;
+	var clone = leftOver.slice(0);
 	for (var i = 0 ; i < clone.length; i++) {
 		for (var j = 0 ; j < this.elements.length; j++) {
 			if (this.switchItInRow(clone[i], j, row)){
-				this.leftOver.splice(i,1);
+				leftOver.splice(i,1);
 				return true;
 			}
 			this.updatePointer();
