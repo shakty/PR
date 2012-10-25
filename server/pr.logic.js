@@ -13,20 +13,16 @@ function PeerReview () {
 		this.threshold = 5;
 		this.reviewers = 3;
 		
+		this.exhibitions = {
+				A: 0,
+				B: 1,
+				C: 2,
+		};
+		
 		this.results = new node.NDDB();
 		
-//		this.results.h('A', function(e) {
-//			if (e.ex === 'A') return e;
-//		});
-//		
-//		this.results.h('B', function(e) {
-//			if (e.ex === 'B') return e;
-//		});
-//		
-//		this.results.h('C', function(e) {
-//			if (e.ex === 'B') return e;
-//		});
-		
+		this.nextround_reviewers = [ [[], []], [[], []], [[], []] ];
+		this.plids = [];
 	};
 	
 	var pregame = function () {
@@ -35,6 +31,7 @@ function PeerReview () {
 	
 	var instructions = function () {	
 		node.game.pl.save('./out/PL.nddb');
+		node.game.plids = node.game.pl.keep('id').fetch();
 		console.log('Instructions');
 	};
 		
@@ -47,15 +44,16 @@ function PeerReview () {
 		var R =  (this.pl.length > 3) ? this.reviewers
 									  : (this.pl.length > 2) ? 2 : 1;
 		
-		var faces = this.memory.select('state', '=', this.previous())
+		var dataRound = this.memory.select('state', '=', this.previous())
 							   .join('player', 'player', 'CF', 'value')
-							   .select('key', '=', 'SUB')
-							   .fetch();
+							   .select('key', '=', 'SUB');
+							
+		var faces = dataRound.fetch();
+		var subByEx = dataRound.groupBy('value');
+		//console.log(subByEx)
 		
 		
-		
-		
-		
+//		console.log(faces);
 //		console.log(faces.first());
 		
 		var matches;
@@ -64,53 +62,25 @@ function PeerReview () {
 		});
 		
 		node.env('review_select', function() {
-			// For each exhibition X we need to create three groups: 
-			// 1. published in exhibition X
-			// 2. submitted, but not published in X
-			// 3. all the others
-			
-			var submissionRound = this.previous(4);
-			var lastRound = this.results.select('state', '=', submissionRound);
-			
+				
 			// First Round
-			if (!lastRound.length) {
+			if (node.game.state.round === 1) {
+				console.log(faces.length, R)
 				matches = node.JSUS.latinSquareNoSelf(faces.length, R);
+				console.log('MATCHES: ');
+				console.log(matches);
 				return;
 			}
 			
-			var rGroups = {
-				'A': {
-					published: [],
-					submitted: [],
-					other: [],
-				},
-				'B': {
-					published: [],
-					submitted: [],
-					other: [],
-				},
-				'C': {
-					published: [],
-					submitted: [],
-					other: [],
-				},
-			}
-				
-			var exData, exGroups;
-			JSUS.each(['A','B','C'], function (ex) {q
-				exData = lastRound.select('ex', '=', ex);
-				ex
-				var groups = lastRound.groupBy('published');
-				
-				
-				rGroups[ex].published = lastRound.select('published');
-				rGroups[ex].submitted = lastRound.select('published', '=')
-			
+			console.log(node.game.pl.fetch())
+			var rm = new RMatcher();
+			rm.init(JSUS.seq(0,9), node.game.nextround_reviewers);
+			matches = rm.match();
 		});
 		
 		
-//		console.log('STEEEE');
-//		console.log(matches);
+		console.log('MATCHES: ');
+		console.log(matches);
 
 		for (var i=0; i < faces.length; i++) {
 			var data = {};
@@ -144,6 +114,9 @@ function PeerReview () {
 		
 		var submissionRound = this.previous(2);
 		
+		this.nextround_reviewers = [ [[], []], [[], []], [[], []] ];
+		
+		
 		// For each exhibition
 		// get all the evaluations for each submission
 		var exhibs = this.memory.select('state', '>=', submissionRound)
@@ -160,35 +133,38 @@ function PeerReview () {
 		// results of the round (by author) 
 		var player_results = [];
 		
+		var idEx, ex, author, cf, mean, player, works;
 		
 		// Exhibitions Loop
 		for (var i=0; i < exhibs.length; i++) {
 			
 			// Get the list of works per exhibition
-			var works = exhibs[i].groupBy('EVA2.value.for');
+			works = exhibs[i].groupBy('EVA2.value.for');
 						
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
 	
+				player = works[j].first().player;
 				
-				var player = works[j].first().player;
+				mean = works[j].mean('EVA2.value.eva'); 
 				
-				var mean = works[j].mean('EVA2.value.eva'); 
-				
-				var cf = this.memory.select('state', '=', submissionRound)
+				cf = this.memory.select('state', '=', submissionRound)
 									.select('player', '=', player)
 									.select('key', '=', 'CF');
 
 
 				
-				var author = this.pl.select('id', '=', player).first();
+				author = this.pl.select('id', '=', player).first();
+				
+				ex = works[j].first().value;
+				idEx = this.exhibitions[ex];
 				
 				var player_result = {
 						player: player,
 						author: author.name,
 						mean: mean.toFixed(2),
 						scores: works[j].fetch('EVA2.value.eva'),
-						ex: works[j].first().value,
+						ex: ex,
 						round: submissionRound,
 				};
 				
@@ -203,14 +179,23 @@ function PeerReview () {
 						id: author.name,
 						round: node.game.state.toHash('S.r'),
 						pc: author.pc,
-					});
-				}
+					}));
+					
+					// Add player to the list of next reviewers for the 
+					// exhibition where he *published*
+					this.nextround_reviewers[idEx][0].push(player);
+					
+				} 
+				
+				// Add player to the list of next reviewers for the 
+				// exhibition where he *submitted*
+				this.nextround_reviewers[idEx][1].push(player);				
 				
 				// Add results for single player
 				player_results.push(player_result);
 				
 				// Add it to the local DB of results
-				this.results.add(player_result);
+				this.results.insert(player_result);
 			}
 		}
 
@@ -245,9 +230,6 @@ function PeerReview () {
 		console.log('Game ended');
 		node.memory.dumpAllIndexes('./out/');
 		
-//		node.random.exec(function(){
-//			node.replay(true);
-//		},1000);
 	};
 	
 	var gameloop = { // The different, subsequent phases in each round
@@ -305,7 +287,8 @@ function PeerReview () {
 }
 
 if ('object' === typeof module && 'function' === typeof require) {
-	var node = require('../../../node_modules/nodegame-server/node_modules/nodegame-client');
+	var node = require('nodegame-client');
+	var RMatcher = require('./rmatcher.js');
 	module.exports.node = node;
 	module.exports.PeerReview = PeerReview;
 }
@@ -317,7 +300,10 @@ var conf = {
 	verbosity: 0,
 	io: {				 
 	     reconnect: false
-	} 
+	},
+	env: {
+		review_select: true,
+	},
 };
 
 node.play(conf, new PeerReview());

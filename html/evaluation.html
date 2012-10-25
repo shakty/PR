@@ -72,7 +72,7 @@ window.onload = function(){
                controls: false
     };
 
-    var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+    var cf = node.widgets.get('ChernoffFacesSimple', cf_options);
   
     var evaId = 'eva_' + msg.data.from;
     var diplayEvaId = 'display_' + msg.data.from;

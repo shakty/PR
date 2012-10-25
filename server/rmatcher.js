@@ -425,7 +425,7 @@ function simulateMatch(N) {
 		
 }
 	
-simulateMatch(1000000);
+//simulateMatch(1000000);
 
 
 //var myElements = [ [ 3, 5 ], [ 8, 9, 1, 7, 6 ], [ 2, 4 ] ];

@@ -128,7 +128,7 @@ $(document).ready(function() {
     // with a random face, otherwise with 
     // the last one created
     if (!node.game.last_cf) {
-      var init_cf = node.window.widgets.ChernoffFaces.FaceVector.random();
+      var init_cf = node.widgets.widgets.ChernoffFaces.FaceVector.random();
       //console.log(init_cf);
       
       // some features are fixed in the simplified version
@@ -164,7 +164,7 @@ $(document).ready(function() {
       };
       
      var creationDiv = document.getElementById('creation');
-     node.game.cf = node.window.addWidget('ChernoffFacesSimple', creationDiv, cf_options);
+     node.game.cf = node.widgets.append('ChernoffFacesSimple', creationDiv, cf_options);
      
      // Copy face_0
      if (GameState.compare(node.game.state, '3.1.1') === 0) {

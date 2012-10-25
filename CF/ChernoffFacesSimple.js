@@ -4,22 +4,18 @@
 	
 	var Table = node.window.Table;
 	
-	//var CF = Ember.Application.create();
+	node.widgets.register('ChernoffFacesSimple', ChernoffFaces);
 	
-	/**
-	 * Expose constructor
-	 */
-	exports.ChernoffFacesSimple = ChernoffFaces;
-	exports.ChernoffFaces.FaceVector = FaceVector;
-	exports.ChernoffFaces.FacePainter = FacePainter;
-	
+	/// ## Defaults
 	
 	ChernoffFaces.defaults = {};
+	ChernoffFaces.defaults.id = 'ChernoffFaces';
 	ChernoffFaces.defaults.canvas = {};
 	ChernoffFaces.defaults.canvas.width = 100;
 	ChernoffFaces.defaults.canvas.heigth = 100;
 	
-	ChernoffFaces.id = 'ChernoffFaces';
+	// ## Meta-data
+	
 	ChernoffFaces.name = 'Chernoff Faces';
 	ChernoffFaces.version = '0.3';
 	ChernoffFaces.description = 'Display parametric data in the form of a Chernoff Face.';
@@ -91,7 +87,7 @@
 			this.sc = options.controls;
 		}
 		else {
-			this.sc = node.window.getWidget('Controls.Slider', sc_options);
+			this.sc = node.widgets.get('Controls.Slider', sc_options);
 		}
 		
 		// CreateControls are always there, but may not be visible

@@ -12,7 +12,7 @@ function PeerReviewGame () {
 	
 	this.init = function() {			
 		node.window.setup('PLAYER');
-		node.window.addWidget('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
+		node.widgets.append('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
 		
 		//node.window.addWidget('WaitScreen');
 		
@@ -76,7 +76,7 @@ function PeerReviewGame () {
 				                 	 controls: false,
 							};
 					      
-							var cf = node.window.getWidget('ChernoffFacesSimple', cf_options);
+							var cf = node.widgets.get('ChernoffFacesSimple', cf_options);
 							
 
 			    	          var div = $('<div class="copyorclose">');
@@ -122,7 +122,7 @@ function PeerReviewGame () {
 			
 			var container = document.createElement('div');
 			
-			var cf = node.window.addWidget('ChernoffFacesSimple', container, cf_options);
+			var cf = node.widgets.append('ChernoffFacesSimple', container, cf_options);
 			
 				var details_tbl = new node.window.Table();
 				details_tbl.addColumn(['Author: ' + cell.content.author,
