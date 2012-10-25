@@ -302,7 +302,7 @@ var conf = {
 	     reconnect: false
 	},
 	env: {
-		review_select: true,
+		review_random: true,
 	},
 };
 

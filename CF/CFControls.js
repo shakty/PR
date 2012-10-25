@@ -2,38 +2,6 @@
 
 	var node = parent.node;
 	
-//	var features = [
-//	                {name: 'head_radius',
-//	                 min: 10,
-//	                 max: 100,
-//	                 step: 0.01,
-//	                },
-//	                {name: 'head_scale_x',
-//	                 min: 0.2,
-//	                 max: 2,
-//	                 step: 0.01,
-//	                },
-//	                ];
-//	
-//	
-//	function generateAllCombinations(features) {
-//		var totCombs = 0;
-//		var limits = [];
-//		
-//		for (var i=0; i<features.length; i++) {
-//			var f = features[i];
-//			var diff = Math.abs(f.max - f.min);
-//			var combs = diff / f.step;
-//			totCombs += combs;
-//			limits.push({name: f.name, limit: totCombs});
-//		}
-//		
-//		return limits;
-//	};
-//	
-//	function translate(x, features, limits) {
-//
-//	};
 	/*!
 	* 
 	* A description of a Chernoff Face.
@@ -43,7 +11,10 @@
 	*
 	*/
 
-	Controls.id = 'controls';
+	Controls.defaults = {};
+	Controls.defaults.id = 'controls';
+	
+	
 	Controls.name = 'Controls'
 	Controls.version = '0.2';
 	Controls.description = 'Wraps a collection of user-inputs controls.'
@@ -118,6 +89,7 @@
 	};
 	
 	Controls.prototype.parse = function() {
+		console.log('I am parsing...')
 		return this.list.parse();
 	};
 	
@@ -323,14 +295,10 @@
     ///////////////////////////
 	
 	
-	CFControls = CFControls;
-	
 	CFControls.prototype.__proto__ = jQuerySliderControls.prototype;
 //	CFControls.prototype.__proto__ = SliderControls.prototype;
 
 	CFControls.prototype.constructor = CFControls;
-	
-	
 	
 	
 	CFControls.id = 'CFControls';
@@ -604,6 +572,10 @@
 		}
 		return input;
 	}	
+	
+	CFControls.prototype.parse = function() {
+		return this.list.parse();
+	};
 	
 	CFControls.prototype.getAllValues = function() {
 		var out = {};

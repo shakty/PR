@@ -155,7 +155,15 @@ $(document).ready(function() {
       };
     
       var cfc = new CFControls(sc_options);
-          
+          parent.mycfc = cfc;
+			console.log('class of CFControls')		
+			console.log(CFControls);		
+					
+			console.log('QUESTO e il controller')
+      console.log(cfc);
+      console.log(cfc.parse())		
+			document.body.appendChild(cfc.parse());		
+					
       var cf_options = { id: 'cf',
                  width: 500,
                  height: 500,
@@ -165,7 +173,8 @@ $(document).ready(function() {
       
      var creationDiv = document.getElementById('creation');
      node.game.cf = node.widgets.append('ChernoffFacesSimple', creationDiv, cf_options);
-     
+     //node.game.cf = node.widgets.append('ChernoffFaces', creationDiv, cf_options);
+		 
      // Copy face_0
      if (GameState.compare(node.game.state, '3.1.1') === 0) {
     	 node.set('CF_0', node.game.cf.getAllValues());
