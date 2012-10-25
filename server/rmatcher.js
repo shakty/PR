@@ -7,11 +7,22 @@ function RMatcher (options) {
 	this.groups = [];
 	
 	this.maxIteration = 10;
-
-	this.perfectMatch = false;
 	
 	this.doneCounter = 0;
 }
+
+RMatcher.prototype.init = function (elements, pools) {
+	for (var i = 0; i < elements.length; i++) {
+		var g = new Group();
+		g.init(elements[i], pools[i]);
+		this.addGroup(g);
+	}
+	
+	this.options = {
+			elements: elements,
+			pools: pools,
+	};
+};
 
 RMatcher.prototype.addGroup = function (group) {
 	if (!group) return;
@@ -35,9 +46,8 @@ RMatcher.prototype.match = function() {
 		this.switchBetweenGroups();
 	}
 	
-	for (var i = 0; i < this.groups.length ; i++) {
-		this.groups[i].summary();
-	}
+	return J.map(this.groups, function(g) {	return g.matched; });
+	
 };
 
 RMatcher.prototype.allGroupsDone = function() {
@@ -60,6 +70,18 @@ RMatcher.prototype.tryOtherLeftOvers = function (g) {
 	}
 };
 
+RMatcher.prototype.assignLeftOvers = function() {
+	var g;
+	for ( var i = 0; i < this.groups.length ; i++) {
+		g = this.groups[i]; 
+		// Group is full
+		if (!g.matches.done) {
+			this.tryOtherLeftOvers(i);
+		}
+		
+	} 
+};
+
 RMatcher.prototype.collectLeftOver = function() {
 	return J.map(this.groups, function(g) { return g.leftOver; });
 };
@@ -71,7 +93,7 @@ RMatcher.prototype.switchFromGroup = function (fromGroup, toGroup, fromRow, left
 		for (var j = 0; j < leftOvers.length; j++) {
 			for (var n = 0; n < leftOvers[j].length; n++) {
 				
-				var x = leftOvers[j][n];
+				var x = leftOvers[j][n]; // leftover n from group j
 		
 				if (fromGroup.canSwitchIn(x, toRow)) {
 					for (var h = 0 ; h < fromGroup.matched[toRow].length; h++) {
@@ -81,6 +103,10 @@ RMatcher.prototype.switchFromGroup = function (fromGroup, toGroup, fromRow, left
 							fromGroup.matched[toRow][h] = x;
 							toGroup.addToRow(switched, fromRow);
 							leftOvers[j].splice(n,1);
+							
+							if (toGroup.matches.done) {
+								this.doneCounter++;
+							}
 							return true;
 						}
 					}
@@ -99,52 +125,40 @@ RMatcher.prototype.trySwitchingBetweenGroups = function (g, row) {
 	var lo = this.collectLeftOver();
 	var toGroup = this.groups[g];
 	var fromGroup;
-	for (var i = (g + 1) ; i < (this.groups.length + g) ; i++) {
+	// Tries with all, even with the same group, that is why is (g + 1)
+	for (var i = (g + 1) ; i < (this.groups.length + g + 1) ; i++) {
 		fromGroup = this.groups[i % this.groups.length];
 		
 		if (this.switchFromGroup(fromGroup, toGroup, row, lo)) {
-			console.log('aha')
+			if (toGroup.matches.done) return;
 		}
-		
-		
-		
-		
-//		this.switchBetween(this.groups[g], group)
-//		if (toGroup.matches.done) {
-//			this.doneCounter++;
-//		}
-		
 	}
+	
+	return false;
 };
 
-RMatcher.prototype.assignLeftOvers = function() {
-	var g;
-	for ( var i = 0; i < this.groups.length ; i++) {
-		g = this.groups[i]; 
-		// Group is full
-		if (!g.matches.done) {
-			this.tryOtherLeftOvers(i);
-		}
-		
-	} 
-};
+
 
 RMatcher.prototype.switchBetweenGroups = function() {
-	var g;
+	var g, diff;
 	for ( var i = 0; i < this.groups.length ; i++) {
 		g = this.groups[i]; 
 		// Group has free elements
 		if (!g.matches.done) {
 			for ( var j = 0; j < g.elements.length; j++) {
-				if (g.matched[j].length < g.rowLimit) {
-					this.trySwitchingBetweenGroups(i, j);
+				diff = g.rowLimit - g.matched[j].length;
+				if (diff) {
+					for (var h = 0 ; h < diff; h++) {
+						this.trySwitchingBetweenGroups(i, j);
+						if (this.allGroupsDone()) {
+							return true;
+						}
+					}
 				}
 			}
-			
-//			this.trySwitchingBetweenGroups(i);
 		}
-		
 	} 
+	return false;
 };
 
 
@@ -185,10 +199,14 @@ Group.prototype.init = function (elements, pool) {
 			this.pool[i] = J.shuffle(this.pool[i]);
 		}
 	}
-
 	
-	for (i = 0 ; i < elements.length ; i++) {
-		this.matched[i] = [];
+	if (!elements.length) {
+		this.matches.done = true;
+	}
+	else {	
+		for (i = 0 ; i < elements.length ; i++) {
+			this.matched[i] = [];
+		}
 	}
 	
 	this.matches.requested = this.elements.length * this.rowLimit;
@@ -332,34 +350,121 @@ Group.prototype.summary = function() {
 	console.log('matched: ', this.matched);
 };
 
-var poolA = [ [1, 2], [3, 4], ];
-var elementsA = [7, 1, 2, 4];
+var numbers = [1,2,3,4,5,6,7,8,9];
 
-var poolB = [ [5], [6], ];
-var elementsB = [3 , 8];
+function getElements() {
 
-var poolC = [ [7, 8, 9] ];
-var elementsC = [9, 5, 6, ];
-
-var A, B, C;
-
-A = new Group();
-A.init(elementsA, poolA);
-
-B = new Group();
-B.init(elementsB, poolB);
-
-C = new Group();
-C.init(elementsC, poolC);
-
-var rm = new RMatcher();
-
-rm.addGroup(A);
-rm.addGroup(B);
-rm.addGroup(C);
+	var out = [],
+		n = J.shuffle(numbers);
+	out.push(n.splice(0, J.randomInt(0,n.length)))
+	out.push(n.splice(0, J.randomInt(0,n.length)))
+	out.push(n)
+	
+	return J.shuffle(out);
+}
 
 
-rm.match();
+
+function getPools() {
+	var n = J.shuffle(numbers);
+		out = [];
+	
+	var A = n.splice(0, J.randomInt(0, (n.length / 2)));
+	var B = n.splice(0, J.randomInt(0, (n.length / 2)));
+	var C = n;
+	
+	var A_pub = A.splice(0, J.randomInt(0, A.length));
+	A = J.shuffle([A_pub, A]);
+	
+	var B_pub = B.splice(0, J.randomInt(0, B.length));
+	B = J.shuffle([B_pub, B]);
+	
+	var C_pub = C.splice(0, J.randomInt(0, C.length));
+	C = J.shuffle([C_pub, C]);
+	
+	return J.shuffle([A,B,C]);
+}
+//console.log(getElements())
+//console.log(getPools())
+
+function simulateMatch(N) {
+	
+	for (var i = 0 ; i < N ; i++) {
+		
+		var rm = new RMatcher(),
+			elements = getElements(),
+			pools = getPools();
+		
+//		console.log('NN ' , numbers);
+//		console.log(elements);
+//		console.log(pools)
+		rm.init(elements, pools);
+		
+		var matched = rm.match();
+		
+		if (!rm.allGroupsDone()) {
+			console.log('ERROR')
+			console.log(rm.options.elements);
+			console.log(rm.options.pools);
+			console.log(matched);
+		}
+	}
+		
+}
+	
+simulateMatch(100);
+
+
+//var myElements = [ [ 1, 3, 7, 8, 2, 4, 5 ], [ 6 ], [ 9 ] ];
+//var myPools =  [ [ [ 4, 6, 5, 7, 1 ], [] ], [ [ 2 ], [ 8 ] ], [ [ 3 ], [ 9 ] ] ]
+//
+//
+//var myRM = new RMatcher();
+//myRM.init(myElements, myPools);
+//
+//var myMatch = myRM.match();
+//
+//if (!myRM.allGroupsDone()) {
+//	console.log('ERROR')
+//	console.log(myElements);
+//	console.log(myPools);
+//	console.log(myMatch);
+//	
+//	console.log('---')
+//	J.each(myRM.groups, function(g) {
+//		console.log(g.pool);
+//	});
+//}
+
+
+//var poolA = [ [1, 2], [3, 4], ];
+//var elementsA = [7, 1, 2, 4];
+//
+//var poolB = [ [5], [6], ];
+//var elementsB = [3 , 8];
+//
+//var poolC = [ [7, 8, 9] ];
+//var elementsC = [9, 5, 6, ];
+//
+//var A, B, C;
+//
+//A = new Group();
+//A.init(elementsA, poolA);
+//
+//B = new Group();
+//B.init(elementsB, poolB);
+//
+//C = new Group();
+//C.init(elementsC, poolC);
+//
+//
+//rm.addGroup(A);
+//rm.addGroup(B);
+//rm.addGroup(C);
+//
+//rm.match();
+//
+//console.log(rm.allGroupsDone())
 
 //console.log(g.elements);
 //console.log(g.matched);
