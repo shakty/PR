@@ -1,0 +1,123 @@
+<!doctype html>
+<title>Art Exhibition Game: INSTRUCTIONS</title>
+
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!-- no Escape -->
+<!-- <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
+<!-- no Escape ends -->
+
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/instructions.css">
+<body>
+
+  <div id="container_instructions">
+    <h1>Welcome to the Art Exhibition Game!</h1>
+   
+    <div id="instructions">     
+      <img src="./images/instructions/painter.jpeg" width="200px" />
+      <span id="scrolldown">Scroll the page to read the whole text. </br> Read carefully and with no hurry.</span>
+      <p>
+        <h3>Introduction</h3>
+        You just became part of a community of 9 painters (including you).
+        The community will collectively decide which paintings can be 
+        displayed in <strong>3 (three)</strong> artistic exhibitions (named A, B, and C).
+        The three exhibitions have all the same value for the members of the community.
+      </p>
+       
+      <p>
+      Always keep in mind: In this game you will act both as an <em>artist</em> and as an <em>art critic</em>. 
+      </p>
+      
+      <p>
+      <h3>The game</h3>
+      
+      The game is divided in rounds, and each round is divided in three steps:
+      
+      <ul>
+        <li><strong>Step 1: </strong>Each player creates 1 (one) painting, and chooses 1 (one) exhibition to which he / she submits the work of art.
+        </li>
+        <li>
+          <strong>Step 2: </strong>Each player reviews 3 (three) of the 8 (eight) paintings produced by the other artists. 
+          The review is done by assigning a rating on a scale from 0 (zero) to 10 (ten) to each painting. 
+          You cannot review your own painting.
+        </li>
+        <li>
+          <strong>Step 3: </strong>All the paintings that received an average review-score
+           greater than 5 (five) are put on display in the exhibition to which they were 
+          submitted. If your painting is displayed you will receive a payoff.
+          </li>
+      </ul>
+      
+      </p>
+      
+			<p>
+      <h3>Reviewing</h3>
+        Your painting will be reviewed by those artists who <em>submitted</em> in the <em>previous</em> round a painting to the same exhibition. Those artists who also managed to <em>publish</em> will be preferred. If more reviewers are needed, then they will be selected <em>randomly</em>.
+      </p>
+			
+      <p>
+      <h3>Other rules</h3>
+      <ul>
+         <li>You have a limited amount of time to complete each step of the game. The time left will be displayed on the screen.</li>
+         <li>At each new round, when creating a new painting, you will continue from your previous submission.</li>
+         <li>It is possible to copy paintings from the past exhibitions.</li>
+      </ul>
+      </p>
+      
+      <p>
+      <h3>Payment</h3>
+      <ul>
+        <li>For participating in the game you will receive a fixed monetary compensation of <strong>10 (ten) CHF</strong>, plus 
+            a variable amount based on your performance in the game.</li>   
+				<li>Every round, <em>each</em> exhibition awards <strong>3 (three) CHF</strong> to the artists who published in there. The award is equally distributed among all publishing artists <strong>in the same</strong> exhibition.</li>
+        <li>For each painting of yours that is not put on display you will receive <strong>0 (zero) CHF</strong>.</li>
+        <li>The maximum amount of money you can win is 30*2 + 10 = <strong>70 (seventy) CHF</strong>.</li>
+        <li>In case of misconduct, cheating or disturbing behavior during the game, you will not be paid any money.</li>
+      </ul>
+      </p>
+       
+      
+      <p>
+      <h3>Termination</h3>
+      <ul>
+         <li>The game will end either after <strong>30 (thirty)</strong> rounds, or after <strong>1 hour</strong> of playing.</li>
+      </ul>
+      </p>
+
+
+      <p>
+      <h3>Graphical examples of the interface to create paintings</h3>
+      <ol>
+        <li>
+            Each player produces his or her paintings by moving a set of sliders as illustrated in the picture below.
+            <img src="./images/instructions/create2_edited.png" class="snapshot"/>
+        </li>
+        <li>
+            During the creation of the painting, each player is provided with the an overview of the past exhibitions.
+            <img src="./images/instructions/hist_edited.png" class="snapshot" />
+        </li>
+        <li>
+           Players can click on a painting to display it in its original dimensions. Furthermore, during the creation phase,
+           it is allowed to select and copy past painting as the base of their new work of art.
+           <img src="./images/instructions/hist_copy_edited.png" class="snapshot" />
+       </li>
+       <li>
+           Players review paintings by selecting a value between 0 and 10 on a slider on top of the pictures.
+           <img src="./images/instructions/review_edited.png" class="snapshot" />
+       </li>
+       </ol>
+      </p>
+      <h3>Proceed to the game</h3>
+      <div id="done_box">
+       <button onclick="javascript:parent.node.emit('DONE')">If you understood the instructions, click here to start the game</button>
+     </div>
+    </div>
+    
+  </div>
+</body>
+<script>parent.node.window.noEscape(window);</script>
