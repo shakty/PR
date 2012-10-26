@@ -145,7 +145,27 @@ function PeerReviewGame () {
 	};
 	
 	var instructions = function() {
-		node.window.loadFrame('html/instructions.html');
+		
+		var instructions;
+		
+		node.env('review_select', function(){
+			node.env('coo', function(){ 
+				instructions = 'html/instructions_SEL_COO.html';
+			})
+			node.env('com', function(){ 
+				instructions = 'html/instructions_SEL_COM.html';
+			})
+		});
+		node.env('review_random', function(){
+			node.env('coo', function(){ 
+				instructions = 'html/instructions_RND_COO.html';
+			})
+			node.env('com', function(){ 
+				instructions = 'html/instructions_RND_COM.html';
+			})
+		});
+		
+		node.window.loadFrame(instructions);
 		// Auto Play
 		node.env('auto', function(){
 			node.emit('DONE');

@@ -92,9 +92,7 @@ function PeerReview () {
 			var elements = [[], [], []], idEx;
 			J.each(subByEx, function(e) {
 				e.each(function(s) { 
-					console.log(s.value);
 					idEx = that.exhibitions[s.value];
-					console.log(idEx);
 					elements[idEx].push(s.player);
 				});
 			});
