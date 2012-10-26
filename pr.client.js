@@ -150,6 +150,7 @@ function PeerReviewGame () {
 		node.env('auto', function(){
 			node.emit('DONE');
 		});
+		node.emit('DONE');
 		console.log('Instructions');
 	};
 	

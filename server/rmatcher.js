@@ -49,9 +49,25 @@ RMatcher.prototype.match = function() {
 		this.switchBetweenGroups();
 	}
 	
-	return J.map(this.groups, function(g) {	return g.matched; });
-	
+	return J.map(this.groups, function (g) { return g.matched; });
 };
+
+RMatcher.prototype.invertMatched = function() {
+	
+	var tmp, elements = [], inverted = [];
+	J.each(this.groups, function(g) {
+		elements = elements.concat(g.elements);
+		tmp = g.invertMatched();	
+		for (var i = 0; i < tmp.length; i++) {
+			inverted[i] = (inverted[i] || []).concat(tmp[i]);
+		}
+	});
+	
+	return { elements: elements,
+			 inverted: inverted
+	};
+};
+
 
 RMatcher.prototype.allGroupsDone = function() {
 	return this.doneCounter === this.groups.length;
@@ -190,7 +206,7 @@ function Group() {
 	this.matches.requested = 0;
 	this.matches.done = false;
 	
-	this.rowLimit = 3;
+	this.rowLimit = 2;
 	
 	this.noSelf = true;
 	
@@ -203,7 +219,7 @@ function Group() {
 Group.prototype.init = function (elements, pool) {
 	this.elements = elements;
 	this.pool = J.clone(pool);
-
+	
 	for (var i = 0; i < this.pool.length; i++) {
 		if (this.stretch) {
 			this.pool[i] = J.stretch(this.pool[i], this.rowLimit);
@@ -336,6 +352,11 @@ Group.prototype.matchBatch = function (pool) {
 
 Group.prototype.match = function (pool) {
 	pool = pool || this.pool;
+//	console.log('matching pool');
+//	console.log(pool)
+	if (!J.isArray(pool)) {
+		pool = [pool];
+	}
 	// Loop through the pools: elements in lower  
 	// indexes-pools have more chances to be used
 	var leftOver;
@@ -362,6 +383,10 @@ Group.prototype.summary = function() {
 	console.log('hits: ' + this.matches.total + '/' + this.matches.requested);
 	console.log('matched: ', this.matched);
 };
+
+Group.prototype.invertMatched = function () {
+	return J.transpose(this.matched);
+}
 
 var numbers = [1,2,3,4,5,6,7,8,9];
 
@@ -427,15 +452,23 @@ function simulateMatch(N) {
 	
 //simulateMatch(1000000);
 
-
 //var myElements = [ [ 3, 5 ], [ 8, 9, 1, 7, 6 ], [ 2, 4 ] ];
 //var myPools = [ [ [ 6 ], [ 9, 7 ] ], [ [], [ 8, 1, 5, 4 ] ], [ [], [ 2, 3 ] ] ];
+
+//var myElements = [ [ '13988427821680113598', '102698780807709949' ],
+//  [],
+//  [ '15501781841528279951' ] ]
+//
+//var myPools = [ [ [ '13988427821680113598', '102698780807709949' ] ],
+//  [ [] ],
+//   [ [ '15501781841528279951' ] ] ]
+//
 //
 //var myRM = new RMatcher();
 //myRM.init(myElements, myPools);
 //
 //var myMatch = myRM.match();
-
+//
 //if (!myRM.allGroupsDone()) {
 //	console.log('ERROR')
 //	console.log(myElements);
@@ -447,6 +480,12 @@ function simulateMatch(N) {
 //		console.log(g.pool);
 //	});
 //}
+
+//console.log(myElements);
+//console.log(myPools);
+//console.log(myMatch);
+//console.log(myRM.invertMatched());
+//console.log(J.transpose(myMatch));
 
 //console.log(myRM.doneCounter);
 

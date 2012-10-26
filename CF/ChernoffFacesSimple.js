@@ -85,7 +85,6 @@
 		
 		if ('object' === typeof options.controls) {
 			this.sc = options.controls;
-			console.log(this.sc);
 		}
 		else {
 			this.sc = node.widgets.get('Controls.Slider', sc_options);
@@ -111,8 +110,6 @@
 		this.table.add(this.canvas);
 		this.table.parse();
 		this.root.appendChild(this.table.table);
-		
-		console.log(this)
 	};
 	
 	ChernoffFaces.prototype.getRoot = function() {

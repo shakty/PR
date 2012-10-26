@@ -10,7 +10,7 @@ function PeerReview () {
 	this.automatic_step = true;
 	
 	this.init = function() {
-		this.threshold = 5;
+		this.threshold = 1;
 		this.reviewers = 3;
 		
 		this.exhibitions = {
@@ -21,7 +21,7 @@ function PeerReview () {
 		
 		this.results = new node.NDDB();
 		
-		this.nextround_reviewers = [ [[], []], [[], []], [[], []] ];
+		this.nextround_reviewers;
 		this.plids = [];
 	};
 	
@@ -40,6 +40,7 @@ function PeerReview () {
 	};
 	
 	var evaluation = function(){
+		var that = this;
 		
 		var R =  (this.pl.length > 3) ? this.reviewers
 									  : (this.pl.length > 2) ? 2 : 1;
@@ -48,65 +49,103 @@ function PeerReview () {
 							   .join('player', 'player', 'CF', 'value')
 							   .select('key', '=', 'SUB');
 							
-		var faces = dataRound.fetch();
+		
 		var subByEx = dataRound.groupBy('value');
-		//console.log(subByEx)
-		
-		
-//		console.log(faces);
-//		console.log(faces.first());
 		
 		var matches;
 		node.env('review_random', function(){
-			matches = node.JSUS.latinSquareNoSelf(faces.length, R);
+			faces = dataRound.fetch();
+			matches = J.latinSquareNoSelf(faces.length, R);
+			
+			console.log('MATCHES: ');
+			console.log(matches);
+
+			for (var i=0; i < faces.length; i++) {
+				var data = {};
+				for (var j=0; j < matches.length; j++) {
+					//console.log(matches[j][i]);
+					var face = faces[matches[j][i]];
+					//console.log(face);
+					if (!data[face.value]) data[face.value] = [];
+					data[face.value].push({
+						face: face.CF.value,
+						from: face.player,
+						ex: face.value,
+					});
+					//console.log(matches[i][0].player + ' ' + matches[i][1].player);
+				}
+//				console.log('for ' + faces[i].player);
+//				console.log(node.J.size(data.length));
+				// Sort by exhibition and send them
+				J.each(['A','B','C'], function(ex){
+					if (!data[ex]) return;
+					for (var z = 0; z < data[ex].length; z++) {
+						node.say(data[ex][z], 'CF', faces[i].player);
+					} 
+				});
+			}
+			
 		});
 		
 		node.env('review_select', function() {
 				
-			// First Round
-			if (node.game.state.round === 1) {
-				console.log(faces.length, R)
-				matches = node.JSUS.latinSquareNoSelf(faces.length, R);
-				console.log('MATCHES: ');
-				console.log(matches);
-				return;
-			}
+			var elements = [[], [], []], idEx;
+			J.each(subByEx, function(e) {
+				e.each(function(s) { 
+					console.log(s.value);
+					idEx = that.exhibitions[s.value];
+					console.log(idEx);
+					elements[idEx].push(s.player);
+				});
+			});
 			
-			console.log(node.game.pl.fetch())
+			var pool = that.nextround_reviewers;
+			
+			// First round
+			if (!pool) {
+				console.log('init pool from same round');
+				pool = J.map(elements, function(ex) { return [ex]; });
+			}
+		
+			console.log('pool');
+			console.log(pool);
+			
+			console.log('elements');
+			console.log(elements);
+			
 			var rm = new RMatcher();
-			rm.init(JSUS.seq(0,9), node.game.nextround_reviewers);
-			matches = rm.match();
+			rm.init(elements, pool);
+			
+			var matches = rm.match();
+			
+			for (var i = 0; i < elements.length; i++) {
+				for (var j = 0; j < elements[i].length; j++) {
+					var data = {};
+					for (var h = 0; h < matches[i][j].length; h++) {
+						
+						var face = dataRound.select('player', '=', matches[i][j][h]).first();
+						if (!data[face.value]) data[face.value] = [];
+						
+						data[face.value].push({
+							face: face.CF.value,
+							from: face.player,
+							ex: face.value,
+						});
+					}
+					
+					J.each(['A','B','C'], function(ex){
+						if (!data[ex]) return;
+						for (var z = 0; z < data[ex].length; z++) {
+							node.say(data[ex][z], 'CF', elements[i][j]);
+						} 
+					});
+				}
+			
+			}
 		});
 		
 		
-		console.log('MATCHES: ');
-		console.log(matches);
 
-		for (var i=0; i < faces.length; i++) {
-			var data = {};
-			for (var j=0; j < matches.length; j++) {
-				//console.log(matches[j][i]);
-				var face = faces[matches[j][i]];
-				//console.log(face);
-				if (!data[face.value]) data[face.value] = [];
-				data[face.value].push({
-					face: face.CF.value,
-					from: face.player,
-					ex: face.value,
-				});
-				//console.log(matches[i][0].player + ' ' + matches[i][1].player);
-			}
-//			console.log('for ' + faces[i].player);
-//			console.log(node.JSUS.size(data.length));
-			// Sort by exhibition and send them
-			JSUS.each(['A','B','C'], function(ex){
-				if (!data[ex]) return;
-				for (var z = 0; z < data[ex].length; z++) {
-					node.say(data[ex][z], 'CF', faces[i].player);
-				} 
-			});
-		}
-		
 		console.log('evaluation');
 	};
 	
@@ -174,7 +213,7 @@ function PeerReview () {
 					
 					player_result.published = true;
 					
-					selected.push(JSUS.merge(player_result, {
+					selected.push(J.merge(player_result, {
 						cf: cf.first().value,
 						id: author.name,
 						round: node.game.state.toHash('S.r'),
@@ -213,7 +252,7 @@ function PeerReview () {
 		// Dispatch exhibition results to ALL
 		node.say(selected, 'WIN_CF', 'ALL');
 		// Dispatch detailed individual results to each single player
-		JSUS.each(player_results, function(r){
+		J.each(player_results, function(r){
 			node.say(r, 'PLAYER_RESULT', r.player);
 		});
 		
@@ -247,7 +286,7 @@ function PeerReview () {
 			}
 		};
 
-//	var testloop = JSUS.clone(gameloop);
+//	var testloop = J.clone(gameloop);
 //	testloop[4] = {name: 'Test completed',
 //				   state: function() {
 //						console.log('Test round completed');
@@ -289,6 +328,8 @@ function PeerReview () {
 if ('object' === typeof module && 'function' === typeof require) {
 	var node = require('nodegame-client');
 	var RMatcher = require('./rmatcher.js');
+	var J = node.JSUS;
+	
 	module.exports.node = node;
 	module.exports.PeerReview = PeerReview;
 }
@@ -302,7 +343,7 @@ var conf = {
 	     reconnect: false
 	},
 	env: {
-		review_random: true,
+		review_select: true,
 	},
 };
 
