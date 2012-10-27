@@ -285,27 +285,24 @@ function PeerReviewGame () {
 		var q;
 		node.env('review_select', function(){
 			node.env('coo', function(){ 
-				q = 'http://www.surveymonkey.com/s/6LB3M6D';
+				q = 'html/questionnaire_SEL_COO.html';
 			})
 			node.env('com', function(){ 
-				q = 'http://www.surveymonkey.com/s/6LFFXTG';
+				q = 'html/questionnaire_SEL_COM.html';
 			})
 		});
 		node.env('review_random', function(){
 			node.env('coo', function(){ 
-				q = 'http://www.surveymonkey.com/s/6LFFXTG'; // won't be played now
+				q = 'html/questionnaire_RND_COO.html'; // won't be played now
 			})
 			node.env('com', function(){ 
-				q = 'http://www.surveymonkey.com/s/6LM5MFL';
+				q = 'html/questionnaire_RNDL_COM.html';
 			})
 		});
 		
 		
-		node.window.loadFrame(q, function() {
-			console.log(W.getElementById('ExitBtn'));
-			console.log('----');
-			
-		});		
+		node.window.loadFrame(q);
+		
 		console.log('Postgame');
 
 		// AutoPlay

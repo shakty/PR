@@ -1,0 +1,31 @@
+<!doctype html>
+<title>POSTGAME</title>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!-- no Escape -->
+<!-- <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
+<!-- no Escape ends -->
+
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/postgame.css">
+<body>
+  <h1> Please fill in a small questionnaire about the game experience </h1>
+	<div id="container_questionnaire">
+	 <div id="done_box">
+       <button onclick='javascript:parent.node.DONE();'>Click here when you are done</button>
+   </div>
+   <iframe src="http://www.surveymonkey.com/s/6LFFXTG" name="surveymonkey" id="surveymonkey"></iframe>
+   <div id="done_box2">
+       <button onclick='javascript:parent.node.DONE();'>Click here when you are done</button>
+   </div>
+	</div>
+	
+</body>
+<script>
+  var node = parent.node;
+  node.window.noEscape(window);
+</script>
