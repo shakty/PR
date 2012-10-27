@@ -19,8 +19,6 @@ function PeerReview () {
 				C: 2,
 		};
 		
-		this.results = new node.NDDB();
-		
 		this.nextround_reviewers;
 		this.plids = [];
 	};
@@ -182,7 +180,7 @@ function PeerReview () {
 		// results of the round (by author) 
 		var player_results = [];
 		
-		var idEx, ex, author, cf, mean, player, works;
+		var idEx, ex, author, cf, mean, player, works, nPubs, nextRoundReviewer, player_result;
 		
 		// Exhibitions Loop
 		for (var i=0; i < exhibs.length; i++) {
@@ -190,6 +188,8 @@ function PeerReview () {
 			// Get the list of works per exhibition
 			works = exhibs[i].groupBy('EVA2.value.for');
 						
+			nPubs = 0; // number of published works per exhibition
+			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
 	
@@ -207,9 +207,9 @@ function PeerReview () {
 				
 				ex = works[j].first().value;
 				idEx = this.exhibitions[ex];
-				nextRoundReview = 1; // player is a submitter: second choice reviewer
+				nextRoundReviewer = 1; // player is a submitter: second choice reviewer
 				
-				var player_result = {
+				player_result = {
 						player: player,
 						author: author.name,
 						mean: mean.toFixed(2),
@@ -222,14 +222,18 @@ function PeerReview () {
 				// Threshold
 				if (mean > this.threshold) {	
 					
-					player_result.published = true;
-					
-					selected.push(J.merge(player_result, {
+					J.mixin(player_result, {
 						cf: cf.first().value,
 						id: author.name,
 						round: node.game.state.toHash('S.r'),
 						pc: author.pc,
-					}));
+						published: true,
+					});
+					
+					selected.push(player_result);
+					
+					// increment counter of publication per exhibition
+					nPubs++;
 					
 					// Player will be first choice as a reviewer
 					// in exhibition idEx
@@ -246,8 +250,6 @@ function PeerReview () {
 				// Add results for single player
 				player_results.push(player_result);
 				
-				// Add it to the local DB of results
-				this.results.insert(player_result);
 			}
 		}
 
