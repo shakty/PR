@@ -18,6 +18,12 @@
 <!-- nodeGame starts -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/nodegame-full.js" charset="utf-8"></script>
+<!-- <script src="/javascripts/nodegame-jsus.min.js" charset="utf-8"></script>
+<script src="/javascripts/nodegame-nddb.min.js" charset="utf-8"></script>
+<script src="/javascripts/nodegame-bare.min.js" charset="utf-8"></script>
+<script src="/javascripts/nodegame-addons.min.js" charset="utf-8"></script>
+<script src="/javascripts/nodegame-window.min.js" charset="utf-8"></script>
+<script src="/javascripts/nodegame-widgets.min.js" charset="utf-8"></script> -->
 <!-- nodeGame ends -->
 
 
@@ -68,12 +74,15 @@
 					name: name, //"P_" + Math.floor(Math.random()*1000),
 				},
 				env: {
-					auto: false,
+					auto: true,
 					debug: true,
 					review_select: true,
 					review_random: false,
 					coo: false,
 					com: true,
+				},
+				events: {
+					history: false,
 				}
 			};
 	

@@ -170,7 +170,7 @@ function PeerReviewGame () {
 		node.env('auto', function(){
 			node.emit('DONE');
 		});
-		node.emit('DONE');
+		
 		console.log('Instructions');
 	};
 	
@@ -251,28 +251,17 @@ function PeerReviewGame () {
 			
 			node.onDATA('PLAYER_RESULT', function(msg){
 				if (!msg.data) return;
-				//var resultDiv = W.getDiv('resultDiv');
-//				var table = new W.Table();
 				var str = '';
 				if (msg.data.published) {
-//					table.addRow(['Congratulations!','']);
-//					table.addRow(['You published in exhibition:', msg.data.ex]);
 					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
 					node.emit('MONEYTALKS', node.game.money);
 				}
 				else {
-//					table.addColumn(['Sorry.','']);
-//					table.addColumn(['You were rejected by exhibition:', msg.data.ex]);
 					str += 'Sorry, you got rejected by exhibition: <strong>' + msg.data.ex + '</strong>. ';
 				}
 				str += 'Your average review score was: <strong>' + msg.data.mean + '</strong>.</br></br>';
 				W.getElementById('results').innerHTML = str;
 				
-//				table.addColumn(['Your average review score was:', msg.data.mean]);
-//				table.select('y', '>=', 1).addClass('strong');
-				
-				//resultDiv.appendChild(table.parse());
-//				W.getElementById('results').appendChild(table.parse());
 			});
 			
 			

@@ -45,6 +45,9 @@ function PeerReview () {
 		var R =  (this.pl.length > 3) ? this.reviewers
 									  : (this.pl.length > 2) ? 2 : 1;
 		
+		console.log('R = ' + R);
+		console.log('********')
+		
 		var dataRound = this.memory.select('state', '=', this.previous())
 							   .join('player', 'player', 'CF', 'value')
 							   .select('key', '=', 'SUB');
@@ -63,19 +66,17 @@ function PeerReview () {
 			for (var i=0; i < faces.length; i++) {
 				var data = {};
 				for (var j=0; j < matches.length; j++) {
-					//console.log(matches[j][i]);
 					var face = faces[matches[j][i]];
-					//console.log(face);
+
 					if (!data[face.value]) data[face.value] = [];
+					
 					data[face.value].push({
 						face: face.CF.value,
 						from: face.player,
 						ex: face.value,
 					});
-					//console.log(matches[i][0].player + ' ' + matches[i][1].player);
 				}
-//				console.log('for ' + faces[i].player);
-//				console.log(node.J.size(data.length));
+
 				// Sort by exhibition and send them
 				J.each(['A','B','C'], function(ex){
 					if (!data[ex]) return;
@@ -116,27 +117,38 @@ function PeerReview () {
 			
 			var matches = rm.match();
 			
+			console.log('Matches');
+			console.log(matches);
+			
+			var data = {};
 			for (var i = 0; i < elements.length; i++) {
 				for (var j = 0; j < elements[i].length; j++) {
-					var data = {};
+					
 					for (var h = 0; h < matches[i][j].length; h++) {
 						
-						var face = dataRound.select('player', '=', matches[i][j][h]).first();
+						var face = dataRound.select('player', '=', elements[i][j]).first();
 						if (!data[face.value]) data[face.value] = [];
 						
-						data[face.value].push({
+//						data[face.value].push({
+//							face: face.CF.value,
+//							from: face.player,
+//							ex: face.value,
+//						});
+
+						data = {
 							face: face.CF.value,
 							from: face.player,
 							ex: face.value,
-						});
+						};
+						node.say(data, 'CF', matches[i][j][h]);
 					}
 					
-					J.each(['A','B','C'], function(ex){
-						if (!data[ex]) return;
-						for (var z = 0; z < data[ex].length; z++) {
-							node.say(data[ex][z], 'CF', elements[i][j]);
-						} 
-					});
+//					J.each(['A','B','C'], function(ex){
+//						if (!data[ex]) return;
+//						for (var z = 0; z < data[ex].length; z++) {
+//							node.say(data[ex][z], 'CF', elements[i][j]);
+//						} 
+//					});
 				}
 			
 			}
@@ -195,6 +207,7 @@ function PeerReview () {
 				
 				ex = works[j].first().value;
 				idEx = this.exhibitions[ex];
+				nextRoundReview = 1; // player is a submitter: second choice reviewer
 				
 				var player_result = {
 						player: player,
@@ -218,15 +231,17 @@ function PeerReview () {
 						pc: author.pc,
 					}));
 					
-					// Add player to the list of next reviewers for the 
-					// exhibition where he *published*
-					this.nextround_reviewers[idEx][0].push(player);
+					// Player will be first choice as a reviewer
+					// in exhibition idEx
+					nextRoundReviewer = 0;
 					
 				} 
 				
 				// Add player to the list of next reviewers for the 
-				// exhibition where he *submitted*
-				this.nextround_reviewers[idEx][1].push(player);				
+				// exhibition where he submitted / published
+				this.nextround_reviewers[idEx][nextRoundReviewer].push(player);		
+				
+				console.log('Color ' + author.color + ' submitted to ' + ex + '(' + idEx + ') ' + 'round: ' + node.game.state.round);
 				
 				// Add results for single player
 				player_results.push(player_result);

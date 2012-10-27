@@ -206,7 +206,7 @@ function Group() {
 	this.matches.requested = 0;
 	this.matches.done = false;
 	
-	this.rowLimit = 2;
+	this.rowLimit = 3;
 	
 	this.noSelf = true;
 	
