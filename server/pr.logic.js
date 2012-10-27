@@ -13,6 +13,14 @@ function PeerReview () {
 		this.threshold = 1;
 		this.reviewers = 3;
 		
+		node.env('com', function() {
+			node.game.payoff = 3;
+		});
+		
+		node.env('coo', function() {
+			node.game.payoff = 2;
+		});
+		
 		this.exhibitions = {
 				A: 0,
 				B: 1,
@@ -126,12 +134,6 @@ function PeerReview () {
 						
 						var face = dataRound.select('player', '=', elements[i][j]).first();
 						if (!data[face.value]) data[face.value] = [];
-						
-//						data[face.value].push({
-//							face: face.CF.value,
-//							from: face.player,
-//							ex: face.value,
-//						});
 
 						data = {
 							face: face.CF.value,
@@ -141,12 +143,6 @@ function PeerReview () {
 						node.say(data, 'CF', matches[i][j][h]);
 					}
 					
-//					J.each(['A','B','C'], function(ex){
-//						if (!data[ex]) return;
-//						for (var z = 0; z < data[ex].length; z++) {
-//							node.say(data[ex][z], 'CF', elements[i][j]);
-//						} 
-//					});
 				}
 			
 			}
@@ -185,10 +181,8 @@ function PeerReview () {
 		// Exhibitions Loop
 		for (var i=0; i < exhibs.length; i++) {
 			
-			// Get the list of works per exhibition
+			// Groups all the reviews for an artist
 			works = exhibs[i].groupBy('EVA2.value.for');
-						
-			nPubs = 0; // number of published works per exhibition
 			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
@@ -216,6 +210,7 @@ function PeerReview () {
 						scores: works[j].fetch('EVA2.value.eva'),
 						ex: ex,
 						round: submissionRound,
+						payoff: 0, // will be updated later
 				};
 				
 				
@@ -231,9 +226,6 @@ function PeerReview () {
 					});
 					
 					selected.push(player_result);
-					
-					// increment counter of publication per exhibition
-					nPubs++;
 					
 					// Player will be first choice as a reviewer
 					// in exhibition idEx
@@ -254,20 +246,37 @@ function PeerReview () {
 		}
 
 		
-		var filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
 		
+		var filename;
 		try {
+			filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
 			node.game.memory.save(filename);
 		}
 		catch(e){
 			console.log(e.msg);
 		}
 
+		console.log('**********');
+		console.log('Next round reviewers');
+		console.log(node.game.nextround_reviewers);
+		console.log('**********');
 		
 		// Dispatch exhibition results to ALL
 		node.say(selected, 'WIN_CF', 'ALL');
 		// Dispatch detailed individual results to each single player
-		J.each(player_results, function(r){
+		J.each(player_results, function(r) {
+			node.env('com', function(){
+				if (r.published) {
+					idEx = node.game.exhibitions[r.ex];
+					nPubs = node.game.nextround_reviewers[idEx][0].length;
+					r.payoff = (node.game.payoff / nPubs).toFixed(2);
+				}
+			});
+			node.env('coo', function(){
+				if (r.published) {
+					r.payoff = node.game.payoff;
+				}
+			});
 			node.say(r, 'PLAYER_RESULT', r.player);
 		});
 		
@@ -325,7 +334,7 @@ function PeerReview () {
 //					name: 	'Test Game'
 //				},
 					
-				3: {rounds:	30, 
+				3: {rounds:	1, 
 					state: 	gameloop,
 					name: 	'Game'
 				},
@@ -359,6 +368,7 @@ var conf = {
 	},
 	env: {
 		review_select: true,
+		com: true,
 	},
 };
 

@@ -254,7 +254,9 @@ function PeerReviewGame () {
 				var str = '';
 				if (msg.data.published) {
 					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
-					node.emit('MONEYTALKS', node.game.money);
+					str += 'You earned <strong>' + msg.data.payoff  + ' CHF</strong>. ';
+					node.emit('MONEYTALKS', parseInt(msg.data.payoff));
+					console.log(msg.data);
 				}
 				else {
 					str += 'Sorry, you got rejected by exhibition: <strong>' + msg.data.ex + '</strong>. ';
@@ -279,7 +281,31 @@ function PeerReviewGame () {
 	};
 	
 	var questionnaire = function() {
-		node.window.loadFrame('html/postgame.html');		
+		
+		var q;
+		node.env('review_select', function(){
+			node.env('coo', function(){ 
+				q = 'http://www.surveymonkey.com/s/6LB3M6D';
+			})
+			node.env('com', function(){ 
+				q = 'http://www.surveymonkey.com/s/6LFFXTG';
+			})
+		});
+		node.env('review_random', function(){
+			node.env('coo', function(){ 
+				q = 'http://www.surveymonkey.com/s/6LFFXTG'; // won't be played now
+			})
+			node.env('com', function(){ 
+				q = 'http://www.surveymonkey.com/s/6LM5MFL';
+			})
+		});
+		
+		
+		node.window.loadFrame(q, function() {
+			console.log(W.getElementById('ExitBtn'));
+			console.log('----');
+			
+		});		
 		console.log('Postgame');
 
 		// AutoPlay
@@ -382,7 +408,7 @@ function PeerReviewGame () {
 //				name: 'TEST: Game',
 //			},
 				
-			3: {rounds:	30, 
+			3: {rounds:	1, 
 				state: 	gameloop,
 				name: 	'Game',
 			},
@@ -390,6 +416,14 @@ function PeerReviewGame () {
 			4: {state:	questionnaire,
 				name: 	'Questionnaire',
 				timer: 	600000,
+				done: function() {
+					var next = W.getElementById('NextButton');
+					console.log(next);
+					next.click();
+					
+					
+					return false;
+				}
 			},
 				
 			5: {state:	endgame,
