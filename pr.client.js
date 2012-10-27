@@ -16,6 +16,8 @@ function PeerReviewGame () {
 		
 		//node.window.addWidget('WaitScreen');
 		
+		this.q; // the location of the questionnaire on surveymonkey
+		
 		this.money = 2;
 		
 		this.cf = null;
@@ -296,7 +298,7 @@ function PeerReviewGame () {
 				q = 'html/questionnaire_RND_COO.html'; // won't be played now
 			})
 			node.env('com', function(){ 
-				q = 'html/questionnaire_RNDL_COM.html';
+				q = 'html/questionnaire_RND_COM.html';
 			})
 		});
 		
@@ -311,6 +313,7 @@ function PeerReviewGame () {
 	
 	var endgame = function() {
 		node.window.loadFrame('html/ended.html');
+		
 		console.log('Game ended');
 	};
 	
@@ -413,14 +416,6 @@ function PeerReviewGame () {
 			4: {state:	questionnaire,
 				name: 	'Questionnaire',
 				timer: 	600000,
-				done: function() {
-					var next = W.getElementById('NextButton');
-					console.log(next);
-					next.click();
-					
-					
-					return false;
-				}
 			},
 				
 			5: {state:	endgame,

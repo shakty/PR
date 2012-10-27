@@ -13,19 +13,22 @@
 <link rel="stylesheet" type="text/css" href="css/iframe.css">
 <link rel="stylesheet" type="text/css" href="css/postgame.css">
 <body>
-  <h1> Please fill in a small questionnaire about the game experience </h1>
-	<div id="container_questionnaire">
-	 <div id="done_box">
-       <button onclick='javascript:parent.node.DONE();'>Click here when you are done</button>
-   </div>
+  <h1>Fill in the questionnaire below</h1>
+  <h3>After answering all the questions, click on the 'done' button after the last question. 
+  If the submission is successful, click on the 'Terminate Game' button at the very bottom of the page (<em>remember to scroll the page until the very bottom!!</em>).</h3>
+  <div id="container_questionnaire">
    <iframe src="http://www.surveymonkey.com/s/6LFFXTG" name="surveymonkey" id="surveymonkey"></iframe>
-   <div id="done_box2">
-       <button onclick='javascript:parent.node.DONE();'>Click here when you are done</button>
+  </div>
+  <h2>If you have already submitted the form <strong>above</strong>, you can click the 'Terminate Game' button below.</h2>
+  <h3>If unsure contact the experimenter.</h3>
+  <div id="done_box">
+       <button onclick='javascript:parent.node.DONE();'>Terminate Game.</button>
    </div>
-	</div>
-	
 </body>
 <script>
   var node = parent.node;
   node.window.noEscape(window);
 </script>
+
+
+
