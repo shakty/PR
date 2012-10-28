@@ -43,3 +43,17 @@ span#scrolldown {
 h3 {
 	margin-top: 30px;
 }
+
+table#payoff {
+	margin: 5px 0 0 0;
+	border: 1px solid #CCC;
+	border-spacing: 0;
+	border-collapse: 0;
+}
+
+table#payoff td {
+  border: 1px solid #AAA;
+  padding: 2px;
+  text-align: center;
+  width: 50px;
+}

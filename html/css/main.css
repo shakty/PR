@@ -22,3 +22,7 @@
   padding-right: 10px;
   text-align: left;
 }
+
+iframe#mainframe {
+	height: 1000px;
+}
