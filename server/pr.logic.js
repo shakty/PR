@@ -27,6 +27,8 @@ function PeerReview () {
 				C: 2,
 		};
 		
+		this.last_reviews;
+		this.last_submissions;
 		this.nextround_reviewers;
 		this.plids = [];
 	};
@@ -51,8 +53,6 @@ function PeerReview () {
 		var R =  (this.pl.length > 3) ? this.reviewers
 									  : (this.pl.length > 2) ? 2 : 1;
 		
-		console.log('R = ' + R);
-		console.log('********')
 		
 		var dataRound = this.memory.select('state', '=', this.previous())
 							   .join('player', 'player', 'CF', 'value')
@@ -61,14 +61,20 @@ function PeerReview () {
 		
 		var subByEx = dataRound.groupBy('value');
 		
+		this.last_submissions = [[], [], []];
+		var idEx;
+		J.each(subByEx, function(e) {
+			e.each(function(s) { 
+				idEx = that.exhibitions[s.value];
+				node.game.last_submissions[idEx].push(s.player);
+			});
+		});
+		
 		var matches;
 		node.env('review_random', function(){
 			faces = dataRound.fetch();
 			matches = J.latinSquareNoSelf(faces.length, R);
 			
-			console.log('MATCHES: ');
-			console.log(matches);
-
 			for (var i=0; i < faces.length; i++) {
 				var data = {};
 				for (var j=0; j < matches.length; j++) {
@@ -95,36 +101,28 @@ function PeerReview () {
 		});
 		
 		node.env('review_select', function() {
-				
-			var elements = [[], [], []], idEx;
-			J.each(subByEx, function(e) {
-				e.each(function(s) { 
-					idEx = that.exhibitions[s.value];
-					elements[idEx].push(s.player);
-				});
-			});
 			
 			var pool = that.nextround_reviewers;
+			var elements = that.last_submissions;
 			
 			// First round
 			if (!pool) {
-				console.log('init pool from same round');
 				pool = J.map(elements, function(ex) { return [ex]; });
 			}
 		
-			console.log('pool');
-			console.log(pool);
-			
-			console.log('elements');
-			console.log(elements);
+//			console.log('pool');
+//			console.log(pool);
+//			
+//			console.log('elements');
+//			console.log(elements);
 			
 			var rm = new RMatcher();
 			rm.init(elements, pool);
 			
 			var matches = rm.match();
 			
-			console.log('Matches');
-			console.log(matches);
+//			console.log('Matches');
+//			console.log(matches);
 			
 			var data = {};
 			for (var i = 0; i < elements.length; i++) {
@@ -148,66 +146,78 @@ function PeerReview () {
 			}
 		});
 		
-		
+		this.last_reviews = {};
+		// Build reviews index
+		node.onDATA('EVA', function(msg) {
+			if (!that.last_reviews[msg.data.for]) {
+				that.last_reviews[msg.data.for] = [];
+			}
+			that.last_reviews[msg.data.for].push(msg.data.eva);
+		});
 
 		console.log('evaluation');
 	};
 	
 	var dissemination = function() {
-		
+		var exids = ['A', 'B', 'C'];
 		var submissionRound = this.previous(2);
 		
 		this.nextround_reviewers = [ [[], []], [[], []], [[], []] ];
 		
 		
-		// For each exhibition
-		// get all the evaluations for each submission
-		var exhibs = this.memory.select('state', '>=', submissionRound)
-								.join('player', 'value.for', 'EVA2', ['value'])
-								.select('EVA2') 
-								.select('key','=','SUB')
-								.sort('value')
-								.groupBy('value');
+//		console.log('******');
+//		console.log('Looking into the db...');
+//		// For each exhibition
+//		// get all the evaluations for each submission
+//		var exhibs = this.memory.select('state', '>=', submissionRound)
+//								.join('player', 'value.for', 'EVA2', ['value'])
+//								.select('EVA2') 
+//								.select('key','=','SUB')
+//								.sort('value')
+//								.groupBy('value');
+//		
+//		console.log('Done!');
+//		console.log('******');
 		
-		
+
 		// array of all the selected works (by exhibition);
 		var selected = [];
 		
 		// results of the round (by author) 
 		var player_results = [];
 		
-		var idEx, ex, author, cf, mean, player, works, nPubs, nextRoundReviewer, player_result;
+		var ex, author, cf, mean, player, works, nPubs, nextRoundReviewer, player_result;
 		
-		// Exhibitions Loop
-		for (var i=0; i < exhibs.length; i++) {
-			
+		var subRound = this.memory.select('state', '=', submissionRound);
+		
+		for (var i=0; i < this.last_submissions.length; i++) {
 			// Groups all the reviews for an artist
-			works = exhibs[i].groupBy('EVA2.value.for');
+			works = this.last_submissions[i];
 			
 			// Evaluations Loop
 			for (var j=0; j < works.length; j++) {
-	
-				player = works[j].first().player;
-				
-				mean = works[j].mean('EVA2.value.eva'); 
-				
-				cf = this.memory.select('state', '=', submissionRound)
-									.select('player', '=', player)
-									.select('key', '=', 'CF');
-
-
-				
+				player = works[j];
 				author = this.pl.select('id', '=', player).first();
 				
-				ex = works[j].first().value;
-				idEx = this.exhibitions[ex];
+				mean = 0;
+				J.each(this.last_reviews[player], function(r) {
+					mean+= r; 
+				})
+				mean = mean / this.last_reviews[player].length;
+				
+				cf = subRound.select('player', '=', player)
+							 .select('key', '=', 'CF')
+							 .first().value;
+
+				ex = exids[i];
+				
 				nextRoundReviewer = 1; // player is a submitter: second choice reviewer
 				
 				player_result = {
 						player: player,
 						author: author.name,
 						mean: mean.toFixed(2),
-						scores: works[j].fetch('EVA2.value.eva'),
+						scores: this.last_reviews[player],
 						ex: ex,
 						round: submissionRound,
 						payoff: 0, // will be updated later
@@ -218,7 +228,7 @@ function PeerReview () {
 				if (mean > this.threshold) {	
 					
 					J.mixin(player_result, {
-						cf: cf.first().value,
+						cf: cf,
 						id: author.name,
 						round: node.game.state.toHash('S.r'),
 						pc: author.pc,
@@ -228,22 +238,87 @@ function PeerReview () {
 					selected.push(player_result);
 					
 					// Player will be first choice as a reviewer
-					// in exhibition idEx
+					// in exhibition i
 					nextRoundReviewer = 0;
-					
-				} 
+				}
 				
 				// Add player to the list of next reviewers for the 
 				// exhibition where he submitted / published
-				this.nextround_reviewers[idEx][nextRoundReviewer].push(player);		
+				this.nextround_reviewers[i][nextRoundReviewer].push(player);		
 				
-				console.log('Color ' + author.color + ' submitted to ' + ex + '(' + idEx + ') ' + 'round: ' + node.game.state.round);
+				//console.log('Color ' + author.color + ' submitted to ' + ex + '(' + i + ') ' + 'round: ' + node.game.state.round);
 				
 				// Add results for single player
 				player_results.push(player_result);
-				
 			}
 		}
+		
+		// Exhibitions Loop
+//		for (var i=0; i < exhibs.length; i++) {
+//			
+//			// Groups all the reviews for an artist
+//			works = exhibs[i].groupBy('EVA2.value.for');
+//			
+//			// Evaluations Loop
+//			for (var j=0; j < works.length; j++) {
+//	
+//				player = works[j].first().player;
+//				
+//				mean = works[j].mean('EVA2.value.eva'); 
+//				
+//				cf = this.memory.select('state', '=', submissionRound)
+//									.select('player', '=', player)
+//									.select('key', '=', 'CF');
+//
+//
+//				
+//				author = this.pl.select('id', '=', player).first();
+//				
+//				ex = works[j].first().value;
+//				idEx = this.exhibitions[ex];
+//				nextRoundReviewer = 1; // player is a submitter: second choice reviewer
+//				
+//				player_result = {
+//						player: player,
+//						author: author.name,
+//						mean: mean.toFixed(2),
+//						scores: works[j].fetch('EVA2.value.eva'),
+//						ex: ex,
+//						round: submissionRound,
+//						payoff: 0, // will be updated later
+//				};
+//				
+//				
+//				// Threshold
+//				if (mean > this.threshold) {	
+//					
+//					J.mixin(player_result, {
+//						cf: cf.first().value,
+//						id: author.name,
+//						round: node.game.state.toHash('S.r'),
+//						pc: author.pc,
+//						published: true,
+//					});
+//					
+//					selected.push(player_result);
+//					
+//					// Player will be first choice as a reviewer
+//					// in exhibition idEx
+//					nextRoundReviewer = 0;
+//					
+//				} 
+//				
+//				// Add player to the list of next reviewers for the 
+//				// exhibition where he submitted / published
+//				this.nextround_reviewers[idEx][nextRoundReviewer].push(player);		
+//				
+//				//console.log('Color ' + author.color + ' submitted to ' + ex + '(' + idEx + ') ' + 'round: ' + node.game.state.round);
+//				
+//				// Add results for single player
+//				player_results.push(player_result);
+//				
+//			}
+//		}
 
 //		console.log('**********');
 //		console.log('Next round reviewers');

@@ -63,17 +63,15 @@ function Monitor_Example () {
 	
 	node.onDATA('WIN_CF', function(msg) {
 		
-		// TODO: bug of onDATA
-		if (msg.text !== 'WIN_CF') return;
-		
 		if (msg.data.length) {
 			var playerlist = node.game.pl.db;
-			var db = new node.NDDB(null, msg.data);
 			
-			db.each(function(winner){
-				if ('undefined' !== typeof players_objects[winner.pc]){
+			
+			JSUS.each(msg.data, function(winner) {
+				console.log(winner)
+				if ('undefined' !== typeof players_objects[winner.pc]) {
 					// Add the initial amount to the players balance.
-					players_objects[winner.pc].balance += 2;
+					players_objects[winner.pc].balance += parseFloat(winner.payoff);
 				}
 			});
 			

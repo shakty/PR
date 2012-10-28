@@ -273,7 +273,6 @@ function PeerReviewGame () {
 					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
 					str += 'You earned <strong>' + msg.data.payoff  + ' CHF</strong>. ';
 					node.emit('MONEYTALKS', parseFloat(msg.data.payoff));
-					console.log(msg.data);
 				}
 				else {
 					str += 'Sorry, you got rejected by exhibition: <strong>' + msg.data.ex + '</strong>. ';
@@ -358,7 +357,6 @@ function PeerReviewGame () {
 			state: evaluation,
 			timer: 30000,
 			done: function () {
-				console.log('executing eva done');
 				for (var i in this.evas) {
 					if (this.evas.hasOwnProperty(i)) {
 						node.set('EVA', {'for': i,
