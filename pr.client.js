@@ -2,7 +2,7 @@ function PeerReviewGame () {
 	
 	this.name = 'Peer Review Game';
 	this.description = 'Create, submit, and evaluate contributions from your peers.';
-	this.version = '0.3';
+	this.version = '0.5';
 	
 	this.auto_step = false;
 	this.auto_wait = true;
@@ -14,11 +14,36 @@ function PeerReviewGame () {
 		node.window.setup('PLAYER');
 		node.widgets.append('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
 		
-		//node.window.addWidget('WaitScreen');
 		
-		this.q; // the location of the questionnaire on surveymonkey
+		this.html = {};
 		
-		this.money = 2;
+		node.env('review_select', function(){
+			
+			node.game.html.creation = 'html/creation_SEL.html';
+			
+			node.env('coo', function(){ 
+				node.game.html.q = 'html/questionnaire_SEL_COO.html';
+				node.game.html.instructions = 'html/instructions_SEL_COO.html';
+			});
+			node.env('com', function(){ 
+				node.game.html.q = 'html/questionnaire_SEL_COM.html';
+				node.game.html.instructions = 'html/instructions_SEL_COM.html';
+			});
+		});
+		node.env('review_random', function(){
+			
+			node.game.html.creation = 'html/creation_RND.html';
+			
+			node.env('coo', function(){ 
+				node.game.html.q = 'html/questionnaire_RND_COO.html'; // won't be played now
+				node.game.html.instructions = 'html/instructions_RND_COO.html';
+			});
+			node.env('com', function(){ 
+				node.game.html.q = 'html/questionnaire_RND_COM.html';
+				node.game.html.instructions = 'html/instructions_RND_COM.html';
+			});
+		});
+		
 		
 		this.cf = null;
 		this.outlet = null;
@@ -148,26 +173,8 @@ function PeerReviewGame () {
 	
 	var instructions = function() {
 		
-		var instructions;
 		
-		node.env('review_select', function(){
-			node.env('coo', function(){ 
-				instructions = 'html/instructions_SEL_COO.html';
-			})
-			node.env('com', function(){ 
-				instructions = 'html/instructions_SEL_COM.html';
-			})
-		});
-		node.env('review_random', function(){
-			node.env('coo', function(){ 
-				instructions = 'html/instructions_RND_COO.html';
-			})
-			node.env('com', function(){ 
-				instructions = 'html/instructions_RND_COM.html';
-			})
-		});
-		
-		node.window.loadFrame(instructions);
+		node.window.loadFrame(this.html.instructions);
 		// Auto Play
 		node.env('auto', function(){
 			node.emit('DONE');
@@ -177,7 +184,8 @@ function PeerReviewGame () {
 	};
 	
 	var creation = function() {
-		node.window.loadFrame('html/creation.html', function(){
+		
+		node.window.loadFrame(this.html.creation, function(){
 			node.on('CLICKED_DONE', function(){
 				$( ".copyorclose" ).dialog('close');
 				$( ".copyorclose" ).dialog('destroy');
@@ -284,26 +292,8 @@ function PeerReviewGame () {
 	
 	var questionnaire = function() {
 		
-		var q;
-		node.env('review_select', function(){
-			node.env('coo', function(){ 
-				q = 'html/questionnaire_SEL_COO.html';
-			})
-			node.env('com', function(){ 
-				q = 'html/questionnaire_SEL_COM.html';
-			})
-		});
-		node.env('review_random', function(){
-			node.env('coo', function(){ 
-				q = 'html/questionnaire_RND_COO.html'; // won't be played now
-			})
-			node.env('com', function(){ 
-				q = 'html/questionnaire_RND_COM.html';
-			})
-		});
 		
-		
-		node.window.loadFrame(q);
+		node.window.loadFrame(this.html.q);
 		
 		console.log('Postgame');
 

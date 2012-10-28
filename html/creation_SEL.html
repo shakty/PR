@@ -1,0 +1,52 @@
+<!doctype html>
+<title>Creation</title>
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!-- no Escape -->
+<!-- <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
+<!-- no Escape ends -->
+
+
+<link rel="stylesheet" type="text/css" href="css/iframe.css">
+<link rel="stylesheet" type="text/css" href="css/creation.css">
+<link rel="stylesheet" type="text/css" href="css/exhibition.css">
+
+
+<!--  CF -->
+<script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./../CF/CFControls.js" charset="utf-8"></script>
+<!-- CF ends -->
+
+
+<body>
+	<div id="container_creation">
+    <h2>Create your painting</h2>
+    <div id="creation"></div>
+	</div>
+             
+	 <div id="container_history">
+	   <h2>History of past exhibitions</h2>
+		 <div id="history"></div> 
+		 <div id="done_box">
+       <button id="done_button_box">Click here when you are done.</button>
+		 </div>
+	</div>
+
+	<div id="submission" style="visibility: hidden;">
+    <dl id="sub_list">
+      <span id="text_sub_list">Select the exhibition you want to submit your painting to:</span><br/> <br />
+     <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
+     <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
+     <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
+     <br/>
+     <span id="warn_sub_list">You will likely review paintings for this exhibition in the next round.</span>
+     <span id="warn_sub_list">After 20 seconds an automatic submission will be done for you.</span>
+   </dl>
+ </div>
+ 
+</body>
+<script src="./../lib/creation.js" charset="utf-8"></script>
