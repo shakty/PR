@@ -10,7 +10,7 @@ function PeerReview () {
 	this.automatic_step = true;
 	
 	this.init = function() {
-		this.threshold = 1;
+		this.threshold = 5;
 		this.reviewers = 3;
 		
 		node.env('com', function() {
@@ -245,21 +245,14 @@ function PeerReview () {
 			}
 		}
 
+//		console.log('**********');
+//		console.log('Next round reviewers');
+//		console.log(node.game.nextround_reviewers);
+//		console.log('**********');
 		
 		
-		var filename;
-		try {
-			filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
-			node.game.memory.save(filename);
-		}
-		catch(e){
-			console.log(e.msg);
-		}
-
-		console.log('**********');
-		console.log('Next round reviewers');
-		console.log(node.game.nextround_reviewers);
-		console.log('**********');
+//		console.log(player_results);
+//		console.log(player_results.length);
 		
 		// Dispatch exhibition results to ALL
 		node.say(selected, 'WIN_CF', 'ALL');
@@ -280,6 +273,15 @@ function PeerReview () {
 			node.say(r, 'PLAYER_RESULT', r.player);
 		});
 		
+		// Save to file
+		var filename;
+		try {
+			filename = './out/pr_' + node.game.state.toHash('S.s.r') + '.nddb';
+			node.game.memory.save(filename);
+		}
+		catch(e){
+			console.log(e.msg);
+		}
 		
 
 		console.log('dissemination');
@@ -334,7 +336,7 @@ function PeerReview () {
 //					name: 	'Test Game'
 //				},
 					
-				3: {rounds:	1, 
+				3: {rounds:	30, 
 					state: 	gameloop,
 					name: 	'Game'
 				},

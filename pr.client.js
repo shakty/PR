@@ -201,25 +201,28 @@ function PeerReviewGame () {
 	};
 	
 	var dissemination = function(){
+		
+		var dt_header = 'Round: ' + node.state.round;
+//		if (node.game.gameState.state === 3) {	
+//			dt_header = 'Test Round';
+//		}
+		
+		this.all_ex.addDT(dt_header);
+		
+		var table = new node.window.Table({ className: 'exhibition',
+											render: {
+												pipeline: this.renderCF,
+											 	returnAt: 'first',
+											},
+									
+									 	   
+		});
+		
+		table.setHeader(['A','B','C']);
+		
 		node.window.loadFrame('html/dissemination.html', function() {
 			
-			var dt_header = 'Round: ' + node.state.round;
-//			if (node.game.gameState.state === 3) {	
-//				dt_header = 'Test Round';
-//			}
-			
-			this.all_ex.addDT(dt_header);
-			
-			var table = new node.window.Table({ className: 'exhibition',
-												render: {
-													pipeline: this.renderCF,
-												 	returnAt: 'first',
-												},
-										
-										 	   
-			});
-			
-			table.setHeader(['A','B','C']);
+			node.game.timer.stop();
 			
 			node.onDATA('WIN_CF', function(msg) {
 				
@@ -257,6 +260,10 @@ function PeerReviewGame () {
 					this.all_ex.addDD(str);
 				}
 				
+				node.game.timer.restart({ 
+					milliseconds: 15000,
+					timeup: 'DONE',
+				});
 			});
 			
 			node.onDATA('PLAYER_RESULT', function(msg){
@@ -265,7 +272,7 @@ function PeerReviewGame () {
 				if (msg.data.published) {
 					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
 					str += 'You earned <strong>' + msg.data.payoff  + ' CHF</strong>. ';
-					node.emit('MONEYTALKS', parseInt(msg.data.payoff));
+					node.emit('MONEYTALKS', parseFloat(msg.data.payoff));
 					console.log(msg.data);
 				}
 				else {
@@ -279,7 +286,7 @@ function PeerReviewGame () {
 			
 			// Auto play
 			node.env('auto', function(){
-				node.random.emit('DONE', 12000);
+				node.random.emit('DONE', 120000);
 			});
 			
 		});
@@ -366,7 +373,6 @@ function PeerReviewGame () {
 		
 		3: {state: dissemination,
 			name: 'Exhibition',
-			timer: 15000,
 		}
 	};
 
@@ -398,7 +404,7 @@ function PeerReviewGame () {
 //				name: 'TEST: Game',
 //			},
 				
-			3: {rounds:	1, 
+			3: {rounds:	30, 
 				state: 	gameloop,
 				name: 	'Game',
 			},
