@@ -149,6 +149,7 @@ function PeerReview () {
 		this.last_reviews = {};
 		// Build reviews index
 		node.onDATA('EVA', function(msg) {
+			console.log(msg.data);
 			if (!that.last_reviews[msg.data.for]) {
 				that.last_reviews[msg.data.for] = [];
 			}
@@ -202,7 +203,8 @@ function PeerReview () {
 				mean = 0;
 				J.each(this.last_reviews[player], function(r) {
 					mean+= r; 
-				})
+				});
+				
 				mean = mean / this.last_reviews[player].length;
 				
 				cf = subRound.select('player', '=', player)

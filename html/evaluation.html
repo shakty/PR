@@ -55,6 +55,8 @@ window.onload = function(){
   
   var headers = [];
   
+  node.game.evasChanged = {}; // reset change monitor
+  
   node.onDATA('CF', function(msg) {
     
 	  /* console.log(msg.data) */
@@ -92,6 +94,8 @@ window.onload = function(){
     
     this.evas[msg.data.from] = display; 
     
+    
+    
     table.setHeader(headers);
     table.addColumn([sl, display_container, cf.getCanvas()]);
     // How to add jquery slider   
@@ -103,6 +107,7 @@ window.onload = function(){
       step: 0.1,
       slide: function( event, ui ) {
         $( "#" + diplayEvaId ).val( ui.value );
+        node.game.evasChanged[msg.data.from] = true;
       }
     });
     $( "#" + diplayEvaId ).val( $( "#" + evaId ).slider( "value" ) ); 

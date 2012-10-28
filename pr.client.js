@@ -61,6 +61,7 @@ function PeerReviewGame () {
 		};
 		
 		this.evas = {};
+		this.evasChanged = {};
 		
 		this.all_ex = new node.window.List({ id: 'all_ex',
 											 lifo: true,
@@ -180,6 +181,8 @@ function PeerReviewGame () {
 			node.emit('DONE');
 		});
 		
+		node.emit('DONE');
+		
 		console.log('Instructions');
 	};
 	
@@ -285,7 +288,7 @@ function PeerReviewGame () {
 			
 			// Auto play
 			node.env('auto', function(){
-				node.random.emit('DONE', 120000);
+				node.random.emit('DONE', 5000);
 			});
 			
 		});
@@ -359,8 +362,10 @@ function PeerReviewGame () {
 			done: function () {
 				for (var i in this.evas) {
 					if (this.evas.hasOwnProperty(i)) {
-						node.set('EVA', {'for': i,
-										 eva: Number(this.evas[i].value)
+						node.set('EVA', {
+							'for': i,
+							eva: Number(this.evas[i].value),
+							hasChanged: this.evasChanged[i], 
 						});
 					}
 				}
