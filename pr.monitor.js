@@ -61,26 +61,23 @@ function Monitor_Example () {
 	});
 	
 	
-	node.onDATA('WIN_CF', function(msg) {
+	node.onDATA('PLAYER_RESULT', function(msg) {
 		
-		if (msg.data.length) {
-			var playerlist = node.game.pl.db;
-			
-			
-			JSUS.each(msg.data, function(winner) {
-				console.log(winner)
-				if ('undefined' !== typeof players_objects[winner.pc]) {
-					// Add the initial amount to the players balance.
-					players_objects[winner.pc].balance += parseFloat(winner.payoff);
-				}
-			});
-			
-			var playerlist_for_view = _.map(_.keys(players_objects), function(key){
-				return {id: key, balance: players_objects[key].balance};
-			});
-
-			App.players.set('content', playerlist_for_view);			
+		var winner = msg.data;
+		
+		console.log(winner);
+		if ('undefined' !== typeof players_objects[winner.pc]) {
+			// Add the initial amount to the players balance.
+			players_objects[winner.pc].balance += parseFloat(winner.payoff);
 		}
+		
+		
+		var playerlist_for_view = _.map(_.keys(players_objects), function(key){
+			return {id: key, balance: players_objects[key].balance};
+		});
+
+		App.players.set('content', playerlist_for_view);			
+		
 	});
 	
 	

@@ -149,7 +149,6 @@ function PeerReview () {
 		this.last_reviews = {};
 		// Build reviews index
 		node.onDATA('EVA', function(msg) {
-			console.log(msg.data);
 			if (!that.last_reviews[msg.data.for]) {
 				that.last_reviews[msg.data.for] = [];
 			}
@@ -164,21 +163,6 @@ function PeerReview () {
 		var submissionRound = this.previous(2);
 		
 		this.nextround_reviewers = [ [[], []], [[], []], [[], []] ];
-		
-		
-//		console.log('******');
-//		console.log('Looking into the db...');
-//		// For each exhibition
-//		// get all the evaluations for each submission
-//		var exhibs = this.memory.select('state', '>=', submissionRound)
-//								.join('player', 'value.for', 'EVA2', ['value'])
-//								.select('EVA2') 
-//								.select('key','=','SUB')
-//								.sort('value')
-//								.groupBy('value');
-//		
-//		console.log('Done!');
-//		console.log('******');
 		
 
 		// array of all the selected works (by exhibition);
@@ -254,83 +238,7 @@ function PeerReview () {
 				player_results.push(player_result);
 			}
 		}
-		
-		// Exhibitions Loop
-//		for (var i=0; i < exhibs.length; i++) {
-//			
-//			// Groups all the reviews for an artist
-//			works = exhibs[i].groupBy('EVA2.value.for');
-//			
-//			// Evaluations Loop
-//			for (var j=0; j < works.length; j++) {
-//	
-//				player = works[j].first().player;
-//				
-//				mean = works[j].mean('EVA2.value.eva'); 
-//				
-//				cf = this.memory.select('state', '=', submissionRound)
-//									.select('player', '=', player)
-//									.select('key', '=', 'CF');
-//
-//
-//				
-//				author = this.pl.select('id', '=', player).first();
-//				
-//				ex = works[j].first().value;
-//				idEx = this.exhibitions[ex];
-//				nextRoundReviewer = 1; // player is a submitter: second choice reviewer
-//				
-//				player_result = {
-//						player: player,
-//						author: author.name,
-//						mean: mean.toFixed(2),
-//						scores: works[j].fetch('EVA2.value.eva'),
-//						ex: ex,
-//						round: submissionRound,
-//						payoff: 0, // will be updated later
-//				};
-//				
-//				
-//				// Threshold
-//				if (mean > this.threshold) {	
-//					
-//					J.mixin(player_result, {
-//						cf: cf.first().value,
-//						id: author.name,
-//						round: node.game.state.toHash('S.r'),
-//						pc: author.pc,
-//						published: true,
-//					});
-//					
-//					selected.push(player_result);
-//					
-//					// Player will be first choice as a reviewer
-//					// in exhibition idEx
-//					nextRoundReviewer = 0;
-//					
-//				} 
-//				
-//				// Add player to the list of next reviewers for the 
-//				// exhibition where he submitted / published
-//				this.nextround_reviewers[idEx][nextRoundReviewer].push(player);		
-//				
-//				//console.log('Color ' + author.color + ' submitted to ' + ex + '(' + idEx + ') ' + 'round: ' + node.game.state.round);
-//				
-//				// Add results for single player
-//				player_results.push(player_result);
-//				
-//			}
-//		}
-
-//		console.log('**********');
-//		console.log('Next round reviewers');
-//		console.log(node.game.nextround_reviewers);
-//		console.log('**********');
-		
-		
-//		console.log(player_results);
-//		console.log(player_results.length);
-		
+				
 		// Dispatch exhibition results to ALL
 		node.say(selected, 'WIN_CF', 'ALL');
 		// Dispatch detailed individual results to each single player
