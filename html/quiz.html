@@ -121,8 +121,10 @@ node.env('coo', function(){
     });
 });
 
-console.log(answers);
-
+node.env('auto', function(){
+	node.set('QUIZ', results);
+  node.random.emit('DONE', 2000);
+});
 
 function checkAnswer(a) {
 	if (!a || !answers) return;
