@@ -180,8 +180,6 @@ function PeerReviewGame () {
 			node.emit('DONE');
 		});
 		
-		node.emit('DONE');
-		
 		console.log('Instructions');
 	};
 	
