@@ -14,7 +14,6 @@ function PeerReviewGame () {
 		node.window.setup('PLAYER');
 		node.widgets.append('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
 		
-		
 		this.html = {};
 		
 		node.env('review_select', function(){

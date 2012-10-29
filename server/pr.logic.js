@@ -190,12 +190,24 @@ function PeerReview () {
 				player = works[j];
 				author = this.pl.select('id', '=', player).first();
 				
+				if (!author) {
+					node.err('No author found. This should not happen. Some results are missing.');
+					continue;
+				}
+				
+				if (!this.last_reviews[player]) {
+					node.err('No reviews for player: ' + player + '. This should not happen. Some results are missing.');
+					continue;
+				}
+				
 				mean = 0;
 				J.each(this.last_reviews[player], function(r) {
 					mean+= r; 
 				});
 				
 				mean = mean / this.last_reviews[player].length;
+				
+				
 				
 				cf = subRound.select('player', '=', player)
 							 .select('key', '=', 'CF')

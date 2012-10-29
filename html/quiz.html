@@ -23,7 +23,8 @@
         <dt><strong>Q.1</strong></dt>
         
         <dd>
-         <form name="reviewRange">
+        <span id="reviewRange_result" class="quiz_result"></span>
+         <form name="reviewRange" id="reviewRange">
 			  <p> When reviewing a painting you can express your liking on a scale:</p>
 			  <p>
 			    <input type="radio" name="reviewRange" value="0"> From 0 to 10<br>
@@ -35,13 +36,14 @@
         </dd>
        <dt><strong>Q.2</strong></dt>
        <dd>
-       <form name="reviewSelect">
+       	<span id="reviewSelect_result" class="quiz_result"></span>
+       <form name="reviewSelect" id="reviewSelect">
        <p>In the current round you have been the only artist who published in exhibition A. In the next round you will review for A</p>
         <p>
-          <input type="radio" name="reviewSelect" value="0"> Anyway <br>
+          <input type="radio" name="reviewSelect" value="0"> In any case <br>
           <input type="radio" name="reviewSelect" value="1"> If you submit to A again<br>
           <input type="radio" name="reviewSelect" value="2"> If at least one player submits to A in the next round<br>
-          <input type="radio" name="reviewSelect" value="3"> You can't say it, it is random.
+          <input type="radio" name="reviewSelect" value="3"> You can't say it, the reviewers are randomly assigned to the exhibitions.
         </p>
       </p>
        </form>
@@ -49,7 +51,8 @@
      
      <dt><strong>Q.3</strong></dt>
      <dd>
-     <form name="coocom">
+     <span id="coocom_result" class="quiz_result"></span>
+     <form name="coocom" id="coocom">
 	      <p> If exhibition A publishes 2 paintings, B 0 paintings, and C 1 painting, what is the payoff for the artists?</p>
 	        <p>
 	          <input type="radio" name="coocom" value="0"> All get 3.00 CHF<br>
@@ -62,7 +65,7 @@
 	      </dd>
 	      </dl>
 	       <div id="done_box">
-          <button onclick='javascript:checkAnswers();'>Click here when you are done</button>
+          <button onclick='javascript:checkAnswers();' id="submitQuiz">Click here when you are done. <br>Correct answers <span id="answers_counter">0 / 3</span></button>
         </div>
      </div>
     </div>
@@ -76,6 +79,8 @@ var node =  parent.node,
 
 
 node.window.noEscape(window);
+
+var results = {};
 
 var answers;
 
@@ -135,18 +140,29 @@ function checkAnswers () {
 
 	var correct, counter = 0;
 	J.each(document.forms, function(a){
+		if (!results[a.name]) results[a.name] = [];
 		correct = checkAnswer(a);
 		
 		if (correct) {
 		  W.highlight(a, 'ERR');
+			document.getElementById(a.id + '_result').innerHTML = 'Wrong, try again';
+		  results[a.name].push(0);	 
 		  }
 		  else {  
 		    W.highlight(a, 'OK');
-		    counter++;
+        document.getElementById(a.id + '_result').innerHTML = 'Correct!';
+				results[a.name].push(1);
+				counter++;
 		}
 	});
 
-	console.log('Correct answers: ' + counter + '/' + document.forms.length);
+  document.getElementById('answers_counter').innerHTML = counter + ' / ' + document.forms.length;
+	
+	if (counter === document.forms.length) {
+		node.set('QUIZ', results);
+	 	node.random.emit('DONE', 2000);
+	}
+	
 }
 
 
