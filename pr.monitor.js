@@ -65,7 +65,7 @@ function Monitor_Example () {
 		
 		var winner = msg.data;
 		
-		console.log(winner);
+		//console.log(winner);
 		if ('undefined' !== typeof players_objects[winner.pc]) {
 			// Add the initial amount to the players balance.
 			players_objects[winner.pc].balance += parseFloat(winner.payoff);
