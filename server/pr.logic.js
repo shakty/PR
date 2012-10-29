@@ -22,9 +22,9 @@ function PeerReview () {
 		});
 		
 		this.exhibitions = {
-				A: 0,
-				B: 1,
-				C: 2,
+			A: 0,
+			B: 1,
+			C: 2,
 		};
 		
 		this.last_reviews;

@@ -74,9 +74,13 @@ RMatcher.prototype.allGroupsDone = function() {
 };
 
 RMatcher.prototype.tryOtherLeftOvers = function (g) {
-	var group;
-	for (var i = (g + 1) ; i < (this.groups.length + g) ; i++) {
-		group = this.groups[i % this.groups.length];
+	var group, groupId;
+	var order = J.seq(0, (this.groups.length-1));
+	order = J.shuffle(order);
+	for (var i = 0 ; i < order.length ; i++) {
+		groupId = order[i];
+		if (groupId === g) continue;
+		group = this.groups[groupId];
 		leftOver = [];
 		if (group.leftOver.length) {
 			group.leftOver = this.groups[g].matchBatch(group.leftOver);
@@ -425,30 +429,30 @@ function getPools() {
 //console.log(getElements())
 //console.log(getPools())
 
-function simulateMatch(N) {
-	
-	for (var i = 0 ; i < N ; i++) {
-		
-		var rm = new RMatcher(),
-			elements = getElements(),
-			pools = getPools();
-		
-//		console.log('NN ' , numbers);
-//		console.log(elements);
-//		console.log(pools)
-		rm.init(elements, pools);
-		
-		var matched = rm.match();
-		
-		if (!rm.allGroupsDone()) {
-			console.log('ERROR')
-			console.log(rm.options.elements);
-			console.log(rm.options.pools);
-			console.log(matched);
-		}
-	}
-		
-}
+//function simulateMatch(N) {
+//	
+//	for (var i = 0 ; i < N ; i++) {
+//		
+//		var rm = new RMatcher(),
+//			elements = getElements(),
+//			pools = getPools();
+//		
+////		console.log('NN ' , numbers);
+////		console.log(elements);
+////		console.log(pools)
+//		rm.init(elements, pools);
+//		
+//		var matched = rm.match();
+//		
+//		if (!rm.allGroupsDone()) {
+//			console.log('ERROR')
+//			console.log(rm.options.elements);
+//			console.log(rm.options.pools);
+//			console.log(matched);
+//		}
+//	}
+//		
+//}
 	
 //simulateMatch(1000000);
 
@@ -480,7 +484,7 @@ function simulateMatch(N) {
 //		console.log(g.pool);
 //	});
 //}
-
+//
 //console.log(myElements);
 //console.log(myPools);
 //console.log(myMatch);

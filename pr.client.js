@@ -186,9 +186,7 @@ function PeerReviewGame () {
 	};
 	
 	var quiz = function () {	
-		node.window.loadFrame('html/quiz.html', function(){
-			
-		});
+		node.window.loadFrame('html/quiz.html');
 		console.log('Quiz');
 	};
 	
