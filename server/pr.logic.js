@@ -43,6 +43,12 @@ function PeerReview () {
 		console.log('Instructions');
 	};
 		
+	var quiz = function () {	
+//		node.game.pl.save('./out/PL.nddb');
+//		node.game.plids = node.game.pl.keep('id').fetch();
+		console.log('Quiz');
+	};
+	
 	var creation = function () {		
 		console.log('creation');
 	};
@@ -317,20 +323,24 @@ function PeerReview () {
 					name: 	'Instructions'
 				},
 				
+				3: {state: quiz,
+					name: 'Quiz',
+				},
+				
 //				3: {state: 	testloop,
 //					name: 	'Test Game'
 //				},
 					
-				3: {rounds:	30, 
+				4: {rounds:	30, 
 					state: 	gameloop,
 					name: 	'Game'
 				},
 				
-				4: {state:	questionnaire,
+				5: {state:	questionnaire,
 					name: 	'Questionnaire'
 				},
 					
-				5: {state:	endgame,
+				6: {state:	endgame,
 					name: 	'Thank you'
 				}
 		};	

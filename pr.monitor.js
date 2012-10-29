@@ -95,6 +95,10 @@ function Monitor_Example () {
 	var instructions = function() {		
 		console.log('Instructions');
 	};
+	
+	var quiz = function() {		
+		console.log('quiz');
+	};
 		
 	var creation = function() {
 		console.log('creation');
@@ -155,17 +159,21 @@ function Monitor_Example () {
 			2: {state: 	instructions,
 				name: 	'Instructions'
 			},
+			
+			3: {state: 	quiz,
+				name: 	'Quiz'
+			},
 				
-			3: {rounds:	10, 
+			4: {rounds:	30, 
 				state: 	gameloop,
 				name: 	'Game'
 			},
 			
-			4: {state:	questionnaire,
+			5: {state:	questionnaire,
 				name: 	'Questionnaire'
 			},
 				
-			5: {state:	endgame,
+			6: {state:	endgame,
 				name: 	'Thank you'
 			}
 			

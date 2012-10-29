@@ -186,6 +186,13 @@ function PeerReviewGame () {
 		console.log('Instructions');
 	};
 	
+	var quiz = function () {	
+		node.window.loadFrame('html/quiz.html', function(){
+			
+		});
+		console.log('Quiz');
+	};
+	
 	var creation = function() {
 		
 		node.window.loadFrame(this.html.creation, function(){
@@ -403,21 +410,25 @@ function PeerReviewGame () {
 				timer: 	300000,
 			},
 			
+			3: {state: quiz,
+				name: 'Quiz',
+			},
+			
 //			3: {state: testloop,
 //				name: 'TEST: Game',
 //			},
 				
-			3: {rounds:	30, 
+			4: {rounds:	30, 
 				state: 	gameloop,
 				name: 	'Game',
 			},
 			
-			4: {state:	questionnaire,
+			5: {state:	questionnaire,
 				name: 	'Questionnaire',
 				timer: 	600000,
 			},
 				
-			5: {state:	endgame,
+			6: {state:	endgame,
 				name: 	'Thank you',
 			}
 			

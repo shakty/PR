@@ -69,37 +69,61 @@
     
   </div>
 </body>
-<script>parent.node.window.noEscape(window);
+<script>
+var node =  parent.node,
+    J = parent.JSUS,
+    W = parent.W;
+
+
+node.window.noEscape(window);
 
 var answers;
 
-if (node.env.com && node.env.review_select) {
-	answers = {
-			coocom: 3,
-			reviewSelect: 2,
-			reviewRange: 0
-	};
-}
-else if (node.env.com && node.env.review_random) {
-	answers = {
-      coocom: 3,
-      reviewSelect: 3,
-      reviewRange: 0
-	};
-}
-else if (node.env.review_random) {
-	answers = {
-      coocom: 2,
-      reviewSelect: 3,
-      reviewRange: 0
-	};
-}
-else {
-	answers = {
-      coocom: 2,
-      reviewSelect: 2,
-      reviewRange: 0
-  };
+node.env('com', function(){
+	
+	node.env('review_select', function(){
+		answers = {
+			      coocom: 3,
+			      reviewSelect: 2,
+			      reviewRange: 0
+		};	
+	});
+	node.env('review_random', function(){
+		answers = {
+			      coocom: 3,
+			      reviewSelect: 3,
+			      reviewRange: 0
+	  };
+  });
+	
+});
+	
+node.env('coo', function(){
+	  
+	  node.env('review_select', function(){
+		  answers = {
+			      coocom: 2,
+			      reviewSelect: 2,
+			      reviewRange: 0
+			  };
+	  });
+	  node.env('review_random', function(){
+      answers = {
+            coocom: 2,
+            reviewSelect: 3,
+            reviewRange: 0
+        }; 
+    });
+});
+
+console.log(answers);
+
+
+function checkAnswer(a) {
+	if (!a || !answers) return;
+	
+	var checked = getCheckedValue(a);  
+	return checked != answers[a.name];
 }
 
 function checkAnswers () {
@@ -108,35 +132,36 @@ function checkAnswers () {
 	var coocom = document.getElementById('coocom');
 	/* console.log(reviewRange);	
 	console.log(document.forms['coocom']) */
-	
-	if (getCheckedValue(document.forms['reviewRange'] !== answers.reviewRange) {
-		console.log('WRONG')!
-	}
-	else {
-		console.log('correct');
-	}
-	console.log)
-	console.log(getCheckedValue(document.forms['reviewSelect']))
-	console.log(getCheckedValue(document.forms['coocom']))
+
+	var correct, counter = 0;
+	J.each(document.forms, function(a){
+		correct = checkAnswer(a);
+		
+		if (correct) {
+		  W.highlight(a, 'ERR');
+		  }
+		  else {  
+		    W.highlight(a, 'OK');
+		    counter++;
+		}
+	});
+
+	console.log('Correct answers: ' + counter + '/' + document.forms.length);
 }
 
 
 function getCheckedValue(radioObj) {
-	  if (!radioObj) return "";
-	  
-	  var radioLength = radioObj.length;
-	  
-	  if (radioLength == undefined)
-	    if (radioObj.checked)
-	      return radioObj.value;
-	    else
-	      return "";
-	  for(var i = 0; i < radioLength; i++) {
-	    if(radioObj[i].checked) {
-	      return radioObj[i].value;
-	    }
+	  if (!radioObj) return;
+
+	  if (radioObj.length) {
+		  for (var i = 0; i < radioObj.length; i++) {
+		      if (radioObj[i].checked) {
+		        return radioObj[i].value;
+		      }
+		    }
 	  }
-	  return "";
+	    
+	  return radioObj.checked;
 	}
 
 	// set the radio button with the given value as being checked
