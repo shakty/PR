@@ -26,12 +26,12 @@ function Monitor_Example () {
 						   features: cell.content,
 						   controls: false
 				};
-				var cf = node.window.getWidget('ChernoffFaces', cf_options);
+				var cf = node.widgets.get('ChernoffFaces', cf_options);
 				return cf.getCanvas();
 			}
 		};
 		
-		this.summary = node.window.addWidget('GameTable', document.body, {render: {
+		this.summary = node.widgets.append('GameTable', document.body, {render: {
 			pipeline: renderCF,
 		 	returnAt: 'first',
 		}});
