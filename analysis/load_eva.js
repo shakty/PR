@@ -4,7 +4,8 @@ var fs = require('fs'),
 	NDDB = require('NDDB').NDDB;
 
 
-
+var DIR = './com_sel/';
+///////////////////////
 
 
 var options = {
@@ -14,7 +15,7 @@ var options = {
     'comment': '',
 };
 
-var reader = csv.createCsvFileReader('./out/key_EVA.csv', options);
+var reader = csv.createCsvFileReader(DIR + 'key_EVA.csv', options);
 
 	
 
@@ -39,7 +40,7 @@ reader.setColumnNames([
 
 
 var db = new NDDB();
-db.load('./nddb/all_cf_sub.nddb');
+db.load(DIR + 'all_cf_sub.nddb');
 
 db.h('player', function(gb) {
 	return gb.player.id;
@@ -96,6 +97,7 @@ reader.on('end', function(){
 			console.log('Error, no scores');
 			return;
 		}
+		console.log(e.scores)
 		if (e.scores.length !== 3) {
 			console.log('Error, not enough scores');
 			return;
@@ -107,16 +109,6 @@ reader.on('end', function(){
 		//console.log(e);
 	})
 	
-	db.save('./nddb/all_cf_sub_eva.nddb');
+	db.save(DIR + 'all_cf_sub_eva.nddb');
 	console.log('wrote file.');
 });
-
-
-
-
-
-
-
-
-
-

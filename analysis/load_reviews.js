@@ -5,7 +5,8 @@ var fs = require('fs'),
 	J = require('./../node_modules/NDDB/node_modules/JSUS/jsus.js').JSUS;
 
 
-
+var DIR = './com_sel/';
+///////////////////////
 
 
 var options = {
@@ -15,7 +16,7 @@ var options = {
     'comment': '',
 };
 
-var reader = csv.createCsvFileReader('./out/key_EVA.csv', options);
+var reader = csv.createCsvFileReader(DIR + 'key_EVA.csv', options);
 
 	
 
@@ -40,7 +41,7 @@ reader.setColumnNames(colnames);
 //PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./out/PL.nddb');
+pl.load(DIR + 'PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
@@ -103,7 +104,7 @@ reader.on('data', function(data) {
 
 
 reader.on('end', function(){
-	db.save('./nddb/all_reviews.nddb');
+	db.save(DIR + 'all_reviews.nddb');
 	
 	var pfile = 'ingroup/all_reviews.csv'; 
 
@@ -114,7 +115,7 @@ reader.on('end', function(){
 	colnames.push('same');
 	
 	// PLAYER STATS
-	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream('./csv/' + pfile));
+	var pWriter = csv.createCsvStreamWriter(fs.createWriteStream( DIR + 'csv/' + pfile));
 	pWriter.writeRecord(colnames);	
 	
 	db.each(function(p){

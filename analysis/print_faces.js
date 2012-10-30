@@ -598,7 +598,8 @@ FaceVector.prototype.toString = function() {
 ////////////
 
 
-
+var DIR = './com_sel/';
+///////////////////////
 
 var db = new NDDB();
 
@@ -612,7 +613,7 @@ db.h('key', function(gb) {
 	return gb.key;
 });
 
-db.load('./nddb/all_cf.nddb');
+db.load(DIR + 'all_cf.nddb');
 
 db.rebuildIndexes();
 
@@ -622,7 +623,7 @@ db.rebuildIndexes();
 	//console.log(e);
 	var filename = e.player.pc + '_' + e.state.round + '.png';
 	var face = e.value;
-	var out = fs.createWriteStream(__dirname + '/faces/' + filename);
+	var out = fs.createWriteStream(DIR + 'faces/' + filename);
 	var stream = fp.canvas.canvas.createPNGStream();
 
 	stream.on('data', function(chunk){

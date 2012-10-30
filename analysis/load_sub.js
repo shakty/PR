@@ -5,6 +5,8 @@ var fs = require('fs'),
 
 
 
+var DIR = './com_sel/';
+///////////////////////
 
 
 var options = {
@@ -14,7 +16,10 @@ var options = {
     'comment': '',
 };
 
-var reader = csv.createCsvFileReader('./out/key_SUB.csv', options);
+
+
+
+var reader = csv.createCsvFileReader(DIR + 'key_SUB.csv', options);
 
 	
 
@@ -38,7 +43,7 @@ reader.setColumnNames([
 
 
 var db = new NDDB();
-db.load('./nddb/all_cf.nddb');
+db.load(DIR + 'all_cf.nddb');
 
 db.h('player', function(gb) {
 	return gb.player.id;
@@ -84,7 +89,7 @@ reader.on('data', function(data) {
 
 reader.on('end', function(){
 	//console.log(db.player['9132212711841317531'].first());
-	db.save('./nddb/all_cf_sub.nddb');
+	db.save(DIR + 'all_cf_sub.nddb');
 	console.log('wrote file.');
 });
 

@@ -78,14 +78,16 @@ nddb.h('key', function(gb) {
 
 var read = 0;
 
+var DIR = './com_sel/';
 
-pl.load('./out/PL.nddb');
+
+pl.load(DIR + 'PL.nddb');
 
 
 pl.each(function(data) {
 
     //console.log(data);
-    var readerPL = csv.createCsvFileReader('./out/player_' + data.id + '.csv', options);
+    var readerPL = csv.createCsvFileReader(DIR + 'player_' + data.id + '.csv', options);
     
     readerPL.on('data', function(cf) {
 
@@ -134,7 +136,7 @@ pl.each(function(data) {
     	if (read == 9) {
 //    		console.log(nddb);
     		console.log(nddb.length);
-    		nddb.save('./nddb/all_cf.nddb');
+    		nddb.save(DIR + 'all_cf.nddb');
     	}
     });
    

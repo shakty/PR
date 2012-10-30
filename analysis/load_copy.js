@@ -6,7 +6,8 @@ var fs = require('fs'),
 	d3 = require('d3');
 
 
-
+var DIR = './com_sel/';
+///////////////////////
 
 
 var options = {
@@ -16,7 +17,7 @@ var options = {
     'comment': '',
 };
 
-var reader = csv.createCsvFileReader('./out/key_COPIED.csv', options);
+var reader = csv.createCsvFileReader(DIR + 'key_COPIED.csv', options);
 
 	
 
@@ -54,7 +55,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./nddb/all_cf_sub_eva.nddb');
+db.load(DIR + 'all_cf_sub_eva.nddb');
 // Cast to number
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -67,7 +68,7 @@ db.rebuildIndexes();
 // PL
 var pl = new NDDB();	
 pl.h('id', function(gb) { return gb.id;});
-pl.load('./out/PL.nddb');
+pl.load(DIR + 'PL.nddb');
 pl.sort('pc');
 pl.rebuildIndexes();
 
@@ -127,8 +128,8 @@ reader.on('data', function(data) {
 
 reader.on('end', function(){
 	//console.log(db.fetch('copy'));
-	db.save('./nddb/all_cf_sub_eva_copy.nddb');
-	dbcopy.save('./nddb/all_copy.nddb');
+	db.save(DIR + 'all_cf_sub_eva_copy.nddb');
+	dbcopy.save( DIR + 'all_copy.nddb');
 	console.log('wrote files.');
 });
 
