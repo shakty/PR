@@ -1,27 +1,8 @@
-<!doctype html>
-<title>Art Exhibition Game: INSTRUCTIONS</title>
+<link rel="stylesheet" type="text/css" href="../html/css/iframe.css">
+<link rel="stylesheet" type="text/css" href="../html/css/instructions.css">
+<h1>Instructions of the Art Exhibition Game</h1>
 
-<!-- JQUERY UI STARTS -->
-<link type="text/css" href="../lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
-<script src="../lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
-<script src="../lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
-<!-- JQUERY UI ENDS -->
-
-<!-- no Escape -->
-<!-- <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
-<!-- no Escape ends -->
-
-<link rel="stylesheet" type="text/css" href="css/iframe.css">
-<link rel="stylesheet" type="text/css" href="css/instructions.css">
-<body>
-
-  <div id="container_instructions">
-    <h1>Welcome to the Art Exhibition Game!</h1>
-   
-    <div id="instructions">     
-      <img src="./images/instructions/painter.jpeg" width="200px" />
-      <span id="scrolldown">Scroll the page to read the whole text. </br> Read carefully and with no hurry.</span>
-      <p>
+    <p>
         <h3>Introduction</h3>
         You just became part of a community of 9 painters (including you).
         The community will collectively decide which paintings can be 
@@ -55,18 +36,16 @@
       
       </p>
       
-			<p>
+      <p>
       <h3>Who reviews what</h3>
       
         <ul>
-	        <li>When you choose one exhibition, you increase your chances to become a reviewer for that exhibition in the <strong>next</strong> round.</li>
-	        <li>If your painting is also published, your chances will be even higher.</li>
-	        <li>You will always review 3 paintings, and you can never review your own painting.</li>
+          <li>At each round you will be <em>randomly</em> assigned to review 3 paintings, and you can never review your own painting.</li>
         </ul>
         
       </p>
-			
-			 <p>
+      
+       <p>
       <h3>Payoff calculation</h3>
       <ul>
         <li>You will receive a fixed monetary compensation of <strong>10 (ten) CHF</strong>, plus 
@@ -86,7 +65,7 @@
         
       </ul>
       </p>
-			
+      
       <p>
       <h3>Other rules</h3>
       <ul>
@@ -103,36 +82,3 @@
          <li>In case of misconduct, cheating or disturbing behavior during the game, you will not be paid any money.</li>
       </ul>
       </p>
-
-
-      <p>
-      <h3>Graphical examples of the interface to create paintings</h3>
-      <ol>
-        <li>
-            Each player produces his or her paintings by moving a set of sliders as illustrated in the picture below.
-            <img src="./images/instructions/create2_edited.png" class="snapshot"/>
-        </li>
-        <li>
-            During the creation of the painting, each player is provided with the an overview of the past exhibitions.
-            <img src="./images/instructions/hist_edited.png" class="snapshot" />
-        </li>
-        <li>
-           Players can click on a painting to display it in its original dimensions. Furthermore, during the creation phase,
-           it is allowed to select and copy past painting as the base of their new work of art.
-           <img src="./images/instructions/hist_copy_edited.png" class="snapshot" />
-       </li>
-       <li>
-           Players review paintings by selecting a value between 0 and 10 on a slider on top of the pictures.
-           <img src="./images/instructions/review_edited.png" class="snapshot" />
-       </li>
-       </ol>
-      </p>
-      <h3>Proceed to the game</h3>
-      <div id="done_box">
-       <button onclick="javascript:parent.node.emit('DONE')">If you understood the instructions, click here to start the game</button>
-     </div>
-    </div>
-    
-  </div>
-</body>
-<script>parent.node.window.noEscape(window);</script>
