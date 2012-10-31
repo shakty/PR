@@ -5,6 +5,8 @@ var fs = require('fs'),
 	J = require('./../node_modules/NDDB/node_modules/JSUS/jsus.js').JSUS,
 	d3 = require('d3');
 
+var DIR = './com_sel/';
+///////////////////////
 
 var db = new NDDB();
 
@@ -19,7 +21,7 @@ db.h('key', function(gb) {
 });
 
 
-db.load('./nddb/all_cf_sub_eva_copy.nddb');
+db.load(DIR + 'all_cf_sub_eva_copy.nddb');
 
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -77,7 +79,7 @@ var html = d3.select('html');
 
 html.append('style')
 		.attr('type', 'text/css')
-		.text('.copies {border: 1px solid #CCC; vertical-align: top; width: 100px}')
+		.text('.copies {border: 1px solid #CCC; vertical-align: top; width: 100px}');
 
 
 var table = html.append('table');
@@ -142,7 +144,7 @@ var cells = rows.selectAll("td")
 //			.style('margin', '3px')
 
 
-fs.writeFile('./html/index_copy.htm', window.document.innerHTML, function(err) {
+fs.writeFile(DIR + 'html/index_copy.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {
@@ -196,7 +198,7 @@ var cells = rows.selectAll("td")
     		return content;
     	});
 
-fs.writeFile('./html/index_copies.htm', window.document.innerHTML, function(err) {
+fs.writeFile(DIR + 'html/index_copies.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {

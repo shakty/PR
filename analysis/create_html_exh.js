@@ -5,6 +5,10 @@ var fs = require('fs'),
 	JSUS = require('./../node_modules/NDDB/node_modules/JSUS/jsus.js').JSUS,
 	d3 = require('d3');
 
+
+var DIR = './com_sel/';
+///////////////////////
+
 var db = new NDDB();
 
 db.h('player', function(gb) {
@@ -23,7 +27,7 @@ db.h('ex', function(gb) {
 
 
 
-db.load('./nddb/all_cf_sub_eva.nddb');
+db.load(DIR + 'all_cf_sub_eva.nddb');
 
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -37,10 +41,10 @@ db.rebuildIndexes();
 var exhs = JSUS.implodeObj(db.ex),
 	exnames = ['A','B','C'];
 
-var ONLY_PUBLISHED = true;
+var ONLY_PUBLISHED = false;
 
-var index_file = (ONLY_PUBLISHED) ? './html/index_exh_pub.htm'
-								: './html/index_exh.htm';
+var index_file = (ONLY_PUBLISHED) ? DIR + 'html/index_exh_pub.htm'
+								: DIR + 'html/index_exh.htm';
 
 var states = db.groupBy('state');
 

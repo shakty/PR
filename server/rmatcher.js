@@ -450,11 +450,24 @@ function getPools() {
 //			console.log(rm.options.pools);
 //			console.log(matched);
 //		}
+//		
+//		for (var j = 0; j < rm.groups.length; j++) {
+//			var g = rm.groups[j];
+//			for (var h = 0; h < g.elements.length; h++) {
+//				if (g.matched[h].length !== g.rowLimit) {
+//					console.log('Wrong match: ' +  h);
+//
+//					console.log(rm.options.elements);
+//					console.log(rm.options.pools);
+//					console.log(matched);
+//				}
+//			}
+//		}
 //	}
 //		
 //}
-	
-//simulateMatch(1000000);
+//	
+//simulateMatch(100000);
 
 //var myElements = [ [ 3, 5 ], [ 8, 9, 1, 7, 6 ], [ 2, 4 ] ];
 //var myPools = [ [ [ 6 ], [ 9, 7 ] ], [ [], [ 8, 1, 5, 4 ] ], [ [], [ 2, 3 ] ] ];

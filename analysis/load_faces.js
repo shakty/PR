@@ -3,145 +3,150 @@ var fs = require('fs'),
 	csv = require('ya-csv'),
 	NDDB = require('NDDB').NDDB;
 
+module.exports = load;
 
-var options = {
-    'separator': ',',
-    'quote': '"',
-    'escape': '"',       
-    'comment': '',
-};
+function load(DIR) {
 
+	if (!DIR) {
+		console.err('You need to specify a directory as parameter');
+		return false;
+	}
+		
+	var options = {
+	    'separator': ',',
+	    'quote': '"',
+	    'escape': '"',       
+	    'comment': '',
+	};
 	
- 	
-//"3","1","1","50","false","11552021611387795746","CF","2.293314986813439","2.293314986813439","green","1","87.21","0.59","0.649","0.47","5","32.21","3.33","1.73","1","1","1","35.26","9.21","-0.76","18.42","0","0","0","0.75","20","54.95","-28.42","1339414035698"
-var columnsCF = [
-                 'state',
-                 'step',
-                 'round',
-                 'is',
-                 'paused',
-                 'player',
-                 'key',
-                 'scaleX',
-                 'scaleY',
-                 'color',
-                 'lineWidth',
-                 'head_radius',
-                 'head_scale_x',
-                 'head_scale_y',
-                 'eye_height',
-                 'eye_radius',
-                 'eye_spacing',
-                 'eye_scale_x',
-                 'eye_scale_y',
-                 'pupil_radius',
-                 'pupil_scale_x',
-                 'pupil_scale_y',
-                 'eyebrow_length',
-                 'eyebrow_eyedistance',
-                 'eyebrow_angle',
-                 'eyebrow_spacing',
-                 'nose_height',
-                 'nose_length',
-                 'nose_width',
-                 'mouth_height',
-                 'mouth_width',
-                 'mouth_top_y',
-                 'mouth_bottom_y',
-                 'time',
-];
-
-
-// "3","1","1","50","false","11552021611387795746","SUB","B","1339414035686"
-
-
-// BEGIN
-/////////////
-
-
-var nddb = new NDDB();
-var pl = new NDDB();
-
-nddb.h('player', function(gb) {
-	return gb.pc;
-});
-
-
-nddb.h('state', function(gb) {
-	return GameState.toHash(gb.state, 'S.s.r');
-});
-
-
-nddb.h('key', function(gb) {
-	return gb.key;
-});
-
-var read = 0;
-
-var DIR = './com_sel/';
-
-
-pl.load(DIR + 'PL.nddb');
-
-
-pl.each(function(data) {
-
-    //console.log(data);
-    var readerPL = csv.createCsvFileReader(DIR + 'player_' + data.id + '.csv', options);
-    
-    readerPL.on('data', function(cf) {
-
-    	
-    	if (cf[6] === 'CF') {
-    		//console.log(cf);
-    		var face = {};
-    		//console.log(cf.length)
-    		for (var i=7; i<33; i++) {
-    			if (columnsCF[i] !== 'color') {
-    				face[columnsCF[i]] = Number(cf[i]);
-    			}
-    			else {
-    				face[columnsCF[i]] = cf[i];
-    			}
-    			
-    		}
-    		//console.log(face);
-    		var gameBit = {
-    				state: {
-    					state: cf[0],
-    					step: cf[1],
-    					round: cf[2],
-    					is: cf[3],
-    					paused: cf[4],
-    				},
-		    		player: {
-		    			name: data.name,
-		    			id: data.id,
-		    			pc: data.pc,
-		    			color: data.color,
-		    		},
-					key: 'CF',
-					value: face,
-					time: cf[33],
-    		};
-    		//console.log(gameBit);
-    		
-        	nddb.insert(gameBit);
-    	}
-    	
-    });   
-    
-    readerPL.on('end', function(){
-    	read++;
-    	if (read == 9) {
-//    		console.log(nddb);
-    		console.log(nddb.length);
-    		nddb.save(DIR + 'all_cf.nddb');
-    	}
-    });
-   
-});
-
+		
+	 	
+	//"3","1","1","50","false","11552021611387795746","CF","2.293314986813439","2.293314986813439","green","1","87.21","0.59","0.649","0.47","5","32.21","3.33","1.73","1","1","1","35.26","9.21","-0.76","18.42","0","0","0","0.75","20","54.95","-28.42","1339414035698"
+	var columnsCF = [
+	                 'state',
+	                 'step',
+	                 'round',
+	                 'is',
+	                 'paused',
+	                 'player',
+	                 'key',
+	                 'scaleX',
+	                 'scaleY',
+	                 'color',
+	                 'lineWidth',
+	                 'head_radius',
+	                 'head_scale_x',
+	                 'head_scale_y',
+	                 'eye_height',
+	                 'eye_radius',
+	                 'eye_spacing',
+	                 'eye_scale_x',
+	                 'eye_scale_y',
+	                 'pupil_radius',
+	                 'pupil_scale_x',
+	                 'pupil_scale_y',
+	                 'eyebrow_length',
+	                 'eyebrow_eyedistance',
+	                 'eyebrow_angle',
+	                 'eyebrow_spacing',
+	                 'nose_height',
+	                 'nose_length',
+	                 'nose_width',
+	                 'mouth_height',
+	                 'mouth_width',
+	                 'mouth_top_y',
+	                 'mouth_bottom_y',
+	                 'time',
+	];
+	
+	
+	// "3","1","1","50","false","11552021611387795746","SUB","B","1339414035686"
+	
+	
+	// BEGIN
+	/////////////
+	
+	
+	var nddb = new NDDB();
+	var pl = new NDDB();
+	
+	nddb.h('player', function(gb) {
+		return gb.pc;
+	});
+	
+	
+	nddb.h('state', function(gb) {
+		return GameState.toHash(gb.state, 'S.s.r');
+	});
+	
+	
+	nddb.h('key', function(gb) {
+		return gb.key;
+	});
+	
+	var read = 0;
+	
+	pl.load(DIR + 'PL.nddb');
+	
+	
+	pl.each(function(data) {
+	
+	    //console.log(data);
+	    var readerPL = csv.createCsvFileReader(DIR + 'player_' + data.id + '.csv', options);
+	    
+	    readerPL.on('data', function(cf) {
+	
+	    	
+	    	if (cf[6] === 'CF') {
+	    		//console.log(cf);
+	    		var face = {};
+	    		//console.log(cf.length)
+	    		for (var i=7; i<33; i++) {
+	    			if (columnsCF[i] !== 'color') {
+	    				face[columnsCF[i]] = Number(cf[i]);
+	    			}
+	    			else {
+	    				face[columnsCF[i]] = cf[i];
+	    			}
+	    			
+	    		}
+	    		//console.log(face);
+	    		var gameBit = {
+	    				state: {
+	    					state: cf[0],
+	    					step: cf[1],
+	    					round: cf[2],
+	    					is: cf[3],
+	    					paused: cf[4],
+	    				},
+			    		player: {
+			    			name: data.name,
+			    			id: data.id,
+			    			pc: data.pc,
+			    			color: data.color,
+			    		},
+						key: 'CF',
+						value: face,
+						time: cf[33],
+	    		};
+	    		//console.log(gameBit);
+	    		
+	        	nddb.insert(gameBit);
+	    	}
+	    	
+	    });   
+	    
+	    readerPL.on('end', function(){
+	    	read++;
+	    	if (read == 9) {
+	//    		console.log(nddb);
+	    		console.log(nddb.length);
+	    		nddb.save(DIR + 'all_cf.nddb');
+	    	}
+	    });
+	   
+	});
+}
 
 
 

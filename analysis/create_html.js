@@ -4,6 +4,8 @@ var fs = require('fs'),
 	NDDB = require('NDDB').NDDB,
 	d3 = require('d3');
 
+var DIR = './com_sel/';
+///////////////////////
 
 var db = new NDDB();
 
@@ -17,7 +19,7 @@ db.h('key', function(gb) {
 	return gb.key;
 });
 
-db.load('./nddbs/all_cf_sub_eva.nddb');
+db.load(DIR + 'all_cf_sub_eva.nddb');
 
 db.each(function(e){
 	e.state.round = Number(e.state.round);
@@ -86,7 +88,7 @@ var cells = rows.selectAll("td")
 				//Update pointer
 				pl.next();
 	        	if (item) {
-	        		filename = './faces/' + item.player.pc + '_' + item.state.round + '.png';
+	        		filename = '../faces/' + item.player.pc + '_' + item.state.round + '.png';
 	            	//console.log(filename)
 	            	return filename;
 	        	}
@@ -120,7 +122,7 @@ var cells = rows.selectAll("td")
 		});
 
 
-fs.writeFile('./index.htm', window.document.innerHTML, function(err) {
+fs.writeFile(DIR + 'html/index.htm', window.document.innerHTML, function(err) {
     if(err) {
         console.log(err);
     } else {
