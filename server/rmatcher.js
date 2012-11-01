@@ -429,45 +429,106 @@ function getPools() {
 //console.log(getElements())
 //console.log(getPools())
 
-//function simulateMatch(N) {
-//	
-//	for (var i = 0 ; i < N ; i++) {
-//		
-//		var rm = new RMatcher(),
-//			elements = getElements(),
-//			pools = getPools();
-//		
-////		console.log('NN ' , numbers);
-////		console.log(elements);
-////		console.log(pools)
-//		rm.init(elements, pools);
-//		
-//		var matched = rm.match();
-//		
-//		if (!rm.allGroupsDone()) {
-//			console.log('ERROR')
-//			console.log(rm.options.elements);
-//			console.log(rm.options.pools);
-//			console.log(matched);
-//		}
-//		
-//		for (var j = 0; j < rm.groups.length; j++) {
-//			var g = rm.groups[j];
-//			for (var h = 0; h < g.elements.length; h++) {
-//				if (g.matched[h].length !== g.rowLimit) {
-//					console.log('Wrong match: ' +  h);
+
+
+
+
+function simulateMatch(N) {
+	
+	for (var i = 0 ; i < N ; i++) {
+		
+		var rm = new RMatcher(),
+			elements = getElements(),
+			pools = getPools();
+		
+//		console.log('NN ' , numbers);
+//		console.log(elements);
+//		console.log(pools)
+		rm.init(elements, pools);
+		
+		var matched = rm.match();
+		
+		if (!rm.allGroupsDone()) {
+			console.log('ERROR')
+			console.log(rm.options.elements);
+			console.log(rm.options.pools);
+			console.log(matched);
+		}
+		
+		for (var j = 0; j < rm.groups.length; j++) {
+			var g = rm.groups[j];
+			for (var h = 0; h < g.elements.length; h++) {
+				if (g.matched[h].length !== g.rowLimit) {
+					console.log('Wrong match: ' +  h);
+
+					console.log(rm.options.elements);
+					console.log(rm.options.pools);
+					console.log(matched);
+				}
+			}
+		}
+	}
+		
+}
+	
+simulateMatch(1000000000);
+
+//var myElements = [ [ 1, 5], [ 6, 9 ], [ 2, 3, 4, 7, 8 ] ];
+//var myPools = [ [ [ ], [ 1,  5, 6, 7] ], [ [4], [ 3, 9] ], [ [], [ 2, 8] ] ];
+
+//4.07A 25	
+//4.77C 25	
+//4.37B 25	
+//5.13B 25 [08 R_16]	
+//0.83A 25 [09 R_7]	
+//3.93A 25 [09 R_23]	
+//1.37A 25 [07 R_21]	
+//3.30C 25	
+//4.40B 25
 //
-//					console.log(rm.options.elements);
-//					console.log(rm.options.pools);
-//					console.log(matched);
-//				}
-//			}
-//		}
-//	}
-//		
-//}
-//	
-//simulateMatch(100000);
+//25
+//
+//389546331863136068
+//B
+//
+//// submissions in r 26
+//
+//3.73A 26 [05 R_25]	
+//2.40C 26	
+//undefinedC 26 [05 R_25]	
+//4.37C 26 [06 R_19]	
+//6.07A 26 [06 R_19]	
+//undefinedB 26 [06 R_18]	
+//4.33C 26 [05 R_25]	
+//undefinedC 26 [08 R_19]	
+//4.40B 26
+//
+//
+//26
+//
+//19868497151402574894
+//A
+//
+//27
+//
+//5688413461195617580
+//C
+//20961392604176231
+//B
+
+
+
+
+
+//20961392604176200	SUB	A	1351591619837
+//19868497151402600000	SUB	A	1351591620386
+//5688413461195620000	SUB	A	1351591652731
+//2019166870553500000	SUB	B	1351591653043
+//389546331863136000	SUB	B	1351591653803
+//1886985572967670000	SUB	C	1351591654603
+//762387587655923000	SUB	C	1351591654648
+//1757870795266120000	SUB	B	1351591655960
+//766044637969952000	SUB	A	1351591656253
 
 //var myElements = [ [ 3, 5 ], [ 8, 9, 1, 7, 6 ], [ 2, 4 ] ];
 //var myPools = [ [ [ 6 ], [ 9, 7 ] ], [ [], [ 8, 1, 5, 4 ] ], [ [], [ 2, 3 ] ] ];
@@ -486,6 +547,20 @@ function getPools() {
 //
 //var myMatch = myRM.match();
 //
+//
+//for (var j = 0; j < myRM.groups.length; j++) {
+//	var g = myRM.groups[j];
+//	for (var h = 0; h < g.elements.length; h++) {
+//		if (g.matched[h].length !== g.rowLimit) {
+//			console.log('Wrong match: ' + j + '-' + h);
+//
+//			console.log(myRM.options.elements);
+//			console.log(myRM.options.pools);
+////			console.log(matched);
+//		}
+//	}
+//}
+
 //if (!myRM.allGroupsDone()) {
 //	console.log('ERROR')
 //	console.log(myElements);
@@ -497,13 +572,15 @@ function getPools() {
 //		console.log(g.pool);
 //	});
 //}
-//
+
 //console.log(myElements);
 //console.log(myPools);
+//console.log('match')
 //console.log(myMatch);
+
 //console.log(myRM.invertMatched());
 //console.log(J.transpose(myMatch));
-
+//
 //console.log(myRM.doneCounter);
 
 //var poolA = [ [1, 2], [3, 4], ];

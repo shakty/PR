@@ -14,16 +14,17 @@ var load_faces = require('./load_faces'),
 
 
 var DIR = './data/com_sel/';
+//var DIR = './data/sample/';
 ///////////////////////
 
 
-load_faces(DIR);
+//load_faces(DIR);
+
+//load_subs(DIR);
 
 load_evas(DIR);
 
-load_subs(DIR);
-
-load_copies(DIR);
+//load_copies(DIR);
 
 
 

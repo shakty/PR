@@ -1,7 +1,8 @@
 var fs = require('fs'),
 	path = require('path'),
 	csv = require('ya-csv'),
-	NDDB = require('NDDB').NDDB;
+	NDDB = require('NDDB').NDDB,
+	J = require('nodegame-client').JSUS;
 
 module.exports = load;
 
@@ -105,15 +106,46 @@ function load(DIR) {
 			if (e.scores.length !== 3) {
 				console.log('Error, not enough scores');
 				console.log(e.scores)
+				console.log(e.state.round)
+				
 				return;
 			}
 			
-			var avg = (Number(e.scores[0]) + Number(e.scores[1]) + Number(e.scores[2])) / 3;
+			
+			var avg = 0;
+			
+			J.each(e.scores, function(s) {
+				if ('undefined' === typeof s) {
+					console.log('eeeh?')
+					console.log(s)
+				}
+				avg+= Number(s);
+			});
+//			console.log('SUM')
+//			console.log(avg)
+//			console.log('AVG')
+			avg = avg / e.scores.length;
+//			console.log(avg)
+//			console.log('fixed')
 			e.avg = avg.toFixed(2);
-			e.published =  (e.avg > threshold) ? true : false; 
+//			console.log(e.avg);
+
+			if (!e.avg) {
+				console.log('eeeh???')
+			}
+			
+			e.published = (e.avg > threshold) ? true : false; 
 			//console.log(e);
 		})
 		
+		db.each(function(e){
+			if (!e.avg) {
+				console.log(e)
+				console.log(e.avg);
+			}
+		});
+		
+		db.select('state.round', '=', 27).save(DIR + '27.nddb');
 		db.save(DIR + 'all_cf_sub_eva.nddb');
 		console.log('wrote file.');
 	});
