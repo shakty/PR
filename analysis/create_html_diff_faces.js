@@ -21,10 +21,10 @@ var html = d3.select('html')
 //					.append('li')
 //						.text('_self.csv:   difference from the submission of the same player in the previous round')
 
-function createListofImages(imgDir, out) {
+function createListofImages(DIR, imgDir, out) {
 
-	out = './html/' + out;
-	var filenames = fs.readdirSync(imgDir);
+	out = DIR + 'html/' + out;
+	var filenames = fs.readdirSync(DIR + imgDir);
 	filenames.sort();
 	
 	d3.select('dl').remove();
@@ -51,36 +51,38 @@ function createListofImages(imgDir, out) {
 }
 
 
+var DIR = './data/com_sel/';
+
 // SINGLE FEATURES
-// createListofImages('./csv/diff/single/img/', './index_diff_faces_single.htm');
+//createListofImages(DIR, 'csv/diff/single/img/', 'index_diff_faces_single.htm');
 
 // GROUPED
-// createListofImages('./csv/diff/parts/img/', './index_diff_faces_grouped.htm');
+//createListofImages(DIR, 'csv/diff/parts/img/', 'index_diff_faces_grouped.htm');
 
 // GLOBAL
-// createListofImages('./csv/diff/global/img/', './index_diff_faces_global.htm');
+//createListofImages(DIR, 'csv/diff/global/img/', 'index_diff_faces_global.htm');
 
 // COPY
-// createListofImages('./csv/copy/img/', './index_copy_in_time.htm');
+//createListofImages(DIR, 'csv/copy/img/', 'index_copy_in_time.htm');
 
 // SELF
-// createListofImages('./csv/diff/self/img/', './index_diff_faces_self.htm');
+ createListofImages(DIR, 'csv/diff/self/img/', 'index_diff_faces_self.htm');
 
 // PUBS
-// createListofImages('./csv/diff/pubs/img/', './index_diff_faces_pubs.htm');
+ createListofImages(DIR, 'csv/diff/pubs/img/', 'index_diff_faces_pubs.htm');
 
 // DIFF PUBS
-// createListofImages('./csv/diff/previouspub/img/', './index_diff_faces_previouspub.htm');
+ createListofImages(DIR, 'csv/diff/previouspub/img/', 'index_diff_faces_previouspub.htm');
 
 // DIFFs and SCORE
-// createListofImages('./csv/diff/diffandscore/img/', './index_diffandscore.htm');
+ createListofImages(DIR, 'csv/diff/diffandscore/img/', 'index_diffandscore.htm');
 
 // SUBMISSION DECISION
-//createListofImages('./csv/sub/img/', './index_subs.htm');
+createListofImages(DIR, 'csv/sub/img/', 'index_subs.htm');
 
 // INGROUP-OUTGROUP
-//createListofImages('./csv/ingroup/img/', './index_ingroup.htm');
+createListofImages(DIR, 'csv/ingroup/img/', 'index_ingroup.htm');
 
 // EVALUATIONS
-createListofImages('./csv/eva/img/', './index_evas.htm');
+createListofImages(DIR, 'csv/eva/img/', 'index_evas.htm');
 

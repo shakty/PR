@@ -22,12 +22,12 @@ var DIR = './data/com_sel/';
 
 //load_subs(DIR);
 
-load_evas(DIR);
+//load_evas(DIR);
 ////
 //load_copies(DIR);
 
 
 
 // Ingroup
-//load_reviews(DIR);
+load_reviews(DIR);
 

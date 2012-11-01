@@ -1,5 +1,5 @@
 # Init
-source('PR_init.R')
+source('/home/stefano/PR3/analysis/data/csv/PR_init.R')
 
 ## Publications
 ###############
@@ -62,11 +62,11 @@ dev.off()
 meanRounds = apply(rounds, MARGIN=2, mean)
 meanRounds
 
-#jpeg('img/round_evas_mean.jpg',quality=100,width=600)
+jpeg('eva/img/round_evas_mean.jpg',quality=100,width=600)
 plot(meanRounds, main="Evaluation mean per round",ylab="Evaluation score",ylim=c(0,10))
 lines(meanRounds)
 abline(lm(meanRounds ~ c(1:30)))
-#dev.off()
+dev.off()
 
 varRounds = apply(rounds, MARGIN=2, sd)
 varRounds
@@ -239,7 +239,6 @@ plot(zoo(copies.normalized),
      ylim=c(0,1),
      main="How old are the copied faces by each player? (normalized)",
      xlab='Rounds')
-
 dev.off()         
 
 
