@@ -19,10 +19,11 @@ var DIR = './data/com_sel/';
 
 //load_faces(DIR);
 
-load_evas(DIR);
 
 //load_subs(DIR);
-//
+
+load_evas(DIR);
+////
 //load_copies(DIR);
 
 
