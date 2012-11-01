@@ -42,7 +42,7 @@ function create_html_copy(DIR) {
 	var copies = J.obj2Array(db.copies,1); 
 	
 	var thcopies = J.keys(db.copies);
-	console.log(thcopies);
+//	console.log(thcopies);
 	
 	
 	var outs =  players = db.groupBy('player.id');
@@ -58,6 +58,9 @@ function create_html_copy(DIR) {
 		//console.log(filename)
 		pub = item.published ? 'P' : 'NP';
 		avg = item.avg;
+		
+//		console.log(avg)
+		
 		style =  "width: 150px; margin: 3px; border: 3px solid ";
 		style+= item.published ? "yellow;" : "#CCC";
 		content = '<img src="' + filename + '" style="' + style + '"/>';
@@ -170,8 +173,8 @@ function create_html_copy(DIR) {
 	    .append("th")
 	        .html(function(who_round) {
 	        	var tokens = who_round.split('_');
-	        	console.log(tokens)
-	        	console.log(db.first())
+//	        	console.log(tokens)
+//	        	console.log(db.first())
 	        	var face = db.select('player.id', '=', tokens[0])
 	        				 .select('state.round', '=', tokens[1]).first();
 	        	return displayFace(face, true);

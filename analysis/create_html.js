@@ -13,8 +13,8 @@ var DIR = './data/com_sel/';
 ///////////////////////////
 
 
-//create_html(DIR);
+create_html(DIR);
 
 //create_html_by_ex(DIR, true); // only published
 //
-create_html_by_ex(DIR, false); // all submissions
+//create_html_by_ex(DIR, false); // all submissions

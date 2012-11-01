@@ -14,6 +14,7 @@ var load_faces = require('./load_faces'),
 
 
 var DIR = './data/com_sel/';
+//var DIR = './data/sample/';
 ///////////////////////
 
 
@@ -22,12 +23,12 @@ var DIR = './data/com_sel/';
 
 //load_subs(DIR);
 
-//load_evas(DIR);
+load_evas(DIR);
 ////
-//load_copies(DIR);
+load_copies(DIR);
 
 
 
 // Ingroup
-load_reviews(DIR);
+//load_reviews(DIR);
 
