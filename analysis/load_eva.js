@@ -35,6 +35,7 @@ function load(DIR) {
 	                       'EVA',
 	                       'who',
 	                       'score',
+	                       'hasChanged',
 	                       'time',
 	]);
 	 	
@@ -145,7 +146,7 @@ function load(DIR) {
 			}
 		});
 		
-		db.select('state.round', '=', 27).save(DIR + '27.nddb');
+//		db.select('state.round', '=', 27).save(DIR + '27.nddb');
 		db.save(DIR + 'all_cf_sub_eva.nddb');
 		console.log('wrote file.');
 	});
