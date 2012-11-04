@@ -5,6 +5,7 @@ datadir <- '/home/stefano/PR3/analysis/data/'
 #datadir <- '/home/balistef/PR3/analysis/data/'
 
 session <- 'com_sel'
+session <- 'coo_rnd_orig'
 
 DATADIR = sprintf("%s%s/csv/", datadir, session)
 DATADIR
@@ -70,4 +71,3 @@ plotDiffFeaturesDir <- function(dir) {
     }
   }
 }
-
