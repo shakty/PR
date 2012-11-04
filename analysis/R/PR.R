@@ -1,5 +1,5 @@
 # Init
-source('PR_init.R')
+#source('PR_init.R')
 
 ## Publications
 ###############
@@ -9,7 +9,7 @@ subPlayers.count <- apply(subPlayers, 2, sum)
 subPlayers.count
 
 
-jpeg(DATADIR + 'pubs/img/pubs_count_by_player.jpg',quality=100,width=600)
+jpeg('pubs/img/pubs_count_by_player.jpg',quality=100,width=600)
 x <- barplot(subPlayers.count,
         col = colors,
         ylim=c(0,30),
@@ -36,12 +36,12 @@ boxplot(players)
 #colMeans(cbind(colMeans(players)))
 
 
-jpeg(DATADIR + 'eva/img/players_boxplot.jpg',quality=100,width=600)
+jpeg('eva/img/players_boxplot.jpg',quality=100,width=600)
 boxplot(players,main="Distribution of evaluation scores per player")
 dev.off()
 
 # Time Series
-jpeg(DATADIR + 'eva/img/players_eva_ts.jpg',quality=100,width=600)
+jpeg('eva/img/players_eva_ts.jpg',quality=100,width=600)
 plot(zoo(players),
        type='o',
        ylim=c(0,10),
@@ -55,22 +55,22 @@ dev.off()
 # ROUNDS
 rounds <- read.csv(file="./eva/eva_x_round.csv", head=TRUE, sep=",")
 summary(rounds)
-jpeg(DATADIR + 'eva/img/round_evas_boxplot.jpg',quality=100,width=600)
+jpeg('eva/img/round_evas_boxplot.jpg',quality=100,width=600)
 boxplot(rounds, main="Distribution of evaluation scores per round",ylab="Evaluation score")
 dev.off()
 
 meanRounds = apply(rounds, MARGIN=2, mean)
 meanRounds
 
-#jpeg(DATADIR + 'img/round_evas_mean.jpg',quality=100,width=600)
+jpeg('eva/img/round_evas_mean.jpg',quality=100,width=600)
 plot(meanRounds, main="Evaluation mean per round",ylab="Evaluation score",ylim=c(0,10))
 lines(meanRounds)
 abline(lm(meanRounds ~ c(1:30)))
-#dev.off()
+dev.off()
 
 varRounds = apply(rounds, MARGIN=2, sd)
 varRounds
-jpeg(DATADIR + 'eva/img/round_evas_var.jpg',quality=100,width=600)
+jpeg('eva/img/round_evas_var.jpg',quality=100,width=600)
 plot(varRounds, main="Evaluation standard deviation per round",ylab="Evaluation score",ylim=c(0,10))
 lines(varRounds)
 dev.off()     
@@ -84,7 +84,7 @@ dev.off()
 subPlayers <- read.table(file="./sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
 subPlayers
 
-jpeg(DATADIR + 'sub/img/players_sub_ts.jpg',quality=100,width=600)
+jpeg('sub/img/players_sub_ts.jpg',quality=100,width=600)
 plot.ts(subPlayers,type='o', plot.type="multiple", main='Exhibition choice over 30 rounds')
 dev.off()
 
@@ -100,7 +100,7 @@ playerSubs
 #oldpar = par(mar=c(5,4,4,8), xpd=T)
 #par(oldpar)
 
-jpeg(DATADIR + 'sub/img/player_subs_all.jpg',quality=100,width=600)
+jpeg('sub/img/player_subs_all.jpg',quality=100,width=600)
 barplot(playerSubs,
         col = brewer.pal(3,"Set1"),
         border="white",
@@ -132,7 +132,7 @@ dev.off()
 
 #old = par(mai=c(1,1,1,1))
 
-#jpeg(DATADIR + 'sub/img/exhibs_count_ts.jpg',quality=100,width=600)
+#jpeg('sub/img/exhibs_count_ts.jpg',quality=100,width=600)
 #barplot(as.matrix(subExRounds.count),
 #        col = brewer.pal(3,"Set1"),
 #        border="white",
@@ -150,7 +150,7 @@ summary(subExRound)
 
 subExRound.t <- t(subExRound); subExRound.t
 
-jpeg(DATADIR + 'sub/img/exhibs_count_ts.jpg',quality=100,width=600)
+jpeg('sub/img/exhibs_count_ts.jpg',quality=100,width=600)
 barplot(as.matrix(subExRound.t),
         col = brewer.pal(3,"Set1"),
         border="white",
@@ -174,7 +174,7 @@ diffFacesPlayers <- read.csv(file="./diff/global/diff_faces_x_round_x_player_sel
 
       
 summary(diffFacesPlayers)
-jpeg(DATADIR + 'diff/global/img/diff_faces_x_round_x_player_self.jpg', quality=100, width=600)      
+jpeg('diff/global/img/diff_faces_x_round_x_player_self.jpg', quality=100, width=600)      
 boxplot(diffFacesPlayers, main="Distributions of difference between two subsequent submissions")
 dev.off()
 
@@ -416,12 +416,18 @@ dev.off()
 # mean eva for submitting to the same exhibition or not
 #######################################################
 
+ingroup <- read.csv(file="./ingroup/all_reviews.csv", head=TRUE, sep=",")
+head(ingroup)
+
+
 ingroup.sameex <- ingroup[ingroup$sameex == 1,]
-ingroup.sameex
+ingroup.sameex.changed <- ingroup.sameex[ingroup.sameex$changed == 1,]
+head(ingroup.sameex)
 
 
 ingroup.otherex <- ingroup[ingroup$sameex != 1,]
-ingroup.otherex
+ingroup.otherex.changed <- ingroup.otherex[ingroup.otherex$changed == 1,]
+head(ingroup.otherex)
 
 
 plot.ts(ingroup.sameex$score)
@@ -429,29 +435,15 @@ plot.ts(ingroup.sameex$score)
 stats.inex = summary(ingroup.sameex$score); stats.inex
 stats.outex = summary(ingroup.otherex$score); stats.outex
 
-#jpeg("./ingroup/img/same_other_ex_boxplot.jpg", quality=100, width=600)
-boxplot(ingroup.sameex$score, ingroup.otherex$score,
-        main="Review scores for paintings in same exhibition vs other exhibition")
-grid(col="gray", nx=NA, ny=NULL)
-axis(1, at=1:2, labels=c("Same", "Other"))
-#dev.off()
 
-#jpeg("./ingroup/img/same_other_ex.jpg", quality=100, width=600)
-plot(density(ingroup.sameex$score),
-     xlim=c(0,10),
-     lty=1,
-     col="2",
-     main="Review scores for paintings in same exhibition vs other exhibition")
-lines(density(ingroup.otherex$score),
-      xlim=c(0,10),
-      lty=2)
-grid(col="gray", nx=NA, ny=NULL)
-legend("top",
-       legend=c("Same", "Other"),
-       ncol=2,
-       lty=1:2,
-       col=c("2","1"))
-#dev.off()
+plotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex)
+
+plotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed)
+                     
+boxplotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex)
+
+boxplotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed)
+
 
 # are mean different?
 t = t.test(ingroup.otherex$score, ingroup.sameex$score)
@@ -512,9 +504,9 @@ scorecolumns <- regexpr("score", names(ingroup.players)) > 0
 ingroup.scores <- ingroup.players[scorecolumns]
 ingroup.scores
 
-#jpeg('./ingroup/img/reviews_players_ts.jpg', quality=100, width=600)
+jpeg('./ingroup/img/reviews_players_ts.jpg', quality=100, width=600)
 plot(zoo(ingroup.scores),
      ylim=c(0,10),
      main="Evolution of individual review scores in time",
      xlab='Rounds')     
-#dev.off()
+dev.off()

@@ -84,11 +84,14 @@ function load(DIR) {
 		return gb.id;
 	});
 	subs.h('round', function(gb) {
+		// Update 3 or 4; if no quiz -> 3
 		if (gb.state.state == 4) {
 			return gb.state.round;
 		}
 	});
 	subs.rebuildIndexes();
+	
+//	console.log(subs.fetch())
 	
 	
 	//console.log(db.player['9132212711841317531'].first());

@@ -599,6 +599,9 @@ FaceVector.prototype.toString = function() {
 
 
 var DIR = './com_sel/';
+var DIR = './data/com_rnd_fake/';
+var DIR = './data/coo_sel_err/';
+
 ///////////////////////
 
 var db = new NDDB();

@@ -5,7 +5,10 @@ datadir <- '/home/stefano/PR3/analysis/data/'
 #datadir <- '/home/balistef/PR3/analysis/data/'
 
 session <- 'com_sel'
-session <- 'coo_rnd_orig'
+#session <- 'coo_rnd_orig'
+#session <- 'com_rnd_fake'
+session <- 'coo_sel_err'
+
 
 DATADIR = sprintf("%s%s/csv/", datadir, session)
 DATADIR
@@ -70,4 +73,32 @@ plotDiffFeaturesDir <- function(dir) {
       plotDiffFeatures(dir, f)
     }
   }
+}
+
+plotEvaSameVsOtherEx <- function(ing, outg) {
+  jpeg("./ingroup/img/same_other_ex.jpg", quality=100, width=600)
+plot(density(ing$score),
+     xlim=c(0,10),
+     lty=1,
+     col="2",
+     main="Review scores for paintings in same exhibition vs other exhibition")
+lines(density(outg$score),
+      xlim=c(0,10),
+      lty=2)
+grid(col="gray", nx=NA, ny=NULL)
+legend("top",
+       legend=c("Same", "Other"),
+       ncol=2,
+       lty=1:2,
+       col=c("2","1"))
+dev.off()
+}
+
+boxplotEvaSameVsOtherEx <- function(ing, outg) {
+jpeg("./ingroup/img/same_other_ex_boxplot.jpg", quality=100, width=600)
+boxplot(ing$score, outg$score,
+        main="Review scores for paintings in same exhibition vs other exhibition")
+grid(col="gray", nx=NA, ny=NULL)
+axis(1, at=1:2, labels=c("Same", "Other"))
+dev.off()
 }
