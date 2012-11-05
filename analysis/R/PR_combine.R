@@ -420,10 +420,6 @@ ingroup <- read.csv(file="./ingroup/all_reviews.csv", head=TRUE, sep=",")
 head(ingroup)
 
 
-files <- createFileList("ingroup/all_reviews.csv", datadir, sessions.coo)
-
-ingroup <- read.tables(files)
-
 ingroup.sameex <- ingroup[ingroup$sameex == 1,]
 ingroup.sameex.changed <- ingroup.sameex[ingroup.sameex$changed == 1,]
 head(ingroup.sameex)
@@ -439,7 +435,6 @@ plot.ts(ingroup.sameex$score)
 stats.inex = summary(ingroup.sameex$score); stats.inex
 stats.outex = summary(ingroup.otherex$score); stats.outex
 
-pr.setwd(datadir, 'coo');
 
 plotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex)
 
@@ -448,8 +443,6 @@ plotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed)
 boxplotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex)
 
 boxplotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed)
-
-
 
 
 # are mean different?

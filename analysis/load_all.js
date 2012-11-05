@@ -13,16 +13,16 @@ var load_faces = require('./load_faces'),
 	load_copies = require('./load_copy');
 
 
-var DIR = './data/com_sel/';
+//var DIR = './data/com_sel/';
 var DIR = './data/coo_rnd_orig/';
-var DIR = './data/com_rnd_fake/';
-var DIR = './data/coo_sel_err/';
+//var DIR = './data/com_rnd_fake/';
+//var DIR = './data/coo_sel_err/';
 
 //var DIR = './data/sample/';
 ///////////////////////
 
 
-load_faces(DIR);
+//load_faces(DIR);
 
 //load_subs(DIR);
 

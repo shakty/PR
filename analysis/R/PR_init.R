@@ -2,18 +2,31 @@
 rm(list=ls())
 
 datadir <- '/home/stefano/PR3/analysis/data/'
-#datadir <- '/home/balistef/PR3/analysis/data/'
 
-session <- 'com_sel'
+#session <- 'com_sel'
 #session <- 'coo_rnd_orig'
-#session <- 'com_rnd_fake'
+session <- 'com_rnd_fake'
 session <- 'coo_sel_err'
 
+sessions.com <- c('com_sel','com_rnd_fake')
+sessions.coo <- c('coo_rnd_orig', 'coo_sel_err')
 
 DATADIR = sprintf("%s%s/csv/", datadir, session)
 DATADIR
 setwd(DATADIR)
 
+
+pr.setwd <- function(DIR, session){
+  DATADIR = sprintf("%s%s", datadir, session)
+  DATADIR
+  setwd(DATADIR)
+}
+
+pr.setwd.csv <- function(DIR, session){
+  DATADIR = sprintf("%s%s/csv/", datadir, session)
+  DATADIR
+  setwd(DATADIR)
+}
 
 library("RColorBrewer")
 library('zoo')
@@ -101,4 +114,31 @@ boxplot(ing$score, outg$score,
 grid(col="gray", nx=NA, ny=NULL)
 axis(1, at=1:2, labels=c("Same", "Other"))
 dev.off()
+}
+
+
+read.tables <- function(files, ...) {
+  df <- data.frame(Date=as.Date(character()),
+                 File=character(), 
+                 User=character(), 
+                 stringsAsFactors=FALSE)
+  #df <- list()
+  for (f in files) {
+      csv <- read.csv(file=f, head=TRUE, sep=",")
+      head(csv)
+      csv$file <- f
+      df <- rbind(df, csv)
+  }
+
+  return(df)
+}
+
+createFileList <- function(file, DIR, sessions) {
+  files <- list()
+  for (s in sessions) {
+    myFile <- sprintf("%s%s/csv/%s", DIR, s, file)
+    files <- c(files, myFile)
+  }
+
+  return(files)
 }
