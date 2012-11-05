@@ -77,6 +77,23 @@ function load(DIR) {
 	
 	db.rebuildIndexes();
 	
+
+	var subs = new NDDB();
+	subs.load(DIR + 'all_cf_sub.nddb');
+	subs.h('player', function(gb) {
+		return gb.id;
+	});
+	subs.h('round', function(gb) {
+		// Update 3 or 4; if no quiz -> 3
+		if (gb.state.state == 4) {
+			return gb.state.round;
+		}
+	});
+	subs.rebuildIndexes();
+	
+//	console.log(subs.fetch())
+	
+	
 	//console.log(db.player['9132212711841317531'].first());
 	var countRevs = {};
 	
@@ -91,15 +108,30 @@ function load(DIR) {
 				countRevs[data.player]++;
 			}
 		    
+//			console.log(data);
+
+			
 			data.pc = pl.id[data.player].first().pc;
 		    data.score = Number(data.score);
 		    data.round = Number(data.round);
 			data.rev = countRevs[data.player];  
+			
+			// same color?
 			data.incolor = pl.id[data.player].first().color;
 			data.outcolor = pl.id[data.who].first().color;
 			data.samecolor = (data.outcolor === data.incolor) ? 1 : 0; 
 			
+			// same ex?
+			data.inex = subs.round[data.round].select('player.id','=',data.player).first().ex;
+			data.outex = subs.round[data.round].select('player.id','=',data.who).first().ex;
+			data.sameex = (data.outex === data.inex) ? 1 : 0; 
+				
+			// 5 has changed ?
+			data.hasChanged = (data.time === 'true') ? 1 : 0;
+			
 		    db.insert(data);
+//		    console.log(data);
+		    
 		}
 	  
 	});
@@ -117,6 +149,11 @@ function load(DIR) {
 		colnames.push('incolor');
 		colnames.push('outcolor');
 		colnames.push('same');
+		colnames.push('inex');
+		colnames.push('outex');
+		colnames.push('sameex');
+		colnames.push('changed');
+		
 		
 		// PLAYER STATS
 		var pWriter = csv.createCsvStreamWriter(fs.createWriteStream( DIR + 'csv/' + pfile));
@@ -124,7 +161,7 @@ function load(DIR) {
 		
 		db.each(function(p){
 			var data = J.obj2Array(p);
-			console.log(data);
+//			console.log(data);
 			pWriter.writeRecord(data);
 		});
 		

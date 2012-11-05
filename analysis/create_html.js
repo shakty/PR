@@ -10,6 +10,8 @@ var create_html = require('./create_html_copy'),
 
 
 var DIR = './data/com_sel/';
+var DIR = './data/com_rnd_fake/';
+var DIR = './data/coo_sel_err/';
 ///////////////////////////
 
 

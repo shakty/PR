@@ -18,31 +18,32 @@ var stats_copy =  require('./stats_copy'),
 
 
 var DIR = './data/com_sel/';
-
+var DIR = './data/com_rnd_fake/';
+var DIR = './data/coo_sel_err/';
 
 // COPIES
-//stats_copy(DIR, 'ROUND_STATS');
+stats_copy(DIR, 'ROUND_STATS');
 //stats_copy(DIR, 'ROUND_STATS_NORM');
 //stats_copy(DIR, 'DISTANCE_VS_SCORE');
 
 
 //stats_faces_pub(DIR);
-
+//
 //stats_faces_self(DIR);
-
+//
 //stats_faces(DIR);
-
+//
 //stats_ingroup(DIR);
-
+//
 //stats_players(DIR);
-
+//
 //stats_pubs(DIR);
-
+//
 //stats_reviews(DIR, 'ROUND_STATS');
-
+//
 //stats_reviews(DIR, 'DISTANCE_VS_SCORE');
 
 
 //stats_subs(DIR);
-stats_subs(DIR, 'TRANSFORM');
+//stats_subs(DIR, 'TRANSFORM');
 

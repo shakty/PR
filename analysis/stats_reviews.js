@@ -50,6 +50,10 @@ function stats_reviews(DIR, ACTION) {
 		pnames.push(p + 'in');
 		pnames.push(p + 'out');
 		pnames.push(p + 'same');
+		pnames.push(p + 'inex');
+		pnames.push(p + 'outex');
+		pnames.push(p + 'sameex');
+		pnames.push(p + 'changed');
 	});
 	
 	var rnames_tmp = J.seq(1,30,1,function(e){
@@ -65,6 +69,10 @@ function stats_reviews(DIR, ACTION) {
 		rnames.push(p + '_in');
 		rnames.push(p + '_out');
 		rnames.push(p + '_same');
+		pnames.push(p + 'inex');
+		pnames.push(p + 'outex');
+		pnames.push(p + 'sameex');
+		pnames.push(p + 'changed');
 	});
 	
 	
@@ -216,6 +224,11 @@ function stats_reviews(DIR, ACTION) {
 					reviews.push(p.incolor);
 					reviews.push(p.outcolor);
 					reviews.push(p.samecolor);
+					reviews.push(p.inex);
+					reviews.push(p.outex);
+					reviews.push(p.sameex);
+					reviews.push(p.hasChanged);
+					
 				});
 				pWriter.writeRecord(reviews);
 				//console.log(subs);
@@ -236,7 +249,7 @@ function stats_reviews(DIR, ACTION) {
 				
 				db.player[pl].sort('round');
 				var reviews = db.player[pl].map(function(p) {
-					return [p.score, p.incolor, p.outcolor, p.samecolor];
+					return [p.score, p.incolor, p.outcolor, p.samecolor, p.inex, p.outex, p.sameex, p.hasChanged];
 				});
 				rWriter.writeRecord(reviews);
 				

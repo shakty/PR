@@ -14,6 +14,10 @@ var load_faces = require('./load_faces'),
 
 
 var DIR = './data/com_sel/';
+var DIR = './data/coo_rnd_orig/';
+var DIR = './data/com_rnd_fake/';
+var DIR = './data/coo_sel_err/';
+
 //var DIR = './data/sample/';
 ///////////////////////
 
@@ -26,8 +30,6 @@ load_faces(DIR);
 
 //load_copies(DIR);
 
-
-
 // Ingroup
-//load_reviews(DIR);
+load_reviews(DIR);
 

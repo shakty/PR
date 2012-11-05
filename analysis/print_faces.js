@@ -600,6 +600,12 @@ FaceVector.prototype.toString = function() {
 
 module.exports = print_faces;
 
+var DIR = './com_sel/';
+var DIR = './data/com_rnd_fake/';
+var DIR = './data/coo_sel_err/';
+
+///////////////////////
+
 function print_faces(DIR) {
 
 	if (!DIR) {

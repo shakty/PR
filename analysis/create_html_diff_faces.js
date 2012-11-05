@@ -52,18 +52,20 @@ function createListofImages(DIR, imgDir, out) {
 
 
 var DIR = './data/com_sel/';
+var DIR = './data/com_rnd_fake/';
+var DIR = './data/coo_sel_err/';
 
 // SINGLE FEATURES
-//createListofImages(DIR, 'csv/diff/single/img/', 'index_diff_faces_single.htm');
+createListofImages(DIR, 'csv/diff/single/img/', 'index_diff_faces_single.htm');
 
 // GROUPED
-//createListofImages(DIR, 'csv/diff/parts/img/', 'index_diff_faces_grouped.htm');
+createListofImages(DIR, 'csv/diff/parts/img/', 'index_diff_faces_grouped.htm');
 
 // GLOBAL
-//createListofImages(DIR, 'csv/diff/global/img/', 'index_diff_faces_global.htm');
+createListofImages(DIR, 'csv/diff/global/img/', 'index_diff_faces_global.htm');
 
 // COPY
-//createListofImages(DIR, 'csv/copy/img/', 'index_copy_in_time.htm');
+createListofImages(DIR, 'csv/copy/img/', 'index_copy_in_time.htm');
 
 // SELF
  createListofImages(DIR, 'csv/diff/self/img/', 'index_diff_faces_self.htm');
