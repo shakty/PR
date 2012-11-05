@@ -598,50 +598,57 @@ FaceVector.prototype.toString = function() {
 ////////////
 
 
-var DIR = './com_sel/';
-///////////////////////
+module.exports = print_faces;
 
-var db = new NDDB();
+function print_faces(DIR) {
 
-db.h('player', function(gb) {
-	return gb.player;
-});
-//db.h('state', function(gb) {
-//	return GameState.toHash(gb.state, 'S.s.r');
-//});
-db.h('key', function(gb) {
-	return gb.key;
-});
-
-db.load(DIR + 'all_cf.nddb');
-
-db.rebuildIndexes();
-
-(function printFace(e) {
-	if (!e) return;
-	var fp = new FacePainter();
-	//console.log(e);
-	var filename = e.player.pc + '_' + e.state.round + '.png';
-	var face = e.value;
-	var out = fs.createWriteStream(DIR + 'faces/' + filename);
-	var stream = fp.canvas.canvas.createPNGStream();
-
-	stream.on('data', function(chunk){
-		out.write(chunk);
-//		console.log(chunk);
+	if (!DIR) {
+		console.err('You need to specify a directory as parameter');
+		return false;
+	}
+	
+	var db = new NDDB();
+	
+	db.h('player', function(gb) {
+		return gb.player;
 	});
-
-	stream.on('end', function(){
-		console.log('saved ' + filename);
-		//setTimeout(function(){
-			printFace(db.key.CF.next());
-		//},200);
+	//db.h('state', function(gb) {
+	//	return GameState.toHash(gb.state, 'S.s.r');
+	//});
+	db.h('key', function(gb) {
+		return gb.key;
+	});
+	
+	db.load(DIR + 'all_cf.nddb');
+	
+	db.rebuildIndexes();
+	
+	(function printFace(e) {
+		if (!e) return;
+		var fp = new FacePainter();
+		//console.log(e);
+		var filename = e.player.pc + '_' + e.state.round + '.png';
+		var face = e.value;
+		var out = fs.createWriteStream(DIR + 'faces/' + filename);
+		var stream = fp.canvas.canvas.createPNGStream();
+	
+		stream.on('data', function(chunk){
+			out.write(chunk);
+	//		console.log(chunk);
+		});
+	
+		stream.on('end', function(){
+			console.log('saved ' + filename);
+			//setTimeout(function(){
+				printFace(db.key.CF.next());
+			//},200);
+			
+		});
 		
-	});
-	
-	
-	fp.draw(face);
-})(db.key.CF.first());	
+		
+		fp.draw(face);
+	})(db.key.CF.first());	
+}
 
 
 
