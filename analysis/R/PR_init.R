@@ -1,6 +1,12 @@
 # Working Dir
 rm(list=ls())
 
+pr.setwd <- function(DIR, session){
+  DATADIR = sprintf("%s%s/csv/", DIR, session)
+  setwd(DATADIR)
+  getwd()
+}
+
 datadir <- '/home/stefano/PR3/analysis/data/'
 
 #session <- 'com_sel'
@@ -11,22 +17,12 @@ session <- 'coo_sel_err'
 sessions.com <- c('com_sel','com_rnd_fake')
 sessions.coo <- c('coo_rnd_orig', 'coo_sel_err')
 
-DATADIR = sprintf("%s%s/csv/", datadir, session)
-DATADIR
-setwd(DATADIR)
+# combined sessions
+session <- 'coo'
+session <- 'com'
 
+pr.setwd(datadir, session)
 
-pr.setwd <- function(DIR, session){
-  DATADIR = sprintf("%s%s", datadir, session)
-  DATADIR
-  setwd(DATADIR)
-}
-
-pr.setwd.csv <- function(DIR, session){
-  DATADIR = sprintf("%s%s/csv/", datadir, session)
-  DATADIR
-  setwd(DATADIR)
-}
 
 library("RColorBrewer")
 library('zoo')
@@ -88,32 +84,40 @@ plotDiffFeaturesDir <- function(dir) {
   }
 }
 
-plotEvaSameVsOtherEx <- function(ing, outg) {
-  jpeg("./ingroup/img/same_other_ex.jpg", quality=100, width=600)
-plot(density(ing$score),
+plotEvaSameVsOtherEx <- function(ing, outg, name) {
+   outfile <- sprintf("ingroup/img/%s.jpg", name)
+   jpeg(outfile, quality=100, width=600)
+   old = par(oma = c(3,0,0,0))
+
+   plot(density(ing$score),
      xlim=c(0,10),
+     ylim=c(0,0.2),
      lty=1,
      col="2",
      main="Review scores for paintings in same exhibition vs other exhibition")
-lines(density(outg$score),
+   lines(density(outg$score),
       xlim=c(0,10),
       lty=2)
-grid(col="gray", nx=NA, ny=NULL)
-legend("top",
+   grid(col="gray", nx=NA, ny=NULL)
+   legend("top",
        legend=c("Same", "Other"),
        ncol=2,
        lty=1:2,
        col=c("2","1"))
-dev.off()
+   
+   mtext(name, side = 1, outer=FALSE, padj=8)
+   par(old)
+   dev.off()
 }
 
-boxplotEvaSameVsOtherEx <- function(ing, outg) {
-jpeg("./ingroup/img/same_other_ex_boxplot.jpg", quality=100, width=600)
-boxplot(ing$score, outg$score,
+boxplotEvaSameVsOtherEx <- function(ing, outg, name) {
+     outfile <- sprintf("ingroup/img/%s.jpg", name)
+     jpeg(outfile, quality=100, width=600)
+     boxplot(ing$score, outg$score,
         main="Review scores for paintings in same exhibition vs other exhibition")
-grid(col="gray", nx=NA, ny=NULL)
-axis(1, at=1:2, labels=c("Same", "Other"))
-dev.off()
+     grid(col="gray", nx=NA, ny=NULL)
+     axis(1, at=1:2, labels=c("Same", "Other"))
+     dev.off()
 }
 
 
@@ -141,4 +145,12 @@ createFileList <- function(file, DIR, sessions) {
   }
 
   return(files)
+}
+
+getCSVPath <- function(DIR, session) {
+  return(sprintf("%s%s/csv/", DIR, session))
+}
+
+getFilePath <- function(DIR, session, file) {
+  return(sprintf("%s%s/csv/%s", DIR, session, file))
 }

@@ -416,13 +416,13 @@ dev.off()
 # mean eva for submitting to the same exhibition or not
 #######################################################
 
+#pr.setwd(datadir, 'coo');
+pr.setwd(datadir, 'com');
+
+
+
 ingroup <- read.csv(file="./ingroup/all_reviews.csv", head=TRUE, sep=",")
 head(ingroup)
-
-
-files <- createFileList("ingroup/all_reviews.csv", datadir, sessions.coo)
-
-ingroup <- read.tables(files)
 
 ingroup.sameex <- ingroup[ingroup$sameex == 1,]
 ingroup.sameex.changed <- ingroup.sameex[ingroup.sameex$changed == 1,]
@@ -439,15 +439,14 @@ plot.ts(ingroup.sameex$score)
 stats.inex = summary(ingroup.sameex$score); stats.inex
 stats.outex = summary(ingroup.otherex$score); stats.outex
 
-pr.setwd(datadir, 'coo');
 
-plotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex)
+plotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex,"same_other_ex")
 
-plotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed)
+plotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed, "same_other_ex_changed")
                      
-boxplotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex)
+boxplotEvaSameVsOtherEx(ingroup.sameex, ingroup.otherex, "same_other_ex_boxplot")
 
-boxplotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed)
+boxplotEvaSameVsOtherEx(ingroup.sameex.changed, ingroup.otherex.changed, "same_other_ex_boxplot_changed")
 
 
 
