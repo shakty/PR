@@ -18,11 +18,11 @@ var stats_copy =  require('./stats_copy'),
 
 
 var DIR = './data/com_sel/';
-var DIR = './data/com_rnd_fake/';
-var DIR = './data/coo_sel_err/';
+//var DIR = './data/com_rnd_fake/';
+//var DIR = './data/coo_sel_err/';
 
 // COPIES
-stats_copy(DIR, 'ROUND_STATS');
+//stats_copy(DIR, 'ROUND_STATS');
 //stats_copy(DIR, 'ROUND_STATS_NORM');
 //stats_copy(DIR, 'DISTANCE_VS_SCORE');
 
@@ -31,7 +31,7 @@ stats_copy(DIR, 'ROUND_STATS');
 //
 //stats_faces_self(DIR);
 //
-//stats_faces(DIR);
+stats_faces(DIR);
 //
 //stats_ingroup(DIR);
 //

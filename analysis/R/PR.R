@@ -1,8 +1,10 @@
 # Init
 #source('PR_init.R')
 
+
 ## Publications
 ###############
+pr.setwd(datadir, 'com_sel');
 
 subPlayers <- read.csv(file="./pubs/pubs_x_round_x_player.csv", head=TRUE, sep=",")
 subPlayers.count <- apply(subPlayers, 2, sum)
@@ -170,15 +172,12 @@ dev.off()
 
 # player with the previous submission      
 diffFacesPlayers <- read.csv(file="./diff/global/diff_faces_x_round_x_player_self.csv", head=TRUE, sep=",")
-
-
-      
 summary(diffFacesPlayers)
+
 jpeg('diff/global/img/diff_faces_x_round_x_player_self.jpg', quality=100, width=600)      
 boxplot(diffFacesPlayers, main="Distributions of difference between two subsequent submissions")
 dev.off()
 
-      
 
 # mean x round
 avgRoundFaceDiffPrevious = rowMeans(diffFacesPlayers, na.rm = FALSE, dims = 1)

@@ -52,8 +52,8 @@ function createListofImages(DIR, imgDir, out) {
 
 
 var DIR = './data/com_sel/';
-var DIR = './data/com_rnd_fake/';
-var DIR = './data/coo_sel_err/';
+//var DIR = './data/com_rnd_fake/';
+//var DIR = './data/coo_sel_err/';
 
 // SINGLE FEATURES
 createListofImages(DIR, 'csv/diff/single/img/', 'index_diff_faces_single.htm');
