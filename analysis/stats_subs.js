@@ -3,7 +3,8 @@ var fs = require('fs'),
 	csv = require('ya-csv'),
 	NDDB = require('NDDB').NDDB,
 	J = require('./../node_modules/NDDB/node_modules/JSUS/jsus.js').JSUS,
-	d3 = require('d3');
+	d3 = require('d3'),
+	pr_stats = require('./pr_stats');
 
 module.exports = stats_subs;
 
@@ -35,24 +36,24 @@ function stats_subs(DIR, ACTION) {
 	
 	
 	
+	// LOADING DEFAULTS
+	//////////////////////
+	
 	// PL
-	var pl = new NDDB();	
-	pl.h('id', function(gb) { return gb.id;});
-	pl.load(DIR + 'PL.nddb');
-	pl.sort('pc');
-	pl.rebuildIndexes();
+	var pl = pr_stats.pl(DIR);
 	
 	// HEADERS
 	var pnames = pl.map(function(p){
 		return "P_" + p.pc;
 	});
 	
-	var rnames = J.seq(1,30,1,function(e){
-		if (e < 10) {
-			e = '0' + e;
-		}
-		return 'R_' + e;
-	});
+	var rnames = pr_stats.rnames;
+	
+	// CF FEATURES
+	
+	var cf_features = pr_stats.features;
+	
+	////////////////////////////////////
 	
 	// If true: integer are written instead of A,B,C
 	var transform = (ACTION === 'TRANSFORM') ? true : false;

@@ -415,8 +415,8 @@ dev.off()
 # mean eva for submitting to the same exhibition or not
 #######################################################
 
-#pr.setwd(datadir, 'coo');
-pr.setwd(datadir, 'com');
+pr.setwd(datadir, 'coo');
+#pr.setwd(datadir, 'com');
 
 
 

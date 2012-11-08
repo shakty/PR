@@ -106,8 +106,8 @@ function load(DIR) {
 			//console.log(e.scores)
 			if (e.scores.length !== 3) {
 				console.log('Error, not enough scores');
-				console.log(e.scores)
-				console.log(e.state.round)
+//				console.log(e.scores)
+//				console.log(e.state.round)
 				
 				return;
 			}
@@ -118,7 +118,7 @@ function load(DIR) {
 			J.each(e.scores, function(s) {
 				if ('undefined' === typeof s) {
 					console.log('eeeh?')
-					console.log(s)
+//					console.log(s)
 				}
 				avg+= Number(s);
 			});
@@ -131,19 +131,20 @@ function load(DIR) {
 			e.avg = avg.toFixed(2);
 //			console.log(e.avg);
 
-			if (!e.avg) {
-				console.log('eeeh???')
-			}
+//			if (!e.avg) {
+//				console.log('eeeh???')
+//			}
 			
 			e.published = (e.avg > threshold) ? true : false; 
 			//console.log(e);
 		})
 		
 		db.each(function(e){
-			if (!e.avg) {
-				console.log(e)
-				console.log(e.avg);
-			}
+			console.log(e)
+//			if (!e.avg) {
+//				console.log(e)
+//				console.log(e.avg);
+//			}
 		});
 		
 //		db.select('state.round', '=', 27).save(DIR + '27.nddb');

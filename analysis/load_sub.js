@@ -71,22 +71,41 @@ function load(DIR) {
 	
 	reader.on('data', function(data) {
 		
+		var curFace, prevFace, stay;
+		
 		if (data.SUB === 'SUB') {
 		
-		    var face = db.player[data.player]
+		    curFace = db.player[data.player]
 					    	.select('state.round', '=', data.round)
 					    	.fetch();
 		    
-		    if (face.length !== 1) {
-		    	console.log('Error!');
+		    if (curFace.length !== 1) {
+		    	console.log('Error curFace!');
+		    	return;
 		    }
-		    else {
-		    	face[0].ex = data.ex;
-		    	console.log(face[0])
+		    
+		    curFace = curFace[0];
+		    curFace.ex = data.ex;
+		    	
+		    if (data.round > 1) {
+		    	
+		    	prevFace = db.player[data.player]
+			 					    	.select('state.round', '=', (data.round - 1))
+			 					    	.fetch();
+		    
+		    	
+		    	if (prevFace.length !== 1) {
+			    	console.log('Error prevFace!');
+			    	return;
+			    }
+		    	prevFace = prevFace[0];
+		    	curFace.stay = (prevFace.ex === curFace.ex);
+		    	
+//		    	console.log(curFace);
 		    }
 		}
 	    
-	    //console.log(face);
+//	    console.log(curFace);
 	});
 	
 	

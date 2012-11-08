@@ -12,29 +12,8 @@ function stats_faces(DIR, ACTION) {
 	
 
 	// Load DATA
-	var db = new NDDB();
-	
-	db.h('player', function(gb) {
-		return gb.player.id;
-	});
-	db.h('state', function(gb) {
-		return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
-	});
-	db.h('key', function(gb) {
-		return gb.key;
-	});
-	
-	
-	db.load(DIR + 'all_cf_sub_eva.nddb');
-	// Cast to number
-	db.each(function(e){
-		e.state.round = Number(e.state.round);
-	});
-	db.sort(['player.pc', 'state.round']);
-	db.rebuildIndexes();
-	//console.log(db.first());
-	
-	
+	var db = pr_stats.db(DIR);
+		
 	// LOADING DEFAULTS
 	//////////////////////
 	
@@ -54,8 +33,7 @@ function stats_faces(DIR, ACTION) {
 	
 	////////////////////////////////////
 	
-	///
-	
+
 	
 	writeRoundStats();
 	computeAllSingleFeaturesDistance();
@@ -72,7 +50,7 @@ function stats_faces(DIR, ACTION) {
 		var pWriter = csv.createCsvStreamWriter(fs.createWriteStream(DIR + 'csv/diff/global/' + p_self_file));
 		pWriter.writeRecord(pnames);	
 		
-		var old_faces, faces, round_stuff;
+		var old_faces, faces, round_stuff, face, faceDiff;
 		
 		while (round < 31) {
 			
@@ -80,10 +58,11 @@ function stats_faces(DIR, ACTION) {
 			round_stuff = db.select('state.round', '=', round).sort('player');
 			faces = round_stuff.map(function(p){
 				if (round !== 1) {
-					var face = db.select('state.round','=',(round-1))
+					face = db.select('state.round','=',(round-1))
 									.select('player.id', '=', p.player.id).first('value');
 			
-					return weightedFaceDistance(face, p.value);		
+					faceDiff = weightedFaceDistance(face, p.value);
+					return faceDiff;
 				}
 			});
 			if (faces.length) {
@@ -92,6 +71,7 @@ function stats_faces(DIR, ACTION) {
 			}
 			round++;
 		}
+		
 		console.log("wrote " + p_self_file);
 		
 		
@@ -105,7 +85,7 @@ function stats_faces(DIR, ACTION) {
 			// Divided by player
 			round_stuff = db.select('state.round','=',round).sort('player');
 			faces = round_stuff.map(function(p){
-			
+				
 				var face = db.select('state.round','=',(round))
 								.select('player.id', '=', p.player.id).first('value');
 		
@@ -119,7 +99,11 @@ function stats_faces(DIR, ACTION) {
 					meanRoundDiff += d;
 				});
 				
-				return meanRoundDiff / 8;
+				meanRoundDiff = meanRoundDiff / 8;
+				if (!p.diff) p.diff = {};
+				p.diff.others = meanRoundDiff;
+				
+				return meanRoundDiff;
 			});
 			
 			pWriter.writeRecord(faces);
@@ -127,6 +111,10 @@ function stats_faces(DIR, ACTION) {
 			round++;
 		}
 		console.log("wrote " + p_mean_file);
+		
+
+		db.save(DIR + 'pr_full.nddb');
+		
 		
 		
 		// PLAYERS STATS AVG PER GROUP OF FEATURES

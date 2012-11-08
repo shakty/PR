@@ -13,8 +13,8 @@ var load_faces = require('./load_faces'),
 	load_copies = require('./load_copy');
 
 
-//var DIR = './data/com_sel/';
-var DIR = './data/coo_rnd_orig/';
+var DIR = './data/com_sel/';
+//var DIR = './data/coo_rnd_orig/';
 //var DIR = './data/com_rnd_fake/';
 //var DIR = './data/coo_sel_err/';
 
@@ -26,10 +26,10 @@ var DIR = './data/coo_rnd_orig/';
 
 //load_subs(DIR);
 
-//load_evas(DIR);
+load_evas(DIR);
 
 //load_copies(DIR);
 
 // Ingroup
-load_reviews(DIR);
+//load_reviews(DIR);
 

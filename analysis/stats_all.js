@@ -14,7 +14,8 @@ var stats_copy =  require('./stats_copy'),
 	stats_players =  require('./stats_players'),
 	stats_pubs =  require('./stats_pubs'),
 	stats_reviews =  require('./stats_reviews'),
-	stats_subs =  require('./stats_subs');
+	stats_subs =  require('./stats_subs'),
+	stats_win_lose =  require('./stats_win_lose');
 
 
 var DIR = './data/com_sel/';
@@ -31,7 +32,7 @@ var DIR = './data/com_sel/';
 //
 //stats_faces_self(DIR);
 //
-stats_faces(DIR);
+//stats_faces(DIR);
 //
 //stats_ingroup(DIR);
 //
@@ -43,7 +44,9 @@ stats_faces(DIR);
 //
 //stats_reviews(DIR, 'DISTANCE_VS_SCORE');
 
-
 //stats_subs(DIR);
 //stats_subs(DIR, 'TRANSFORM');
+
+stats_win_lose(DIR);
+
 

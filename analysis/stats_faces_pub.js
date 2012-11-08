@@ -8,32 +8,11 @@ var fs = require('fs'),
 
 module.exports = stats_faces_pub;
 
-function stats_faces_pub(DIR, ACTION) {
+function stats_faces_pub(DIR) {
 
 	// Load DATA
-	var db = new NDDB();
-	
-	db.h('player', function(gb) {
-		return gb.player.id;
-	});
-	db.h('state', function(gb) {
-		return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
-	});
-	db.h('key', function(gb) {
-		return gb.key;
-	});
-	
-	
-	db.load(DIR + 'all_cf_sub_eva_copy.nddb');
-	// Cast to number
-	db.each(function(e){
-		e.state.round = Number(e.state.round);
-	});
-	db.sort(['player.pc', 'state.round']);
-	db.rebuildIndexes();
-	//console.log(db.first());
-	
-	
+	var db = pr_stats.db(DIR, 'pr_full.nddb');
+		
 	// LOADING DEFAULTS
 	//////////////////////
 	
@@ -68,7 +47,7 @@ function stats_faces_pub(DIR, ACTION) {
 	//Every round with all the previous one
 	writeCumulativeRoundStats();
 	
-	
+//	var cumulative = (ACTION == 'CUMULATIVE') ? true : false;
 	
 	/// END
 	
@@ -79,8 +58,8 @@ function stats_faces_pub(DIR, ACTION) {
 		var s = (cumulative) ? db.select('state.round', '<=', round)
 							 : db.select('state.round', '=', round);
 		
-		console.log('CUMULATIVE ' + cumulative);
-		console.log(s.length)
+//		console.log('CUMULATIVE ' + cumulative);
+//		console.log(s.length)
 		
 		return s.select('published', '=', true);
 	}
@@ -107,7 +86,7 @@ function stats_faces_pub(DIR, ACTION) {
 	
 		// PLAYER STATS SELF
 		var round = 2; // IMPORTANT 2
-		var old_faces, faces, round_stuff;
+		var old_faces, faces, round_stuff, faceDiff;
 		while (round < 31) {
 	
 			if (round < 10) {
@@ -124,7 +103,10 @@ function stats_faces_pub(DIR, ACTION) {
 	
 			for (var R = round-1; R > 0; R--) {
 				faces = round_stuff.map(function(p) {
-					return getAvgDistanceFromPubFaces(p.value, (round-R));		
+					faceDiff = getAvgDistanceFromPubFaces(p.value, (round-R));
+					if (!p.diff) p.diff = {};
+					p.diff.pubs = faceDiff;	
+					return faceDiff;
 				});
 				
 	//			var players = round_stuff.map(function(p){
@@ -138,6 +120,7 @@ function stats_faces_pub(DIR, ACTION) {
 	
 			round++;
 		}
+		
 		console.log("wrote " + p_pubs_file);
 	
 	}
@@ -192,7 +175,10 @@ function stats_faces_pub(DIR, ACTION) {
 			round_stuff = db.select('state.round', '=', round).sort('player');
 	
 			faces = round_stuff.map(function(p) {
-				return getAvgDistanceFromPubFaces(p.value, (round-1), true);		
+				faceDiff = getAvgDistanceFromPubFaces(p.value, (round-1), true);
+				if (!p.diff) p.diff = {};
+				p.diff.pubsCum = faceDiff;	
+				return faceDiff;
 			});
 			
 			
@@ -288,44 +274,14 @@ function stats_faces_pub(DIR, ACTION) {
 	
 	}
 	
-	//
-	//function computeAllSingleFeaturesDistance() {
-	//	
-	//	var file, writer, row, round_stuff, round;
-	//	for (var f in cf_features) {
-	//		if (cf_features.hasOwnProperty(f)) {
-	//			round = 1;
-	//			file = './csv/single/diff_' + f + '_x_round_x_player_mean.csv';
-	//			writer = csv.createCsvStreamWriter(fs.createWriteStream(file));
-	//			writer.writeRecord(pnames);	
-	//			while (round < 31) {
-	//				
-	//				round_stuff = db.select('state.round','=',round).sort('player');
-	//				row = round_stuff.map(function(p){
-	//					
-	//					var face = db.select('state.round', '=', round)
-	//									.select('player.id', '=', p.player.id).first('value');
-	//			
-	//					round_diff = round_stuff.map(function(r) {
-	//						if (r.player.id === p.player.id) return;
-	//						return weightedDistance([f], face, r.value);
-	//					});
-	//					
-	//					var meanRoundDiff = 0;
-	//					J.each(round_diff, function(d){
-	//						meanRoundDiff += d;
-	//					});
-	//					
-	//					return meanRoundDiff / 8;
-	//				});
-	//				
-	//				writer.writeRecord(row);
-	//				
-	//				round++;
-	//			}
-	//		}
-	//	}
-	//}
+	//////////////////////////////
+	// SAVE FILE
+	
+	db.save(DIR + 'pr_full.nddb');
+	
+	///////////////////////////////
+	
+
 	
 	function weightedFaceDistance(f1, f2) {
 		var features = [

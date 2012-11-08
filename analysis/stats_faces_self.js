@@ -12,29 +12,8 @@ function stats_faces_self(DIR, ACTION) {
 
 	
 	// Load DATA
-	var db = new NDDB();
-	
-	db.h('player', function(gb) {
-		return gb.player.id;
-	});
-	db.h('state', function(gb) {
-		return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
-	});
-	db.h('key', function(gb) {
-		return gb.key;
-	});
-	
-	
-	db.load(DIR + 'all_cf_sub_eva.nddb');
-	// Cast to number
-	db.each(function(e){
-		e.state.round = Number(e.state.round);
-	});
-	db.sort(['player.pc', 'state.round']);
-	db.rebuildIndexes();
-	//console.log(db.first());
-	
-	
+	var db = pr_stats.db(DIR, 'pr_full.nddb');
+		
 	// LOADING DEFAULTS
 	//////////////////////
 	
@@ -62,7 +41,7 @@ function stats_faces_self(DIR, ACTION) {
 	
 		// PLAYER STATS SELF
 		var round = 2; // IMPORTANT 2
-		var old_faces, faces, round_stuff;
+		var old_faces, faces, round_stuff, face, faceDiff;
 		while (round < 31) {
 	
 			if (round < 10) {
@@ -82,22 +61,29 @@ function stats_faces_self(DIR, ACTION) {
 					var face = db.select('state.round','=',(round - R))
 									.select('player.id', '=', p.player.id).first('value');
 			
-					return weightedFaceDistance(face, p.value);		
+					faceDiff = weightedFaceDistance(face, p.value);
+					if (!p.diff) p.diff = {};
+					p.diff.self = faceDiff;	
+					return faceDiff;
 				});
 				
 				var players = round_stuff.map(function(p){
 					return p.player.pc;
 				}); 
 				
-				console.log(players);
+//				console.log(players);
 				pWriter.writeRecord(faces);
-				console.log(faces);
+//				console.log(faces);
 			}
 			
 	
 			round++;
 		}
+		
+		db.save(DIR + 'pr_full.nddb');
 		console.log("wrote " + p_self_file);
+		
+		
 	
 	}
 	//
@@ -269,37 +255,5 @@ function stats_faces_self(DIR, ACTION) {
 	}
 	
 	
-	/**
-	 * Takes an obj and write it down to a csv file;
-	 */
-	writeCsv = function (path, obj, options) {
-		options = options || {};
-		
-		var writer = csv.createCsvStreamWriter(fs.createWriteStream( path, {'flags': 'a'}));
-		
-		// Add headers, if requested, and if found
-		options.writeHeaders = options.writeHeaders || true;
-		if (options.writeHeaders) {
-			var headers = [];
-			if (J.isArray(options.headers)) {
-				headers = options.headers;
-			}
-			else if (J.isArray(obj)) {
-				headers = J.keys(obj[0]);
-			}
-			
-			if (headers.length) {
-				writer.writeRecord(headers);
-			}
-			else {
-				console.log('Could not find headers', 'WARN');
-			}
-		}
-		
-		var i;
-	    for (i = 0; i < obj.length; i++) {
-	    	console.log(obj[i]);
-			writer.writeRecord(obj[i]);
-		}
-	};
+
 }

@@ -3,7 +3,8 @@ var fs = require('fs'),
 	csv = require('ya-csv'),
 	NDDB = require('NDDB').NDDB,
 	J = require('./../node_modules/NDDB/node_modules/JSUS/jsus.js').JSUS,
-	d3 = require('d3');
+	d3 = require('d3'),
+	pr_stats = require('./pr_stats');
 
 var pr = {};
 
@@ -132,6 +133,35 @@ pr.pl = function (DIR) {
 	pl.sort('pc');
 	pl.rebuildIndexes();
 	return pl;
+}
+
+
+pr.db = function (DIR, file) {
+	file = file || 'all_cf_sub_eva_copy.nddb';
+	
+	var db = new NDDB();
+	
+	db.h('player', function(gb) {
+		return gb.player.id;
+	});
+	db.h('state', function(gb) {
+		return gb.state.state + '.' + gb.state.step +  '.' + gb.state.round;
+	});
+	db.h('key', function(gb) {
+		return gb.key;
+	});
+	
+	
+	db.load(DIR + file);
+	// Cast to number
+	db.each(function(e){
+		e.state.round = Number(e.state.round);
+	});
+	db.sort(['player.pc', 'state.round']);
+	db.rebuildIndexes();
+	//console.log(db.first());
+	
+	return db;
 }
 
 // rnames
