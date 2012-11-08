@@ -90,8 +90,8 @@ function stats_subs(DIR, ACTION) {
 //						var stats_pl = db.player[pl].map(function(p) {
 							
 						var stats_pl = [
-						        p.published,
-						        ('undefined' === typeof p.diff.self) ? 'NA' : p.stay,
+						        p.published ? 1 : 0,
+						        ('undefined' === typeof p.diff.self) ? 'NA' : p.stay ? 1 : 0,
 						        p.diff.others,
 						        ('undefined' === typeof p.diff.self) ? 'NA' : p.diff.self,
 						        ('undefined' === typeof p.diff.pubs) ? 'NA' : p.diff.pubs,
