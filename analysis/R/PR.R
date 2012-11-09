@@ -82,6 +82,7 @@ dev.off()
 # Submissions
 #############
 
+
 # x player
 subPlayers <- read.table(file="./sub/sub_x_round_x_player.csv", head=TRUE, sep=",")
 subPlayers
@@ -89,6 +90,7 @@ subPlayers
 jpeg('sub/img/players_sub_ts.jpg',quality=100,width=600)
 plot.ts(subPlayers,type='o', plot.type="multiple", main='Exhibition choice over 30 rounds')
 dev.off()
+
 
 # If we load the _int version we can produce this graph
 #subPlayers.int <- read.table(file="./sub/sub_x_round_x_player_int.csv", head=TRUE, sep=",")
@@ -111,6 +113,16 @@ barplot(playerSubs,
         legend.text = c('A','B','C'),
         args.legend = list(bty="n", horiz=TRUE, x="top"))
 dev.off()
+
+winlose <- read.table(file="win_lose/win_lose_by_player.csv", head=TRUE, sep=",")
+head(winlose)
+
+qplot(P_02_ex, shape=as.factor(P_02_pub), data=winlose)
+
+ggplot(P_02_ex, shape=as.factor(P_02_pub), data=winlose)
+
+
+
 
 # x round (not working well)
 #subRounds <- read.csv(file="./sub/sub_x_round.csv", head=TRUE, sep=",")
@@ -492,13 +504,11 @@ txt = sprintf('In-mean = %f, Out-mean = %f, t(%i) = %f, p < .05', meanIn, meanOu
 par(old)
 #dev.off()
 
-library(ggplot2)
 qplot(score, data=ingroup,col = as.factor(ingroup$sameex), beside=TRUE)
 
 
 ingroup.players <- read.csv(file="./ingroup/player_reviews.csv", head=TRUE, sep=",")
 head(ingroup.players)
-
 
 
 names(ingroup.players)

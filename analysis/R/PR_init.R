@@ -1,6 +1,8 @@
 # Working Dir
 rm(list=ls())
 
+library(ggplot2)
+
 pr.setwd <- function(DIR, session){
   DATADIR = sprintf("%s%s/csv/", DIR, session)
   setwd(DATADIR)

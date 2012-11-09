@@ -1,13 +1,130 @@
 # Working Dir
-rm(list=ls())
+#rm(list=ls())
 
 library(car)
+
+library(plm)
 
 ############################
 pr.setwd(datadir, 'com_sel');
 
 winlose <- read.csv(file="./win_lose/win_lose_all.csv", head=TRUE, sep=",")
 head(winlose, n=10)
+
+class(winlose$stay)="factor"
+class(winlose$published)="factor"
+
+wl <- pdata.frame(winlose, index=c('round','player'))
+
+wl$published.lag <- lag(x$published, 1)
+
+wl <- na.omit(wl)
+
+plot(density(winlose$stay))
+
+a <- table(wl$stay, wl$published, dnn=cbind("stay","pub"))
+plot(a, col=cbind("1","2"))
+
+cor(wl$stay, wl$published.lag)
+
+head(wl)
+
+plot(density(wl$diffOthers),
+     col="1",
+     ylim=c(0,10))
+lines((density(pubBefore.clean$diffOthers)),
+      col="2")
+lines((density(notPubBefore.clean$diffOthers)),
+      col="3")
+
+
+
+plot(density(wl$diffSelf),
+     col="1",
+     ylim=c(0,6))
+lines((density(pubBefore.clean$diffSelf)),
+      col="2")
+lines((density(notPubBefore.clean$diffSelf)),
+      col="3")
+grid(col="gray", nx=NULL, ny=NULL)
+legend("top",
+       legend=c("All", "Published before", "Not published before"),
+       ncol=2,
+       lty=1,
+       col=c("1","2","3"))
+
+
+plot(density(wl$diffPubs),
+     col="1",
+     ylim=c(0,12))
+lines((density(pubBefore.clean$diffPubs)),
+      col="2")
+lines((density(notPubBefore.clean$diffPubs)),
+      col="3")
+grid(col="gray", nx=NULL, ny=NULL)
+legend("top",
+       legend=c("All", "Published before", "Not published before"),
+       ncol=2,
+       lty=1,
+       col=c("1","2","3"))
+
+
+plot(density(wl$diffPubsCum),
+     col="1",
+     ylim=c(0,16))
+lines((density(pubBefore.clean$diffPubsCum)),
+      col="2")
+lines((density(notPubBefore.clean$diffPubsCum)),
+      col="3")
+grid(col="gray", nx=NULL, ny=NULL)
+legend("top",
+       legend=c("All", "Published before", "Not published before"),
+       ncol=2,
+       lty=1,
+       col=c("1","2","3"))
+
+
+boxplot(pubBefore.clean$diffSelf, notPubBefore.clean$diffSelf)
+
+summary(pubBefore.clean$diffPubs)
+summary(notPubBefore.clean$diffPubs)
+
+
+t.test(pubBefore.clean$diffPubs, notPubBefore.clean$diffPubs)
+
+summary(t)
+
+mean(pubBefore.clean$diffPubs)
+
+mean(notPubBefore.clean$diffPubs)
+
+
+
+pubBefore <- winlose[winlose$published == 1,]
+pubBefore.clean <- na.omit(pubBefore)
+
+head(pubBefore.clean)
+
+notPubBefore <- winlose[winlose$published == 0,]
+
+
+notPubBefore.clean <- na.omit(notPubBefore)
+
+head(notPubBefore.clean)
+
+
+h <- hist(wl$diffOthers)
+
+
+     
+table(wl$published.lag, w)
+
+summary(s)
+
+#plot(winlose$diffOthers, winlose$published)
+
+fit <- glm(stay ~ published, data=wl, family="binomial")
+summary(fit)
 
 winlose.clean <-  na.omit(winlose)
 head(winlose.clean, n=10)

@@ -28,6 +28,7 @@ function stats_subs(DIR, ACTION) {
 	pl.each(function(p) {
 		var pc = "P_" + p.pc;
 		var array = [
+		     pc + '_ex',
 	         pc + '_pub', 
 	         pc + '_stay', 
 	         pc + '_diffOthers', 
@@ -70,7 +71,7 @@ function stats_subs(DIR, ACTION) {
 		
 		// ALL PLAYERS STATS
 		var aWriter = csv.createCsvStreamWriter(fs.createWriteStream(DIR + 'csv/' + afile));
-		aWriter.writeRecord(['published', 'stay', 'diffOthers', 'diffSelf', 'diffPubs', 'diffPubsCum']);
+		aWriter.writeRecord(['round', 'player', 'ex', 'published', 'stay', 'diffOthers', 'diffSelf', 'diffPubs', 'diffPubsCum']);
 		
 		var round = 1;
 		while (round < 31) {
@@ -80,32 +81,19 @@ function stats_subs(DIR, ACTION) {
 			var roundStats = [];
 			round_stuff.each(function(p){
 				
-				
-				
-//				for (var pl in db.player) {
-//					if (db.player.hasOwnProperty(pl)) {
-						
-//						db.player[pl].sort('round');
-				
-//						var stats_pl = db.player[pl].map(function(p) {
-							
-						var stats_pl = [
-						        p.published ? 1 : 0,
-						        ('undefined' === typeof p.diff.self) ? 'NA' : p.stay ? 1 : 0,
-						        p.diff.others,
-						        ('undefined' === typeof p.diff.self) ? 'NA' : p.diff.self,
-						        ('undefined' === typeof p.diff.pubs) ? 'NA' : p.diff.pubs,
-						        ('undefined' === typeof p.diff.pubsCum) ? 'NA' : p.diff.pubsCum,
-						        ];
-//						});
-						
-						aWriter.writeRecord(stats_pl);
-							
-						roundStats = roundStats.concat(stats_pl);
-//					}
-//				}
-				
-				
+				var stats_pl = [
+				        p.ex,
+				        p.published ? 1 : 0,
+				        ('undefined' === typeof p.diff.self) ? 'NA' : p.stay ? 1 : 0,
+				        p.diff.others,
+				        ('undefined' === typeof p.diff.self) ? 'NA' : p.diff.self,
+				        ('undefined' === typeof p.diff.pubs) ? 'NA' : p.diff.pubs,
+				        ('undefined' === typeof p.diff.pubsCum) ? 'NA' : p.diff.pubsCum,
+				        ];
+
+				aWriter.writeRecord([round, "" + p.player.pc].concat(stats_pl));
+					
+				roundStats = roundStats.concat(stats_pl);
 				
 			});
 			pWriter.writeRecord(roundStats);
