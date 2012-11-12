@@ -14,9 +14,9 @@ head(winlose, n=10)
 class(winlose$stay)="factor"
 class(winlose$published)="factor"
 
-wl <- pdata.frame(winlose, index=c('round','player'))
+wl <- pdata.frame(winlose, index=c('player','round'))
 
-wl$published.lag <- lag(x$published, 1)
+wl$published.lag <- lag(wl$published, 1)
 
 wl <- na.omit(wl)
 
@@ -123,13 +123,19 @@ summary(s)
 
 #plot(winlose$diffOthers, winlose$published)
 
-fit <- glm(stay ~ published, data=wl, family="binomial")
+wl2 <- as.data.frame(wl)
+
+fit <- glm(stay ~ published.lag, data=wl2, family="binomial")
+
+fit <- lm(stay ~ published.lag, data=wl2)
+
 summary(fit)
 
 winlose.clean <-  na.omit(winlose)
 head(winlose.clean, n=10)
 
-fit <- lm(formula = diffSelf ~ published, data = winlose.clean)
+fit <- lm(formula = diffSelf ~ published.lag + , data = wl2)
+
 summary(fit)
 
 fit.res <- resid(fit)

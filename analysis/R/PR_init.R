@@ -55,10 +55,10 @@ plotDiffFeatures <- function(dir, file) {
   # TS
 
   #separate
-  imgName = sprintf("%s/img/%s%s", dir, file, "_ts_multiple.jpg")
-  jpeg(imgName, quality=100, width=600)
-  plot.ts(diffs, type='o', main=file, ylim=c(0,1))
-  dev.off()
+  #imgName = sprintf("%s/img/%s%s", dir, file, "_ts_multiple.jpg")
+  #jpeg(imgName, quality=100, width=600)
+  #plot.ts(diffs, type='o', main=file, ylim=c(0,1))
+  #dev.off()
   
   #together
   imgName = sprintf("%s/img/%s%s", dir, file, "_ts_single.jpg")

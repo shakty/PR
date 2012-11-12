@@ -194,6 +194,44 @@ dev.off()
 # face distance
 ################
 
+#pr.setwd(datadir, 'coo_rnd_orig');
+#pr.setwd(datadir, 'coo');
+pr.setwd(datadir, 'com');
+
+# Within same exhibition
+########################
+
+diffSameEx <- read.csv(file="./diff/same_ex/diff_subs_by_ex.csv", head=TRUE, sep=",")
+summary(diffSameEx)
+
+my.ts.panel <- function(x, col = col, bg = bg, pch = pch, type = type,  vpos=8.75, ...) {
+   lines(x, col = col, bg = bg, pch = pch, type = type, ...)                
+   fit <- lm(x ~ seq(1:30))
+   abline(fit, col="2", lty=2)
+}
+
+jpeg('diff/same_ex/img/diff_subs_ex.jpg', quality=100, width=600)
+plot.ts(diffSameEx,
+        type='o',
+        main="Average difference of paintings submitted to the same exhibition per round",
+        ylab="Normalized (0-1) face difference",
+        xlab="Rounds",
+        panel=my.ts.panel)
+dev.off()
+
+# Only published ones
+diffSameEx.pub <- read.csv(file="./diff/same_ex/diff_pubs_by_ex.csv", head=TRUE, sep=",")
+summary(diffSameEx.pub)
+
+jpeg('diff/same_ex/img/diff_pubs_ex.jpg', quality=100, width=600)
+plot.ts(diffSameEx.pub,
+        type='o',
+        main="Average difference of paintings published in the same exhibition per round",
+        ylab="Normalized (0-1) face difference",
+        panel=my.ts.panel)
+dev.off()
+
+#######################
 
 # player with the previous submission      
 diffFacesPlayers <- read.csv(file="./diff/global/diff_faces_x_round_x_player_self.csv", head=TRUE, sep=",")
@@ -213,7 +251,6 @@ plot.ts(diffFacesPlayers, type='o', ylim=rep(c(0,200),9))
 
 plot.ts(diffFacesPlayers, type='o', ylim = c(0,0.6), plot.type="single",  col = colors)
 legend(0.5,0.6, colnames(diffFacesPlayers), col = colors, lty = rep(1,9), lwd = rep (2,9), ncol = 3)
-
 
 
 # player with the average submission of the round

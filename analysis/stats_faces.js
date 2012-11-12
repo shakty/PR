@@ -12,8 +12,9 @@ function stats_faces(DIR, ACTION) {
 	
 
 	// Load DATA
+	//var db = pr_stats.db(DIR, 'pr_full.nddb');
 	var db = pr_stats.db(DIR);
-		
+	
 	// LOADING DEFAULTS
 	//////////////////////
 	
@@ -99,7 +100,7 @@ function stats_faces(DIR, ACTION) {
 					meanRoundDiff += d;
 				});
 				
-				meanRoundDiff = meanRoundDiff / 8;
+				meanRoundDiff = meanRoundDiff / round_diff.length || 1;
 				if (!p.diff) p.diff = {};
 				p.diff.others = meanRoundDiff;
 				
