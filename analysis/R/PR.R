@@ -114,14 +114,27 @@ barplot(playerSubs,
         args.legend = list(bty="n", horiz=TRUE, x="top"))
 dev.off()
 
-winlose <- read.table(file="win_lose/win_lose_by_player.csv", head=TRUE, sep=",")
+winlose <- read.table(file="win_lose/win_lose_all.csv", head=TRUE, sep=",")
 head(winlose)
 
 qplot(P_02_ex, shape=as.factor(P_02_pub), data=winlose)
 
-ggplot(P_02_ex, shape=as.factor(P_02_pub), data=winlose)
+
+geom_line(aes(group=1), colour="#000099") +  # Blue lines
+
+geom_point(size=3, colour="#CC0000")         # Red dots
+
+theme_blank() 
+qplot(data=winlose, ex, color=as.factor(published), shape=ex) 
+
+#facets= round ~ player
 
 
+filepath<-"http://dl.dropbox.com/u/1648032/ggplot2_tutorial_dataset.txt"
+#read in the tab delimited text file using the url() function
+myData<-read.table(file=url(filepath),header=T,sep="\t")
+
+qplot(data=myData,x=BM,y=var1,log="xy",color=Tribe,facets = Hab~Tribe)
 
 
 # x round (not working well)
