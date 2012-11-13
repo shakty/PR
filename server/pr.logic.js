@@ -367,7 +367,6 @@ if ('object' === typeof module && 'function' === typeof require) {
 	module.exports.PeerReview = PeerReview;
 }
 
-
 var conf = {
 	name: "PeerReview_Logic",
 	url: "http://localhost:8080/pr/admin",

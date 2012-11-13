@@ -163,3 +163,11 @@ table.exhibition tr {
 	border-bottom: 1px solid #CCC;
   
 }
+
+div#costdiv {
+  border: 1px solid #CCC;
+}
+
+div#costdiv span#cost {
+  font-size: 40px;
+}

@@ -433,45 +433,45 @@ function getPools() {
 
 
 
-function simulateMatch(N) {
+//function simulateMatch(N) {
+//	
+//	for (var i = 0 ; i < N ; i++) {
+//		
+//		var rm = new RMatcher(),
+//			elements = getElements(),
+//			pools = getPools();
+//		
+////		console.log('NN ' , numbers);
+////		console.log(elements);
+////		console.log(pools)
+//		rm.init(elements, pools);
+//		
+//		var matched = rm.match();
+//		
+//		if (!rm.allGroupsDone()) {
+//			console.log('ERROR')
+//			console.log(rm.options.elements);
+//			console.log(rm.options.pools);
+//			console.log(matched);
+//		}
+//		
+//		for (var j = 0; j < rm.groups.length; j++) {
+//			var g = rm.groups[j];
+//			for (var h = 0; h < g.elements.length; h++) {
+//				if (g.matched[h].length !== g.rowLimit) {
+//					console.log('Wrong match: ' +  h);
+//
+//					console.log(rm.options.elements);
+//					console.log(rm.options.pools);
+//					console.log(matched);
+//				}
+//			}
+//		}
+//	}
+//		
+//}
 	
-	for (var i = 0 ; i < N ; i++) {
-		
-		var rm = new RMatcher(),
-			elements = getElements(),
-			pools = getPools();
-		
-//		console.log('NN ' , numbers);
-//		console.log(elements);
-//		console.log(pools)
-		rm.init(elements, pools);
-		
-		var matched = rm.match();
-		
-		if (!rm.allGroupsDone()) {
-			console.log('ERROR')
-			console.log(rm.options.elements);
-			console.log(rm.options.pools);
-			console.log(matched);
-		}
-		
-		for (var j = 0; j < rm.groups.length; j++) {
-			var g = rm.groups[j];
-			for (var h = 0; h < g.elements.length; h++) {
-				if (g.matched[h].length !== g.rowLimit) {
-					console.log('Wrong match: ' +  h);
-
-					console.log(rm.options.elements);
-					console.log(rm.options.pools);
-					console.log(matched);
-				}
-			}
-		}
-	}
-		
-}
-	
-simulateMatch(1000000000);
+//simulateMatch(1000000000);
 
 //var myElements = [ [ 1, 5], [ 6, 9 ], [ 2, 3, 4, 7, 8 ] ];
 //var myPools = [ [ [ ], [ 1,  5, 6, 7] ], [ [4], [ 3, 9] ], [ [], [ 2, 8] ] ];

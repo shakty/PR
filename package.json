@@ -1,6 +1,6 @@
 {
-    "name": "peerreview3"
-  , "alias": "PR3"
+    "name": "peerreview4"
+  , "alias": "PR4"
   , "description": "Peer Review Game"
   , "version": "1.0.0"
   , "main" : "./pr.js"

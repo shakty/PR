@@ -180,11 +180,15 @@ function PeerReviewGame () {
 			node.emit('DONE');
 		});
 		
+		node.emit('DONE');
+		
 		console.log('Instructions');
 	};
 	
 	var quiz = function () {	
 		node.window.loadFrame('html/quiz.html');
+		node.emit('DONE');
+		console.log('eee???')
 		console.log('Quiz');
 	};
 	
@@ -327,9 +331,9 @@ function PeerReviewGame () {
 			state: creation,
 			timer: {
 					milliseconds: function() {
-						if ( node.state.round < 2) return 80000;
-						if ( node.state.round < 3) return 60000;
-						return 50000;
+						if ( node.state.round < 2) return 8000000;
+						if ( node.state.round < 3) return 6000000;
+						return 5000000;
 					},
 					timeup: function() {
 						$('#mainframe').contents().find('#done_box button').click();
