@@ -61,8 +61,9 @@ function PeerReview () {
 		
 		
 		var dataRound = this.memory.select('state', '=', this.previous())
-							   .join('player', 'player', 'CF', 'value')
-							   .select('key', '=', 'SUB');
+								.select('key', 'in', ['SUB', 'CF'])
+								.join('player', 'player', 'CF', 'value')
+								.select('key', '=', 'SUB');
 							
 		
 		var subByEx = dataRound.groupBy('value');
@@ -375,7 +376,7 @@ var conf = {
 	     reconnect: false
 	},
 	env: {
-		review_select: false,
+		review_select: true,
 		com: true,
 	},
 };
