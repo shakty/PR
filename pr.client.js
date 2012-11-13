@@ -51,6 +51,8 @@ function PeerReviewGame () {
 		this.milli = 1000;
 		this.milli_short = 1000;
 
+		this.creaCosts = 0; // Current round creation costs
+		this.copyCOST = 0.25; // Cost to copy another painting
 		
 		this.evaAttr = {
 				min: 1,
@@ -277,15 +279,20 @@ function PeerReviewGame () {
 			
 			node.onDATA('PLAYER_RESULT', function(msg){
 				if (!msg.data) return;
-				var str = '';
+				var str = '', earnings = 0;
+				var costs =  node.game.creaCosts.toFixed(2);
 				if (msg.data.published) {
 					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
-					str += 'You earned <strong>' + msg.data.payoff  + ' CHF</strong>. ';
-					node.emit('MONEYTALKS', parseFloat(msg.data.payoff));
+					earnings = parseFloat(msg.data.payoff);
 				}
 				else {
 					str += 'Sorry, you got rejected by exhibition: <strong>' + msg.data.ex + '</strong>. ';
 				}
+				
+				str += 'You invested <strong>' + costs + '</strong> CHF, and earned <strong>' + earnings + '</strong> CHF. ';
+				
+				node.emit('MONEYTALKS', earnings - costs);
+				
 				str += 'Your average review score was: <strong>' + msg.data.mean + '</strong>.</br></br>';
 				W.getElementById('results').innerHTML = str;
 				
