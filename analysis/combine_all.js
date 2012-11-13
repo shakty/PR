@@ -19,7 +19,10 @@ var coo = [
 	'./data/coo_rnd_orig/',
 	'./data/coo_sel_err/',
 ];
+     
+var sel = [
            
+];
 
 pr_stats.combine(com, 'data/com/', 'pr_full.nddb');
 pr_stats.combine(com, 'data/com/', 'PL.nddb');
