@@ -375,7 +375,7 @@ var conf = {
 	     reconnect: false
 	},
 	env: {
-		review_select: true,
+		review_select: false,
 		com: true,
 	},
 };

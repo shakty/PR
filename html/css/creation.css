@@ -164,10 +164,14 @@ table.exhibition tr {
   
 }
 
-div#costdiv {
+div#costDiv {
   border: 1px solid #CCC;
 }
 
-div#costdiv span#cost {
+div#costDiv span#cost {
   font-size: 40px;
+}
+
+div#costDiv span#costWarn {
+  
 }

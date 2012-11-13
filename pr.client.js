@@ -280,7 +280,7 @@ function PeerReviewGame () {
 			node.onDATA('PLAYER_RESULT', function(msg){
 				if (!msg.data) return;
 				var str = '', earnings = 0;
-				var costs =  node.game.creaCosts.toFixed(2);
+				var costs = (node.game.state.round === 1) ? 0 : node.game.creaCosts.toFixed(2);
 				if (msg.data.published) {
 					str += 'Congratulations! You published in exhibition: <strong>' + msg.data.ex + '</strong>. ';
 					earnings = parseFloat(msg.data.payoff);
@@ -362,6 +362,7 @@ function PeerReviewGame () {
 					this.last_ex = ex;
 					node.set('SUB', ex);
 					node.set('CF', this.last_cf);
+					node.set('COST', this.creaCosts);
 					return true;
 				}
 			}
