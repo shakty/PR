@@ -190,7 +190,6 @@ function PeerReviewGame () {
 	var quiz = function () {	
 		node.window.loadFrame('html/quiz.html');
 		node.emit('DONE');
-		console.log('eee???')
 		console.log('Quiz');
 	};
 	
@@ -205,6 +204,10 @@ function PeerReviewGame () {
 		console.log('Creation');
 	};
 	
+	var submission = function() {
+		node.window.loadFrame('html/submission.html');
+		console.log('Submission');
+	};
 	
 	var evaluation = function() {
 		node.window.loadFrame('html/evaluation.html');
@@ -346,31 +349,43 @@ function PeerReviewGame () {
 						$('#mainframe').contents().find('#done_box button').click();
 					}
 			},
-			done: function (ex) {
-				//console.log('executing crea done');
-				var exs = ['A','B','C'];
-				if (!JSUS.in_array(ex, exs)) {
-					// time is up without the player 
-					//having selected one of the three exhibitions
-					node.window.getElementById('done_button_box').click();
-					return false;
-				}
-				else {
-					// Close any open dialog box
-					$( ".copyorclose" ).dialog('close');
-					this.last_cf = this.cf.getAllValues();
-					this.last_ex = ex;
-					node.set('SUB', ex);
-					node.set('CF', this.last_cf);
-					node.set('COST', this.creaCosts);
-					return true;
-				}
+			done: function () {
+				// Close any open dialog box
+				$( ".copyorclose" ).dialog('close');
+				this.last_cf = this.cf.getAllValues();
+				return true;
 			}
-				
-		
 		},
 		
-		2: {name: 'Evaluation',
+		2: {name: 'Submission',
+			state: submission,
+			timer: 20000,
+			done: function (ex) {
+				console.log(ex);
+				console.log(node.game.exs);
+				var auto = false;
+				if (!JSUS.in_array(ex, node.game.exs)) {
+					// time is up without the player 
+					//having selected one of the three exhibitions
+					 ex = node.game.last_ex || node.game.exs[node.JSUS.randomInt(3)-1];
+					 auto = true;
+				}
+				
+				// Close any open dialog box
+				$( ".copyorclose" ).dialog('close');
+				this.last_cf = this.cf.getAllValues();
+				this.last_ex = ex;
+				node.set('SUB', {
+					ex: ex,
+					auto: auto,
+				});
+				node.set('CF', this.last_cf);
+				node.set('COST', this.creaCosts);
+				return true;
+			}
+		},
+		
+		3: {name: 'Evaluation',
 			state: evaluation,
 			timer: 30000,
 			done: function () {
@@ -388,7 +403,7 @@ function PeerReviewGame () {
 			}
 		},
 		
-		3: {state: dissemination,
+		4: {state: dissemination,
 			name: 'Exhibition',
 		}
 	};

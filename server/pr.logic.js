@@ -53,6 +53,10 @@ function PeerReview () {
 		console.log('creation');
 	};
 	
+	var submission = function () {		
+		console.log('submission');
+	};
+	
 	var evaluation = function(){
 		var that = this;
 		
@@ -66,13 +70,13 @@ function PeerReview () {
 								.select('key', '=', 'SUB');
 							
 		
-		var subByEx = dataRound.groupBy('value');
+		var subByEx = dataRound.groupBy('value.ex');
 		
 		this.last_submissions = [[], [], []];
 		var idEx;
 		J.each(subByEx, function(e) {
 			e.each(function(s) { 
-				idEx = that.exhibitions[s.value];
+				idEx = that.exhibitions[s.value.ex];
 				node.game.last_submissions[idEx].push(s.player);
 			});
 		});
@@ -92,7 +96,7 @@ function PeerReview () {
 					data[face.value].push({
 						face: face.CF.value,
 						from: face.player,
-						ex: face.value,
+						ex: face.value.ex,
 					});
 				}
 
@@ -143,7 +147,7 @@ function PeerReview () {
 						data = {
 							face: face.CF.value,
 							from: face.player,
-							ex: face.value,
+							ex: face.value.ex,
 						};
 						node.say(data, 'CF', matches[i][j][h]);
 					}
@@ -306,12 +310,16 @@ function PeerReview () {
 			1: {state: creation,
 				name: 'Creation',
 			},
+	
+			2: {state: submission,
+				name: 'Submission',
+			},
 			
-			2: {state: evaluation,
+			3: {state: evaluation,
 				name: 'Evaluation',
 			},
 			
-			3: {state: dissemination,
+			4: {state: dissemination,
 				name: 'Exhibition',
 			}
 		};

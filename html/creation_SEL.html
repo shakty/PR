@@ -29,26 +29,16 @@
       <div id="costDiv"><span id="costText">Your investment costs: </span><span id="cost">0.0</span> CHF. <span id="costWarn"></span></div>
     </div>
 	</div>
-             
+
 	 <div id="container_history">
-	   <h2>History of past exhibitions</h2>
-		 <div id="history"></div> 
-		 <div id="done_box">
+	 	    <h2>History of past exhibitions</h2>  
+		   <div id="history"></div> 
+			 <div id="done_box">
        <button id="done_button_box">Click here when you are done.</button>
-		 </div>
+     </div>
 	</div>
 
-	<div id="submission" style="visibility: hidden;">
-    <dl id="sub_list">
-      <span id="text_sub_list">Select the exhibition you want to submit your painting to:</span><br/> <br />
-     <dt><button id="ex_A" onclick="javascript:parent.node.emit('DONE', 'A');"/>A</button></dt>
-     <dt><button id="ex_B" onclick="javascript:parent.node.emit('DONE', 'B');"/>B</button></dt>
-     <dt><button id="ex_C" onclick="javascript:parent.node.emit('DONE', 'C');"/>C</button></dt>
-     <br/>
-     <span id="warn_sub_list">You will likely review paintings for this exhibition in the next round.</span>
-     <span id="warn_sub_list">After 20 seconds an automatic submission will be done for you.</span>
-   </dl>
- </div>
+	
  
 </body>
 <script src="./../lib/creation.js" charset="utf-8"></script>
