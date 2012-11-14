@@ -51,6 +51,7 @@ function PeerReviewGame () {
 		this.milli = 1000;
 		this.milli_short = 1000;
 
+		this.creaTimeUp = false;
 		this.creaCosts = 0; // Current round creation costs
 		this.copyCOST = 0.25; // Cost to copy another painting
 		
@@ -83,7 +84,7 @@ function PeerReviewGame () {
 			var w = 200;
 			var h = 200;
 			
-			if (node.game.gameLoop.getName() == 'Creation') {	
+			if (node.game.state.step < 3) {	
 				w = 100;
 				h = 100;
 			}
@@ -116,7 +117,7 @@ function PeerReviewGame () {
 			    	          div.append(cf.canvas);
 			    	          
 			    	          var buttons = [];
-			    	          if (node.game.gameLoop.getName() !== 'Exhibition') {
+			    	          if (node.game.gameLoop.getName() === 'Creation') {
 			    	        	  buttons.push({
 			    	        		  text: 'copy',
 			    	        		  click: function() {	
@@ -346,11 +347,13 @@ function PeerReviewGame () {
 						return 5000000;
 					},
 					timeup: function() {
+						node.game.creaTimeUp = true;
 						$('#mainframe').contents().find('#done_box button').click();
 					}
 			},
 			done: function () {
 				// Close any open dialog box
+				node.set('COST', this.creaCosts);
 				$( ".copyorclose" ).dialog('close');
 				this.last_cf = this.cf.getAllValues();
 				return true;
@@ -377,10 +380,12 @@ function PeerReviewGame () {
 				this.last_ex = ex;
 				node.set('SUB', {
 					ex: ex,
-					auto: auto,
+					timeup: auto,
 				});
-				node.set('CF', this.last_cf);
-				node.set('COST', this.creaCosts);
+				node.set('CF', {
+					cf: this.last_cf,
+					timeup: node.game.creaTimeUp,
+				});
 				return true;
 			}
 		},

@@ -91,10 +91,10 @@ function PeerReview () {
 				for (var j=0; j < matches.length; j++) {
 					var face = faces[matches[j][i]];
 
-					if (!data[face.value]) data[face.value] = [];
+					if (!data[face.value.ex]) data[face.value.ex] = [];
 					
-					data[face.value].push({
-						face: face.CF.value,
+					data[face.value.ex].push({
+						face: face.CF.value.cf,
 						from: face.player,
 						ex: face.value.ex,
 					});
@@ -142,10 +142,10 @@ function PeerReview () {
 					for (var h = 0; h < matches[i][j].length; h++) {
 						
 						var face = dataRound.select('player', '=', elements[i][j]).first();
-						if (!data[face.value]) data[face.value] = [];
+						if (!data[face.value.ex]) data[face.value.ex] = [];
 
 						data = {
-							face: face.CF.value,
+							face: face.CF.value.cf,
 							from: face.player,
 							ex: face.value.ex,
 						};
@@ -216,7 +216,7 @@ function PeerReview () {
 				
 				cf = subRound.select('player', '=', player)
 							 .select('key', '=', 'CF')
-							 .first().value;
+							 .first().value.cf;
 
 				ex = exids[i];
 				

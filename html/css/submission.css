@@ -82,6 +82,7 @@ div#history {
   vertical-align: top;
   margin-bottom: 10px;
   overflow-y: auto;
+	border: 0;
 }
 
 /* Exhibitions */
