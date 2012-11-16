@@ -17,7 +17,9 @@ function Ultimatum_wait () {
 	
 	this.init = function() {
 		var open = true;
-		node.on('UPDATED_PLIST', function() {
+		
+		node.on('in.say.PCONNECT', function(msg) {
+		//node.on('UPDATED_PLIST', function() {
 			console.log('Player list = ' + node.game.pl.length);
 			
 			if (!open) {
@@ -34,19 +36,27 @@ function Ultimatum_wait () {
 					
 				});
 			}
-			else if (node.game.pl.length === NUMPLAYERS) {
-				open = false; // only one set of players allowed now
+			else {
 				
-				// We need to mark all selected players first
-				// otherwise the first that is redirected will
-				// trigger the UPDATED_PLIST event
-				node.game.pl.each(function(p){
-					p.playing = true;
-				});
-				node.game.pl.each(function(p){
-					var mtid = p.mtid;
-					node.redirect('/ultimatum/index.html?id=' + mtid, p.id);
-				});
+				console.log(msg.data);
+//				dkcheckIn
+				
+//				if (node.game.pl.length === NUMPLAYERS) {
+//					open = false; // only one set of players allowed now
+//				}
+//				
+//				
+//				
+//				// We need to mark all selected players first
+//				// otherwise the first that is redirected will
+//				// trigger the UPDATED_PLIST event
+//				node.game.pl.each(function(p){
+//					p.playing = true;
+//				});
+//				node.game.pl.each(function(p){
+//					var mtid = p.mtid;
+//					node.redirect('/ultimatum/index.html?id=' + mtid, p.id);
+//				});
 				
 			}
 		});
@@ -77,7 +87,7 @@ var node = require('nodegame-client'),
 
 
 /// Start the game only after we have received the list of access codes
-dk.getCodes(function(){
+//dk.getCodes(function(){
 	var conf = {
 		name: "waiter",
 		url: "http://localhost:8080/pr/wait/admin",
@@ -86,11 +96,11 @@ dk.getCodes(function(){
 			'transports': ['xhr-polling'],
 			'polling duration': 10
 		},
-		verbosity: 0,
+		verbosity: 100,
     };
 
     node.play(conf, new Ultimatum_wait());
-});
+//});
 
 
 

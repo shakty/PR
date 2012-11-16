@@ -1,14 +1,4 @@
-//////////////////////////////////////////////
-// nodeGame Ultimatum Game 
-//
-// Extensively documented tutorial for
-// nodeGame beginners.
-//
-// http://www.nodegame.org
-//
-/////////////////////////////////////////////
-
-function Ultimatum_wait () {
+function pr_wait () {
 	
 	this.name = 'Waiting Room Ultimatum Game - Client';
 	this.description = 'Waits until the game starts....';
