@@ -29,15 +29,15 @@ function wait () {
 			var mtid = msg.data.mtid;
 			
 			dk.checkIn(mtid, function(err, response, body) {
-				if (err) {
-					node.redirect('html/room/error.html', msg.data.id);
-					return;
-				}
-				
-				if (!body.Result) {
-					node.redirect('html/room/unauthorized.html', msg.data.id);
-					return;
-				}
+//				if (err) {
+//					node.redirect('html/room/error.html', msg.data.id);
+//					return;
+//				}
+//				
+//				if (!body.Result) {
+//					node.redirect('html/room/unauthorized.html', msg.data.id);
+//					return;
+//				}
 				
 			});
 		});

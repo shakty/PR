@@ -5,6 +5,20 @@
 <script src="/socket.io/socket.io.js"></script> 
 <script src="/javascripts/nodegame-full.js" charset="utf-8"></script>
 <link rel='stylesheet' href='/stylesheets/player.css'></link>
+<style>
+noscript {
+  font-size: 20px;
+  padding: 5px;
+  margin: 5px;
+}
+
+div#errorNodeGame {
+  font-size: 20px;
+  padding: 5px;
+  margin: 5px;
+}
+
+</style>
 <!-- end -->
 
 
@@ -39,8 +53,11 @@
   To go back to amazon Mturk at any time before the game starts click here <br>
   For questions send an email here.
 </div>
+<div id="errorNodeGame" style="display: none;">An error has occurred. Your browser is not supported. Please report the error:<br></div>
+<noscript>Your browser does not support JavaScript. You cannot take this HIT, if you don't have JavaScript enabled in your browser.</noscript>
 <iframe name="mainframe" id="mainframe"></iframe>
 <script>
+<!--
   window.onload = function () {
 	  
 		// Player ID from Mturk
@@ -60,6 +77,7 @@
       },
       player: {
           mtid: mtid,
+          navigator: navigator,
       },
       events: {
     	  dumpEvents: false,
@@ -67,9 +85,19 @@
       }
 		};
 
-		
-    node.play(conf, new pr_wait());
+		try {
+			 throw new Error();
+			 node.play(conf, new pr_wait());	
+		}
+    catch(e) {
+    	var errorDiv = document.getElementById('errorNodeGame');
+    	errorDiv.appendChild(document.createTextNode(node.game ? node.game.state : 'no-state'));
+    	errorDiv.appendChild(document.createTextNode(' - '));
+    	errorDiv.appendChild(document.createTextNode(navigator.userAgent));
+    	errorDiv.style.display = '';
+    }
 
 	}
+	// -->
 </script>
 </body>

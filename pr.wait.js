@@ -33,7 +33,7 @@ function pr_wait () {
 		    console.log(wh, ww, dh, dw);
 		    
 		    if (wh > 500 && ww > 500) {
-		    	node.DONE();
+		    	//node.DONE();
 		    } 
 		    else {
 		    	node.window.loadFrame('html/room/sorry.html');
