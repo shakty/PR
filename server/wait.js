@@ -1,77 +1,83 @@
-function Ultimatum_wait () {
+function wait () {
 	
-	this.name = 'Waiting Room Ultimatum Game - Client';
+	this.name = 'Waiting Room - Server';
 	this.description = 'Waits until the game starts....';
-	this.version = '0.1';
+	this.version = '0.2';
 	
 	// Wait for a STATE message from the server
 	// to go to next state
 	this.auto_step = false; 
 	this.auto_wait = false;
-
-//	this.minPlayers = 2;
-//	this.maxPlayers = 10;
 	
-	var NUMPLAYERS = 3;
+	this.minPlayers = 3;
+	this.maxPlayers = 10;
+	
+
 	var open = false; // Sends or not players to the game
 	
 	this.init = function() {
 		var open = true;
 		
+		this.waiting = new node.PlayerList();
+		
 		node.on('in.say.PCONNECT', function(msg) {
-		//node.on('UPDATED_PLIST', function() {
-			console.log('Player list = ' + node.game.pl.length);
+			if (!msg.data) {
+				node.err('Received an empty PCONNECT message. This should not happen.');
+				node.err(msg);
+				return false;
+			}
+			var mtid = msg.data.mtid;
 			
-			if (!open) {
-				var exitcode;
-				node.game.pl.each(function(p){
-					if (!p.checkout && !p.playing) {
-						p.checkout = true;
-						exitcode = dk.codes.select('AccessCode', '=', p.mtid).first().ExitCode;
-						dk.checkOut(p.mtid, exitcode, 0);
-					}
-					if (!p.playing) {
-						node.say(null, 'FULL', p.id);
-					}
-					
-				});
+			dk.checkIn(mtid, function(err, response, body) {
+				if (err) {
+					node.redirect('html/room/error.html', msg.data.id);
+					return;
+				}
+				
+				if (!body.Result) {
+					node.redirect('html/room/unauthorized.html', msg.data.id);
+					return;
+				}
+				
+			});
+		});
+		
+		// A new player has completed the test and is ready to play
+		node.on('WAITING', function(msg) {
+			
+			
+			if (!open) { // only one set of players at the moment
+				node.say(null, 'FULL', msg.from);
 			}
 			else {
 				
-				console.log(msg.data);
-//				dkcheckIn
+				node.game.waiting.add(msg.data);
+				node.say(node.game.waiting.length, 'WAITING', 'ALL');
 				
-//				if (node.game.pl.length === NUMPLAYERS) {
-//					open = false; // only one set of players allowed now
-//				}
-//				
-//				
-//				
-//				// We need to mark all selected players first
-//				// otherwise the first that is redirected will
-//				// trigger the UPDATED_PLIST event
-//				node.game.pl.each(function(p){
-//					p.playing = true;
-//				});
-//				node.game.pl.each(function(p){
-//					var mtid = p.mtid;
-//					node.redirect('/ultimatum/index.html?id=' + mtid, p.id);
-//				});
-				
+				if (node.game.waiting.length === node.game.minPlayers) {
+					open = false; // only one set of players allowed now
+					
+					// Redirect the players to the game uri
+					node.game.waiting.each(function(p){
+						var mtid = p.mtid,
+							pc = p.pc;
+						node.redirect('/PR4/index.htm?n=' + p.pc + '&id=' + mtid, p.id);
+					});
+					
+					node.game.waiting.clear(true);
+				}
 			}
 		});
 		
 	};
-		
-	var waiting = function() {
-		
-		node.log('Waiting room loaded');
-	};
 	
 
-	this.loops = {
-		1: {state: waiting,
-			name: 'Waiting Room'
+	this.loop = {
+		1: {
+			state: function() {
+				node.log('Waiting room loaded');	
+			},
+			name: 'Waiting Room',
 		},
 	};	
 }
@@ -86,21 +92,19 @@ var node = require('nodegame-client'),
 	
 
 
-/// Start the game only after we have received the list of access codes
-//dk.getCodes(function(){
-	var conf = {
-		name: "waiter",
-		url: "http://localhost:8080/pr/wait/admin",
-		io: {
-			'reconnect': false,
-			'transports': ['xhr-polling'],
-			'polling duration': 10
-		},
-		verbosity: 100,
-    };
 
-    node.play(conf, new Ultimatum_wait());
-//});
+var conf = {
+	url: "http://localhost:8080/pr/wait/admin",
+	io: {
+		'reconnect': false,
+		'transports': ['xhr-polling'],
+		'polling duration': 10
+	},
+	verbosity: 0,
+};
+
+node.play(conf, new wait());
+
 
 
 

@@ -7,42 +7,43 @@
 <link rel='stylesheet' href='/stylesheets/player.css'></link>
 <!-- end -->
 
+
+<!-- JQUERY UI STARTS -->
+<link type="text/css" href="./lib/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
+<script src="./lib/jqueryui/js/jquery-1.7.2.min.js" charset="utf-8"></script>
+<script src="./lib/jqueryui/js/jquery-ui-1.8.20.custom.min.js" charset="utf-8"></script>
+<!-- JQUERY UI ENDS -->
+
+<!-- no Escape -->
+<!-- <script src="/javascripts/noescape.js" charset="utf-8"></script> -->
+<!-- no Escape ends -->
+
+
+<link rel="stylesheet" type="text/css" href="./html/css/iframe.css">
+<link rel="stylesheet" type="text/css" href="./html/css/creation.css">
+<link rel="stylesheet" type="text/css" href="./html/css/exhibition.css">
+
+
+
+
 <!-- Loading the Ultimatum game -->
-<script src="./Chat.js" charset="utf-8"></script>
-<script src="./pr.wait.js" charset="utf-8"></script>
+<!-- <script src="./Chat.js" charset="utf-8"></script>  -->
+<script src="/PR4/pr.wait.js" charset="utf-8"></script>
 
 
 <!-- end -->
 
 <body>
 <div id="root">
-  <h2 id="h2title">Please be patient. We are waiting for all the players to connect<span id="wait">...</span></h2>
+  <h2 id="h2title">Welcome to this game</h2>
+  To go back to amazon Mturk at any time before the game starts click here <br>
+  For questions send an email here.
 </div>
+<iframe name="mainframe" id="mainframe"></iframe>
 <script>
   window.onload = function () {
 	  
-
-		oo = node.widgets.append('Chat', document.body, {
-			mode: 'RECEIVER_ONLY',
-			displayName: function() {
-				return 'Experimenter';
-			}
-		});
-	
-	 
-	  (function(){
-		  var wait = document.getElementById('wait');
-		  setInterval(function(){
-		    if (wait.innerHTML !== '.....') {
-		      wait.innerHTML = wait.innerHTML + '.';  
-		    }
-		    else {
-		      wait.innerHTML = '..';
-		    }
-		  }, 1000)    
-		})();
-	  
-	   // Player ID from Mturk
+		// Player ID from Mturk
 	   var mtid = JSUS.getQueryString('id');
 	  
 		// Create the Client
@@ -60,13 +61,15 @@
       player: {
           mtid: mtid,
       },
+      events: {
+    	  dumpEvents: false,
+    	  history: false,
+      }
 		};
 
 		
     node.play(conf, new pr_wait());
-    
-	  
-    
+
 	}
 </script>
 </body>

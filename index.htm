@@ -40,7 +40,7 @@
   		
   		if (!pc || pc < 2 || pc > 10) {
   			alert('Oopps! Something went wrong. Please contact the experimenter.');
-  			throw new Exception();
+  			throw new Error();
   		}
   		
   		var color = (pc < 5) ? "green" : (pc < 8) ? "red" : "black"; 
