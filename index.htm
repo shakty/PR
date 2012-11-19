@@ -53,7 +53,7 @@
   		             'Bradbury',
   		             'Howard',
   		             'Walbright',
-  		             'Chestner',
+  		             'Chestner'
   		            ];
   		
   		var name = names[pc-2];
@@ -61,17 +61,17 @@
 			// Create the Client		
 			var conf = {
 				url: "/pr",
-				//verbosity: 10,
+				verbosity: 0,
 				io: {				 
-		  	  reconnect: false,
+		  	  reconnect: false
 				},
 				window: {
-					promptOnleave: false,
+					promptOnleave: false
 				},
 				player: {
 					pc: pc,
 					color: color,
-					name: name, //"P_" + Math.floor(Math.random()*1000),
+					name: name //"P_" + Math.floor(Math.random()*1000),
 				},
 				env: {
 					auto: false,
@@ -79,10 +79,10 @@
 					review_select: true,
 					review_random: false,
 					coo: false,
-					com: true,
+					com: true
 				},
 				events: {
-					history: false,
+					history: false
 				}
 			};
 	

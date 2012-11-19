@@ -66,7 +66,7 @@ function PeerReviewGame () {
 		this.evasChanged = {};
 		
 		this.all_ex = new node.window.List({ id: 'all_ex',
-											 lifo: true,
+											 lifo: true
 		});
 		
 		this.personal_history = null;
@@ -103,7 +103,7 @@ function PeerReviewGame () {
 					                 width: 400,
 					                 height: 400,
 					                 features: f,
-				                 	 controls: false,
+				                 	 controls: false
 							};
 					      
 							var cf = node.widgets.get('ChernoffFacesSimple', cf_options);
@@ -126,10 +126,10 @@ function PeerReviewGame () {
 					    	            		author: cell.content.author,
 					    	            		ex: cell.content.ex,
 					    	            		mean: cell.content.mean,
-					    	            		round: cell.content.round,
+					    	            		round: cell.content.round
 					    	            	});
 					    	                $( this ).dialog( "close" );
-					    	              },
+					    	              }
 			    	        	  });
 			    	          }
 			    	          
@@ -137,7 +137,7 @@ function PeerReviewGame () {
 			    	        	  text: 'Cancel',
 			    	        	  click: function() {
 			    	                $( this ).dialog( "close" );
-			    	              },
+			    	              }
 			    	          });
 			    	          
 			    	          div.dialog({
@@ -145,7 +145,7 @@ function PeerReviewGame () {
 			    	            height: 560,
 			    	            show: "blind",
 			    	            hide: "explode",
-			    	            buttons: buttons,
+			    	            buttons: buttons
 			    	          });
 					   }
 			};
@@ -227,8 +227,8 @@ function PeerReviewGame () {
 		var table = new node.window.Table({ className: 'exhibition',
 											render: {
 												pipeline: this.renderCF,
-											 	returnAt: 'first',
-											},
+											 	returnAt: 'first'
+											}
 									
 									 	   
 		});
@@ -277,7 +277,7 @@ function PeerReviewGame () {
 				
 				node.game.timer.restart({ 
 					milliseconds: 15000,
-					timeup: 'DONE',
+					timeup: 'DONE'
 				});
 			});
 			
@@ -380,11 +380,11 @@ function PeerReviewGame () {
 				this.last_ex = ex;
 				node.set('SUB', {
 					ex: ex,
-					timeup: auto,
+					timeup: auto
 				});
 				node.set('CF', {
 					cf: this.last_cf,
-					timeup: node.game.creaTimeUp,
+					timeup: node.game.creaTimeUp
 				});
 				return true;
 			}
@@ -399,7 +399,7 @@ function PeerReviewGame () {
 						node.set('EVA', {
 							'for': i,
 							eva: Number(this.evas[i].value),
-							hasChanged: this.evasChanged[i], 
+							hasChanged: this.evasChanged[i] 
 						});
 					}
 				}
@@ -409,7 +409,7 @@ function PeerReviewGame () {
 		},
 		
 		4: {state: dissemination,
-			name: 'Exhibition',
+			name: 'Exhibition'
 		}
 	};
 
@@ -429,16 +429,16 @@ function PeerReviewGame () {
 			
 			
 			1: {state:	pregame,
-				name:	'Game will start soon',
+				name:	'Game will start soon'
 			},
 			
 			2: {state: 	instructions,
 				name: 	'Instructions',
-				timer: 	300000,
+				timer: 	300000
 			},
 			
 			3: {state: quiz,
-				name: 'Quiz',
+				name: 'Quiz'
 			},
 			
 //			3: {state: testloop,
@@ -447,16 +447,16 @@ function PeerReviewGame () {
 				
 			4: {rounds:	30, 
 				state: 	gameloop,
-				name: 	'Game',
+				name: 	'Game'
 			},
 			
 			5: {state:	questionnaire,
 				name: 	'Questionnaire',
-				timer: 	600000,
+				timer: 	600000
 			},
 				
 			6: {state:	endgame,
-				name: 	'Thank you',
+				name: 	'Thank you'
 			}
 			
 	};	

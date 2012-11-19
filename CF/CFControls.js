@@ -15,9 +15,9 @@
 	Controls.defaults.id = 'controls';
 	
 	
-	Controls.name = 'Controls'
+	Controls.name = 'Controls';
 	Controls.version = '0.2';
-	Controls.description = 'Wraps a collection of user-inputs controls.'
+	Controls.description = 'Wraps a collection of user-inputs controls.';
 		
 	function Controls (options) {
 		this.options = options;
@@ -89,7 +89,6 @@
 	};
 	
 	Controls.prototype.parse = function() {
-		console.log('I am parsing...')
 		return this.list.parse();
 	};
 	
@@ -265,7 +264,7 @@
     
     jQuerySliderControls.dependencies = {
         jQuery: {},
-        Controls: {},
+        Controls: {}
     };
     
     
@@ -275,7 +274,7 @@
     
     jQuerySliderControls.prototype.add = function (root, id, attributes) {
         var slider = jQuery('<div/>', {
-    	    id: id,
+    	    id: id
     	}).slider();
         
         
@@ -285,7 +284,7 @@
     
     jQuerySliderControls.prototype.getItem = function (id, attributes) {
     	var slider = jQuery('<div/>', {
-     	    id: id,
+     	    id: id
      		}).slider();
     	
     	return slider;
@@ -417,7 +416,7 @@
 				step: 0.01,
 				value: 30,
 				label: 'Zoom in'
-			},
+			}
 			
 
 	};
@@ -439,7 +438,7 @@
 			step: 0.01,
 			value: 20,
 			label: 'Lower lip'
-		},
+		}
 	};
 	
 	
@@ -516,7 +515,7 @@
 			step: 0.01,
 			value: 0, //5,
 			label: 'Nose width'
-		},
+		}
 	};
 	
 	
@@ -543,7 +542,7 @@
 			}	
 		}
 		return defaults;
-	}
+	};
 	
 	CFControls.pinDownFeatures = function (input) {
 		if (!input) return input;
@@ -571,7 +570,7 @@
 			}	
 		}
 		return input;
-	}	
+	};
 	
 	CFControls.prototype.parse = function() {
 		return this.list.parse();
