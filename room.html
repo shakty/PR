@@ -18,6 +18,11 @@ div#errorNodeGame {
   margin: 5px;
 }
 
+iframe#mainframe {
+  height: 800px;
+}
+
+
 </style>
 <!-- end -->
 
@@ -33,11 +38,14 @@ div#errorNodeGame {
 <!-- no Escape ends -->
 
 
-<link rel="stylesheet" type="text/css" href="./html/css/iframe.css">
+<!-- <link rel="stylesheet" type="text/css" href="./html/room/iframe.css"> -->
 <link rel="stylesheet" type="text/css" href="./html/css/creation.css">
 <link rel="stylesheet" type="text/css" href="./html/css/exhibition.css">
 
-
+<!--  CF -->
+<script src="./CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./CF/CFControls.js" charset="utf-8"></script>
+<!-- CF ends -->
 
 
 <!-- Loading the Ultimatum game -->
@@ -85,7 +93,7 @@ div#errorNodeGame {
 		};
 
 		try {
-			 throw new Error();
+			 //throw new Error();
 			 node.play(conf, new pr_wait());	
 		}
     catch(e) {
