@@ -39,7 +39,7 @@
 	  var span_connected = document.getElementById('span_connected');
 	  
     node.onDATA('CONNECTED', function(msg) {
-    	  if (!message.data) return;
+    	  if (!msg.data) return;
     	  span_connected.innerHTML = msg.data + ' / ' + node.game.minPlayers;  
     });
 	  

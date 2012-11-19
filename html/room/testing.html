@@ -12,9 +12,9 @@
 <!-- no Escape ends -->
 
 
-<!-- <link rel="stylesheet" type="text/css" href="./../css/iframe.css">
+<link rel="stylesheet" type="text/css" href="./iframe.css">
 <link rel="stylesheet" type="text/css" href="./../css/creation.css">
-<link rel="stylesheet" type="text/css" href="./../css/exhibition.css"> -->
+<link rel="stylesheet" type="text/css" href="./../css/exhibition.css">
 
 
 <!--  CF -->
@@ -22,18 +22,21 @@
 <script src="./../../CF/CFControls.js" charset="utf-8"></script>
 <!-- CF ends -->
 
-
-
-<!-- end -->
-
 <body>
 <div id="root">
   <h2 id="h2title">In this page we test if your browser has the necessary requirement to go ahead.</h2>
 </div>
 <div id="CFTEST">
-	Below you can find an example of the user interface that you will find during the game. If you can't visualize it, your browser is not
+	Below you will find an example of the user interface that of the game. 
+	If you can't visualize it, or if you are unable to complete the task below, please click 
+	
+	your browser is not
 	supported. Please report the hit.
+	<div id="returnBox">
+  <button id="returnButton">I cannot complete the task</button>
 </div>
+</div>
+
 <script>
 
 window.onload = function() {
@@ -43,15 +46,21 @@ window.onload = function() {
 			NDDB = parent.NDDB,
 			W = parent.W;
 			
-			node.conf.events.dumpEvents = true;
+			
+			document.getElementById("returnButton").onclick = function(){
+				node.emit('errors', ['Cannot complete the task']);
+			};
+			
+			
+			//node.conf.events.dumpEvents = true;
 
-	navigator.sayswho = (function(){
-	    var N= navigator.appName, ua= navigator.userAgent, tem;
-	    var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
-	    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
-	    M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
-	    return M;
-	   })();
+//	navigator.sayswho = (function(){
+//	    var N= navigator.appName, ua= navigator.userAgent, tem;
+//	    var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+//	    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+//	    M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
+//	    return M;
+//	   })();
 
 //	console.log(navigator.sayswho);
 //	console.log(navigator.userAgent);
@@ -99,27 +108,23 @@ window.onload = function() {
   
   var testMyGame = function () {
 		
-		
     
      function addJQuerySliders(init) {
 //       var sliders = $('#mainframe').contents().find( "#cf_controls div.ui-slider" );
 //       sliders.each(function() {
 			 
-			 $( "#cf_controls div.ui-slider" ).each(function() {
+			   $( "#cf_controls div.ui-slider" ).each(function() {
              // read initial values from markup and remove that
              var settings = init[this.id];
              if (settings) {
-               settings.slide = settings.change = function(e, ui) {     
+               settings.slide = settings.change = function(e, ui) {
 							
                  node.emit('CF_CHANGE');
 								 
-								 if (this.id === 'head_scale_x') {
-								 	
-											console.log($(this).slider('value'));
-				      
-					
+								 if (this.id === 'head_scale_x') {					
 								 	  if ($(this).slider('value') === 2){
-									     console.log('DONE!!!!')		
+										  node.emit('DONE');
+									     console.log('WORKS');		
 										}
 								 } 
 								 
@@ -129,9 +134,9 @@ window.onload = function() {
            });
         };
     
-    var errors = [];
+      var errors = [];
     
-    var wh = $(window).height();   // returns height of browser viewport
+      var wh = $(window).height();   // returns height of browser viewport
       var dh = $(document).height(); // returns height of HTML document
       var ww = $(window).width();   // returns width of browser viewport
       var dw = $(document).width(); // returns width of HTML document
@@ -171,8 +176,6 @@ window.onload = function() {
             
            var creationDiv = document.getElementById('CFTEST');
            node.game.cf = node.widgets.append('ChernoffFacesSimple', creationDiv, cf_options);
-          
-//           debugger;
            
            // Adding the jQuery sliders
            ////////////////////////////
@@ -182,7 +185,7 @@ window.onload = function() {
       }
       catch(e) {
 				console.log(e)
-        //errors.push('Error creating the ChernoffFacesSimple: ' + e.message);
+        errors.push('Error creating the ChernoffFacesSimple: ' + e.message);
       }
       
       
@@ -190,24 +193,26 @@ window.onload = function() {
   };
 	
 	var err1 = testMeGeneral();
-      var err2 = testMyGame();
+  var err2 = testMyGame();
       
-      if (!err1.length && !err2.length) {
-          node.DONE();
-        } 
-        else {
-          console.log('ERRORS!!!')
-        JSUS.each(err1, function(e){
-          console.log(e);
-        });
-        
-        JSUS.each(err2, function(e){
-          console.log(e);
-        });
-          
-          node.window.loadFrame('html/room/sorry.html');
-        }
+  if (err1.length || err2.length) {
+    node.emit('errors', err1.concat(err2));
+  }
 	
+	node.on('errors', function(errors) {
+		console.log('ERRORS!!!')
+    JSUS.each(err1, function(e){
+      console.log(e);
+    });
+    
+    JSUS.each(err2, function(e){
+      console.log(e);
+    });
+    
+    node.set('errors', errors);
+      
+    node.window.loadFrame('/PR4/html/room/sorry.html');
+	});
 	
 };
 

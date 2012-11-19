@@ -43,8 +43,9 @@ function wait () {
 		});
 		
 		// A new player has completed the test and is ready to play
-		node.on('WAITING', function(msg) {
+		node.onDATA('WAITING', function(msg) {
 			
+			console.log('received msg');
 			
 			if (!open) { // only one set of players at the moment
 				node.say(null, 'FULL', msg.from);
@@ -53,6 +54,8 @@ function wait () {
 				
 				node.game.waiting.add(msg.data);
 				node.say(node.game.waiting.length, 'WAITING', 'ALL');
+				
+				node.say(node.game.waiting.length, 'CONNECTED', 'ALL');
 				
 				if (node.game.waiting.length === node.game.minPlayers) {
 					open = false; // only one set of players allowed now
@@ -68,6 +71,13 @@ function wait () {
 				}
 			}
 		});
+		
+		
+		node.on('in.say.PDISCONNECT', function(msg) {
+			node.game.waiting.remove(msg.data.id);
+			node.say(node.game.waiting.length, 'CONNECTED', 'ALL');
+		});
+		
 		
 	};
 	

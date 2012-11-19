@@ -13,18 +13,14 @@ function pr_wait () {
 	
 	this.init = function() {
 		
-		node.onDATA('FULL', function(msg){
-			console.log('I have excluded');
-			console.log(msg);
-			W.getElementById('h2title').innerHTML = 'I am sorry but the game has already started, and for the moment you cannot join it. Please try again later.'
-		});
+	
 	};
 
 	
 	
 	
 	var testing = function() {
-		node.window.loadFrame('html/room/testing.html', function(){
+		node.window.loadFrame('/PR4/html/room/testing.html', function(){
 			//
 		});
 		node.log('Test page loaded');
@@ -33,7 +29,9 @@ function pr_wait () {
 	
 	var waiting = function() {
 		console.log(node);
-		node.window.loadFrame('html/room/waiting.html');
+		node.window.loadFrame('/PR4/html/room/waiting.html', function() {
+			// 
+		});
 		node.log('Waiting room loaded');
 	};
 	
