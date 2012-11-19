@@ -13,8 +13,6 @@ function pr_wait () {
 	
 	this.init = function() {
 		
-		//node.window.setup('PLAYER');
-		
 		node.onDATA('FULL', function(msg){
 			console.log('I have excluded');
 			console.log(msg);
@@ -22,25 +20,14 @@ function pr_wait () {
 		});
 	};
 
+	
+	
+	
 	var testing = function() {
 		node.window.loadFrame('html/room/testing.html', function(){
-			
-			var wh = $(window).height();   // returns height of browser viewport
-		    var dh = $(document).height(); // returns height of HTML document
-		    var ww = $(window).width();   // returns width of browser viewport
-		    var dw = $(document).width(); // returns width of HTML document
-		    
-		    console.log(wh, ww, dh, dw);
-		    
-		    if (wh > 500 && ww > 500) {
-		    	//node.DONE();
-		    } 
-		    else {
-		    	node.window.loadFrame('html/room/sorry.html');
-		    }
+			//
 		});
 		node.log('Test page loaded');
-		
 	};
 	
 	

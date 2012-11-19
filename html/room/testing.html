@@ -18,8 +18,8 @@
 
 
 <!--  CF -->
-<!-- <script src="./../CF/ChernoffFacesSimple.js" charset="utf-8"></script> -->
-<!-- <script src="./../CF/CFControls.js" charset="utf-8"></script> -->
+<script src="./../../CF/ChernoffFacesSimple.js" charset="utf-8"></script>
+<script src="./../../CF/CFControls.js" charset="utf-8"></script>
 <!-- CF ends -->
 
 
@@ -30,9 +30,20 @@
 <div id="root">
   <h2 id="h2title">In this page we test if your browser has the necessary requirement to go ahead.</h2>
 </div>
+<div id="CFTEST">
+	Below you can find an example of the user interface that you will find during the game. If you can't visualize it, your browser is not
+	supported. Please report the hit.
+</div>
 <script>
 
 window.onload = function() {
+
+  var node = parent.node,
+	    JSUS = parent.JSUS,
+			NDDB = parent.NDDB,
+			W = parent.W;
+			
+			node.conf.events.dumpEvents = true;
 
 	navigator.sayswho = (function(){
 	    var N= navigator.appName, ua= navigator.userAgent, tem;
@@ -42,8 +53,162 @@ window.onload = function() {
 	    return M;
 	   })();
 
-	console.log(navigator.sayswho);
-	console.log(navigator.userAgent);
+//	console.log(navigator.sayswho);
+//	console.log(navigator.userAgent);
+	
+	
+	var testMeGeneral = function() {
+    
+    var errors = [];
+    
+    if ('undefined' === typeof $) {
+      errors.push('jQuery not found');
+    }
+    
+    if ('undefined' === typeof NDDB) {
+      errors.push('NDDB not found');
+    }
+    
+    if ('undefined' === typeof JSUS) {
+      errors.push('JSUS not found');
+    }
+    
+    if ('undefined' === typeof node.window) {
+      errors.push('node.window not found');
+    }
+    
+    if ('undefined' === typeof W) {
+      errors.push('W not found');
+    }
+    
+    if ('undefined' === typeof node.widgets) {
+      errors.push('node.widgets not found');
+    }
+    
+    if ('undefined' !== typeof NDDB) {
+      try {
+        var db = new NDDB();
+      }
+      catch(e) {
+        errors.push('An error occurred manipulating the NDDB object: ' + e.message);
+      }
+    }
+            
+    return errors;
+  };
+  
+  var testMyGame = function () {
+		
+		
+    
+     function addJQuerySliders(init) {
+//       var sliders = $('#mainframe').contents().find( "#cf_controls div.ui-slider" );
+//       sliders.each(function() {
+			 
+			 $( "#cf_controls div.ui-slider" ).each(function() {
+             // read initial values from markup and remove that
+             var settings = init[this.id];
+             if (settings) {
+               settings.slide = settings.change = function(e, ui) {     
+							
+                 node.emit('CF_CHANGE');
+								 
+								 if (this.id === 'head_scale_x') {
+								 	
+											console.log($(this).slider('value'));
+				      
+					
+								 	  if ($(this).slider('value') === 2){
+									     console.log('DONE!!!!')		
+										}
+								 } 
+								 
+               };
+               $( this ).slider(settings);
+             }
+           });
+        };
+    
+    var errors = [];
+    
+    var wh = $(window).height();   // returns height of browser viewport
+      var dh = $(document).height(); // returns height of HTML document
+      var ww = $(window).width();   // returns width of browser viewport
+      var dw = $(document).width(); // returns width of HTML document
+    
+      if (wh < 500 && ww < 500) {
+        errors.push('Inappropriate resolution: ' + wh + ' ' + ww);
+      }
+      
+      try {
+        
+        var init_cf = node.widgets.widgets.ChernoffFaces.FaceVector.random();
+        init_cf = CFControls.pinDownFeatures(init_cf);
+				
+				// set scale_head more to the left so that we can test the user
+				// moving it to the right
+				
+				init_cf.head_scale_x = 0.3;
+				
+				console.log(init_cf);
+        
+        var init_sc = CFControls.normalizeFeatures(init_cf);
+        
+            var sc_options = {
+              id: 'cf_controls',
+              change: 'CF_CHANGE',
+              features: init_sc,
+            };
+          
+            var cfc = new CFControls(sc_options);
+              
+            var cf_options = { id: 'cf',
+                       width: 500,
+                       height: 500,
+                       controls: cfc,
+                       features: init_cf,
+            };
+            
+           var creationDiv = document.getElementById('CFTEST');
+           node.game.cf = node.widgets.append('ChernoffFacesSimple', creationDiv, cf_options);
+          
+//           debugger;
+           
+           // Adding the jQuery sliders
+           ////////////////////////////
+           addJQuerySliders(init_sc);
+      
+			
+      }
+      catch(e) {
+				console.log(e)
+        //errors.push('Error creating the ChernoffFacesSimple: ' + e.message);
+      }
+      
+      
+      return errors;
+  };
+	
+	var err1 = testMeGeneral();
+      var err2 = testMyGame();
+      
+      if (!err1.length && !err2.length) {
+          node.DONE();
+        } 
+        else {
+          console.log('ERRORS!!!')
+        JSUS.each(err1, function(e){
+          console.log(e);
+        });
+        
+        JSUS.each(err2, function(e){
+          console.log(e);
+        });
+          
+          node.window.loadFrame('html/room/sorry.html');
+        }
+	
+	
 };
 
 
