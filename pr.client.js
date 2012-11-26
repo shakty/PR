@@ -219,7 +219,7 @@ function PeerReviewGame () {
 	
 	var dissemination = function(){
 		
-		var dt_header = 'Round: ' + node.state.round;
+		var dt_header = 'Round: ' + node.game.state.round;
 //		if (node.game.gameState.state === 3) {	
 //			dt_header = 'Test Round';
 //		}
@@ -344,8 +344,8 @@ function PeerReviewGame () {
 			state: creation,
 			timer: {
 					milliseconds: function() {
-						if ( node.state.round < 2) return 80000;
-						if ( node.state.round < 3) return 60000;
+						if ( node.game.state.round < 2) return 80000;
+						if ( node.game.state.round < 3) return 60000;
 						return 5000000;
 					},
 					timeup: function() {
