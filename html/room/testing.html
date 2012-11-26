@@ -27,13 +27,14 @@
   <h2 id="h2title">In this page we test if your browser has the necessary requirement to go ahead.</h2>
 </div>
 <div id="CFTEST">
-	Below you will find an example of the user interface that of the game. 
-	If you can't visualize it, or if you are unable to complete the task below, please click 
-	
-	your browser is not
-	supported. Please report the hit.
+	Below you will find an example of the user interface that of the game.
+	Get familiar with it, and when you are ready to start the game, move the slider <em>Scale head horizontally</em> completely to the right.
+	<p>
+	If you can't visualize the page correctly, or if you are unable to complete the task, your browser is not supported.
+	Please click the button "I cannot complete the task".
 	<div id="returnBox">
   <button id="returnButton">I cannot complete the task</button>
+	</p>
 </div>
 </div>
 
@@ -42,7 +43,7 @@
 window.onload = function() {
 
   var node = parent.node,
-	    JSUS = parent.JSUS,
+	    J = JSUS = parent.JSUS,
 			NDDB = parent.NDDB,
 			W = parent.W;
 			
@@ -141,10 +142,29 @@ window.onload = function() {
       var ww = $(window).width();   // returns width of browser viewport
       var dw = $(document).width(); // returns width of HTML document
     
-      if (wh < 500 && ww < 500) {
+		  var root = document.getElementById('CFTEST');
+		  console.log(ww + ' x ' + wh);
+		  console.log(typeof ww)
+      if (wh < 768 || ww < 1024) {
+				J.sprintf('%importantYour current resolution is too low: %important %res!wwx!wh%res.', {
+					'%important': {
+						className: 'important'
+					},
+					'%res': {
+						className: 'res'
+					},
+					'!ww': ww,
+					'!wh': wh
+				}, root);
+				W.writeln('The game requires a resolution of at least 1024x768 pixels on the screen', root);
+				W.writeln('If you can, maximize the window screen and then reload the page. Otherwise click on "I cannot complete the task"', root);
         errors.push('Inappropriate resolution: ' + wh + ' ' + ww);
       }
       
+			if (errors.length) {
+				return errors;
+			}
+			
       try {
         
         var init_cf = node.widgets.widgets.ChernoffFaces.FaceVector.random();
