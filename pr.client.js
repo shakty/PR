@@ -69,6 +69,8 @@ function PeerReviewGame () {
 											 lifo: true
 		});
 		
+		this.history_open = false;
+		
 		this.personal_history = null;
 		
 		this.last_cf = null;
@@ -342,8 +344,8 @@ function PeerReviewGame () {
 			state: creation,
 			timer: {
 					milliseconds: function() {
-						if ( node.state.round < 2) return 8000000;
-						if ( node.state.round < 3) return 6000000;
+						if ( node.state.round < 2) return 80000;
+						if ( node.state.round < 3) return 60000;
 						return 5000000;
 					},
 					timeup: function() {
@@ -355,6 +357,10 @@ function PeerReviewGame () {
 				// Close any open dialog box
 				node.set('COST', this.creaCosts);
 				$( ".copyorclose" ).dialog('close');
+				if (node.game.history_open) {
+					W.getElementById('show_history').click();
+				}
+				
 				this.last_cf = this.cf.getAllValues();
 				return true;
 			}
@@ -364,8 +370,6 @@ function PeerReviewGame () {
 			state: submission,
 			timer: 20000,
 			done: function (ex) {
-				console.log(ex);
-				console.log(node.game.exs);
 				var auto = false;
 				if (!JSUS.in_array(ex, node.game.exs)) {
 					// time is up without the player 
