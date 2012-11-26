@@ -23,14 +23,18 @@
 
 
 <body>
-	<div id="container_creation">
+	<div id="container_creation" style="float: left; clear: none;">
     <h2>Create your painting</h2>
     <div id="creation">
       <div id="costDiv"><span id="costText">Your investment costs: </span><span id="cost">0.0</span> CHF. <span id="costWarn"></span></div>
     </div>
 	</div>
 
-	 <div id="container_history">
+  <div id="show_history" style="float: right; width: auto;">
+	 <span id="switch_show">Show</span><span id="switch_hide" style="display:none;">Hide</span> history.
+	</div>
+  	
+	 <div id="container_history" style="display:none; float: right; clear: none;">
 	 	    <h2>History of past exhibitions</h2>  
 		   <div id="history"></div> 
 			 <div id="done_box">
