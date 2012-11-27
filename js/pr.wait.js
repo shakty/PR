@@ -16,9 +16,7 @@ function pr_wait () {
 	
 	};
 
-	
-	
-	
+
 	var testing = function() {
 		node.window.loadFrame('/PR4/html/room/testing.html', function(){
 			//
@@ -28,7 +26,6 @@ function pr_wait () {
 	
 	
 	var waiting = function() {
-		console.log(node);
 		node.window.loadFrame('/PR4/html/room/waiting.html', function() {
 			// 
 		});

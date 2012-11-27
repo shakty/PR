@@ -103,6 +103,13 @@ var node = require('nodegame-client'),
 	request = require('request'),
 	dk = require('descil-mturk');
 
+//dk.getCodes(function(){
+//	console.log(dk.codes);
+//});
+
+dk.checkIn('76d0e858baa04c69a0115cf3c3f5c424', function(a,b,c){
+	console.log(c);
+});
 
 var conf = {
 	url: "http://localhost:8080/pr/wait/admin",
@@ -114,7 +121,7 @@ var conf = {
 	verbosity: 0,
 };
 
-node.play(conf, new wait());
+//node.play(conf, new wait());
 
 
 

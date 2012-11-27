@@ -51,20 +51,6 @@ window.onload = function() {
 			document.getElementById("returnButton").onclick = function(){
 				node.emit('errors', ['Cannot complete the task']);
 			};
-			
-			
-			//node.conf.events.dumpEvents = true;
-
-//	navigator.sayswho = (function(){
-//	    var N= navigator.appName, ua= navigator.userAgent, tem;
-//	    var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
-//	    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
-//	    M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
-//	    return M;
-//	   })();
-
-//	console.log(navigator.sayswho);
-//	console.log(navigator.userAgent);
 	
 	
 	var testMeGeneral = function() {
@@ -107,6 +93,38 @@ window.onload = function() {
     return errors;
   };
   
+	var testScreenRes = function() {
+		var errors = [];
+    
+      var wh = $(window).height();   // returns height of browser viewport
+      var dh = $(document).height(); // returns height of HTML document
+      var ww = $(window).width();   // returns width of browser viewport
+      var dw = $(document).width(); // returns width of HTML document
+    
+      var root = document.getElementById('CFTEST');
+
+
+      if (wh < 768 || ww < 1024) {
+        J.sprintf('%importantYour current resolution is too low: %important %res!wwx!wh%res.', {
+          '%important': {
+            className: 'important'
+          },
+          '%res': {
+            className: 'res'
+          },
+          '!ww': ww,
+          '!wh': wh
+        }, root);
+        W.writeln('The game requires a resolution of at least 1024x768 pixels on the screen', root);
+        W.writeln('If you can, maximize the window screen and then reload the page. Otherwise click on "I cannot complete the task"', root);
+        errors.push('Inappropriate resolution: ' + wh + ' ' + ww);
+      }
+      
+      
+     return errors;
+     
+	};
+	
   var testMyGame = function () {
 		
     
@@ -136,34 +154,6 @@ window.onload = function() {
         };
     
       var errors = [];
-    
-      var wh = $(window).height();   // returns height of browser viewport
-      var dh = $(document).height(); // returns height of HTML document
-      var ww = $(window).width();   // returns width of browser viewport
-      var dw = $(document).width(); // returns width of HTML document
-    
-		  var root = document.getElementById('CFTEST');
-
-
-      if (wh < 768 || ww < 1024) {
-				J.sprintf('%importantYour current resolution is too low: %important %res!wwx!wh%res.', {
-					'%important': {
-						className: 'important'
-					},
-					'%res': {
-						className: 'res'
-					},
-					'!ww': ww,
-					'!wh': wh
-				}, root);
-				W.writeln('The game requires a resolution of at least 1024x768 pixels on the screen', root);
-				W.writeln('If you can, maximize the window screen and then reload the page. Otherwise click on "I cannot complete the task"', root);
-        errors.push('Inappropriate resolution: ' + wh + ' ' + ww);
-      }
-      
-			if (errors.length) {
-				return errors;
-			}
 			
       try {
         
@@ -175,8 +165,6 @@ window.onload = function() {
 				
 				init_cf.head_scale_x = 0.3;
 				
-				console.log(init_cf);
-        
         var init_sc = CFControls.normalizeFeatures(init_cf);
         
             var sc_options = {
@@ -213,10 +201,11 @@ window.onload = function() {
   };
 	
 	var err1 = testMeGeneral();
-  var err2 = testMyGame();
+	var err2 = testScreenRes();
+  var err3 = testMyGame();
       
-  if (err1.length || err2.length) {
-    node.emit('errors', err1.concat(err2));
+  if (err1.length || err2.length || err3.length) {
+    node.emit('errors', err1.concat(err2, err3));
   }
 	
 	node.on('errors', function(errors) {
@@ -228,10 +217,14 @@ window.onload = function() {
     JSUS.each(err2, function(e){
       console.log(e);
     });
-    
+		
+		JSUS.each(err3, function(e){
+      console.log(e);
+    });
+		
     node.set('errors', errors);
-      
-    node.window.loadFrame('/PR4/html/room/sorry.html');
+      	
+    parent.window.location = '/PR4/error.html?id=' + node.player.id + 'err1=' + err1.length + '&err2=' + err2.length + '&err3=' + err3.length;
 	});
 	
 };

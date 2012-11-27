@@ -27,7 +27,18 @@
     	  
     	  
     	  this.init = function() {
+					
+					// fix bug on MsgBar
+					node.widgets.widgets.MsgBar.prototype.listeners = function () {
+            var that = this;  
+            node.on('UPDATED_PLIST', function() {
+              node.window.populateRecipientSelector(that.recipient, node.game.pl);
+	          }); 
+	        };
+					
     		  this.chat = node.widgets.append('Chat');
+					this.gboard = node.widgets.append('GameBoard');
+					this.msgbar = node.widgets.append('MsgBar');
     	  };
     	  
 
