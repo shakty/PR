@@ -2,7 +2,7 @@ function PeerReviewGame () {
 	
 	this.name = 'Peer Review Game';
 	this.description = 'Create, submit, and evaluate contributions from your peers.';
-	this.version = '0.5';
+	this.version = '0.6';
 	
 	this.auto_step = false;
 	this.auto_wait = true;
@@ -12,7 +12,7 @@ function PeerReviewGame () {
 	
 	this.init = function() {			
 		node.window.setup('PLAYER');
-		node.widgets.append('MoneyTalks', node.window.header, {currency: 'CHF', money: 10});
+		node.widgets.append('MoneyTalks', node.window.header, {currency: 'ECU', money: 10});
 		
 		this.html = {};
 		
