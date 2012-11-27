@@ -296,6 +296,21 @@ function PeerReview () {
 	};
 	
 	var questionnaire = function() {
+		
+		node.game.pl.each(function(p) {
+			exitcode = dk.codes.select('AccessCode', '=', p.mtid).first().ExitCode;
+			p.win = (p.win || 0) / 1000;
+			dk.checkOut(p.mtid, exitcode, p.win);
+		});
+		
+	      
+	    
+	    console.log('FINAL PAYOFF PER PLAYER');
+	    console.log('***********************');
+	    console.log(node.game.pl.keep(['mtid', 'win']).fetch());
+	    
+	    console.log('***********************');
+		
 		console.log('Postgame');
 	};
 	

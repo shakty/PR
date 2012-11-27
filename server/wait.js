@@ -29,15 +29,18 @@ function wait () {
 			var mtid = msg.data.mtid;
 			
 			dk.checkIn(mtid, function(err, response, body) {
-//				if (err) {
-//					node.redirect('html/room/error.html', msg.data.id);
-//					return;
-//				}
-//				
-//				if (!body.Result) {
-//					node.redirect('html/room/unauthorized.html', msg.data.id);
-//					return;
-//				}
+				if (err) {
+					node.redirect('html/room/error.html', msg.data.id);
+					return;
+				}
+				
+				if (!body.Result) {
+					node.redirect('html/room/unauthorized.html', msg.data.id);
+					return;
+				}
+				
+				// I need to have the ExitCode
+				
 				
 			});
 		});
@@ -99,8 +102,6 @@ var node = require('nodegame-client'),
 	JSUS = node.JSUS,
 	request = require('request'),
 	dk = require('descil-mturk');
-	
-
 
 
 var conf = {
