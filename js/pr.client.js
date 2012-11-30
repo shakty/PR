@@ -16,6 +16,14 @@ function PeerReviewGame () {
 		
 		this.html = {};
 		
+		node.env('mturk', function(){
+		
+			if (node.game.state.state === 4) {
+				node.emit('MONEYTALKS', 1);
+			}
+			
+		});
+		
 		node.env('review_select', function(){
 			
 			node.game.html.creation = 'html/creation_SEL.html';
@@ -29,6 +37,7 @@ function PeerReviewGame () {
 				node.game.html.instructions = 'html/instructions_SEL_COM.html';
 			});
 		});
+		
 		node.env('review_random', function(){
 			
 			node.game.html.creation = 'html/creation_RND.html';
